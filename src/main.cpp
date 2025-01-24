@@ -1,40 +1,50 @@
-#include <iostream>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 
-using namespace std;
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
+}
 
-int main(){
-    GLFWwindow* window;
-
-    /* Initialize the library */
-    if (!glfwInit())
+int main() {
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW" << std::endl;
         return -1;
+    }
 
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
-    {
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Window", nullptr, nullptr);
+    if (!window) {
+        std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
 
-    /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
-    {
-        /* Render here */
-        // glClear(GL_COLOR_BUFFER_BIT);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
 
-        /* Swap front and back buffers */
+    glViewport(0, 0, 800, 600);
+    
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    while (!glfwWindowShouldClose(window)) {
+        glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
         glfwSwapBuffers(window);
-
-        /* Poll for and process events */
+        
         glfwPollEvents();
     }
 
+    glfwDestroyWindow(window);
     glfwTerminate();
-
+    
     return 0;
 }
