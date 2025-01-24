@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/winecraft.dir/src/main.cpp.o -o winecraft  -lglfw 

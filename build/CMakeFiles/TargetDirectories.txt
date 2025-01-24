@@ -1,0 +1,3 @@
+/home/par1tet/reps/winecraft/build/CMakeFiles/winecraft.dir
+/home/par1tet/reps/winecraft/build/CMakeFiles/edit_cache.dir
+/home/par1tet/reps/winecraft/build/CMakeFiles/rebuild_cache.dir

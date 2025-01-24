@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/par1tet/reps/winecraft/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/winecraft.dir/src/main.cpp.o -c /home/par1tet/reps/winecraft/src/main.cpp",
+  "file": "/home/par1tet/reps/winecraft/src/main.cpp",
+  "output": "CMakeFiles/winecraft.dir/src/main.cpp.o"
+}
+]
