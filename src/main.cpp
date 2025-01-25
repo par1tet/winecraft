@@ -111,30 +111,41 @@ int main() {
 
     // Game loop
     while (!glfwWindowShouldClose(window)) {
-    // Очистка экрана
-    glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+        // Очистка экрана
+        glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-    // Получаем время
-    double timeValue = glfwGetTime(); // Время в секундах (double)
-    float time = static_cast<float>(timeValue); // Преобразуем в float
-    cout << time << endl;
-    // Передаем время в шейдер
-    int timeLocation = glGetUniformLocation(shaderProgram, "time");
-    glUniform1f(timeLocation, time); // Передаем как float
+        // Добавление шейдеров в программу
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO); 
 
-    // Добавление шейдеров в программу
-    glUseProgram(shaderProgram);
-    glBindVertexArray(VAO);
 
-    // Рисование треугольника
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        // Обновляем цвет
+        GLfloat timeValue = glfwGetTime();
 
-    // Swap buffers and poll events (обработка событий)
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-}
+        GLfloat firstValue = (sin(timeValue) / 2);
+        GLfloat secondValue = abs((cos(timeValue) / 2) + 0.5f- 1.0f);
+        GLfloat thirdValue = abs((tan(timeValue) / 2) + 0.5f - 1.5f);
+
+        GLint vertexColorLocationGreen = glGetUniformLocation(shaderProgram, "greenColor");
+        glUniform3f(vertexColorLocationGreen, thirdValue, firstValue, secondValue);
+
+        GLint vertexColorLocationBlue = glGetUniformLocation(shaderProgram, "blueColor");
+        glUniform3f(vertexColorLocationBlue, secondValue, thirdValue, firstValue);
+
+        GLint vertexColorLocationRed = glGetUniformLocation(shaderProgram, "redColor");
+        glUniform3f(vertexColorLocationRed, firstValue, secondValue, thirdValue);
+
+
+
+        // Рисование треугольника
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        // Swap buffers and poll events (обработка событий)
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
 
     // Очистка при заврещении программы
     glDeleteVertexArrays(1, &VAO);
