@@ -1,25 +1,25 @@
 cmake_minimum_required(VERSION 3.18)
 project(winecraft VERSION 0.1.0)
 
-
-# Главный исполняемый файл
 add_executable(winecraft 
     src/main.cpp
     src/shader_utils.cpp
 )
 
-# Добавляем библиотеку GLAD
 add_library(glad STATIC libs/glad/src/glad.c)
 target_include_directories(glad PUBLIC libs/glad/include)
 
-# Указываем путь к заголовочным файлам
+file(GLOB_RECURSE SOURCE_SOIL "libs/soil/src/*.c")
+add_library(soil ${SOURCE_SOIL})
+target_include_directories(soil PUBLIC libs/soil/include)
+
 target_include_directories(winecraft PRIVATE 
-    ${CMAKE_SOURCE_DIR}/core  # Путь к core
+    ${CMAKE_SOURCE_DIR}/core
 )
 
-# Подключаем библиотеку GLFW
 find_package(glfw3 REQUIRED)
-target_link_libraries(winecraft glad glfw)
+find_package(OpenGL REQUIRED)
 
-# Указываем путь для ресурсов (шэйдеров)
+target_link_libraries(winecraft soil ${OPENGL_LIBRARIES} glad glfw)
+
 target_compile_definitions(winecraft PRIVATE ASSET_PATH="${CMAKE_SOURCE_DIR}/assets/")

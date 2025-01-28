@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <random>
 #include <iterator>
-#include <thread>
 #include <cmath>
+#include <SOIL/SOIL.h>
 
 using namespace std;
 
@@ -29,6 +29,12 @@ int main() {
         return -1;
     }
 
+    GLfloat textureCoordinates[] = {
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        0.5f, 1.0f,
+    };
+
     GLfloat vertices[] = {
          -0.5f,  -0.5f, 0.5f,
          0.5f, -0.5f, 0.5f,
@@ -47,9 +53,14 @@ int main() {
         //1, 0, 3
     };
 
+    int width, height;
+    unsigned char* image = SOIL_load_image("assets/textures/murych_cat.png", &width, &height, 0, SOIL_LOAD_RGB);
+    
+
     GLuint VAO, VBO, EBO, CBO;
-        
+
     glGenVertexArrays(1, &VAO);
+
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
     glGenBuffers(1, &CBO);
@@ -75,10 +86,9 @@ int main() {
 
     glBindVertexArray(0); 
 
-    GLuint shaderProgram = createShaderProgram("assets/vertex.glsl", "assets/fragment.glsl");
+    glBindTexture(GL_TEXTURE_2D, 0); 
 
-    GLint numberPhase = 1; 
-    GLfloat previosPhaseValue = 1.0f;
+    GLuint shaderProgram = createShaderProgram("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
@@ -87,30 +97,9 @@ int main() {
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO); 
-
-        GLfloat timeValue = (glfwGetTime() + 1.0f);
-
-        GLfloat phaseValue = (ceil(timeValue) - timeValue);
-        // cout << timeValue << endl;
-
-        GLint vertexColorLocationPhaseValue = glGetUniformLocation(shaderProgram, "phaseValue");
-        glUniform1f(vertexColorLocationPhaseValue, phaseValue);
-
-        if (abs(previosPhaseValue - phaseValue) >= 0.5f){
-            numberPhase += 1;
-        }
-        
-        if (numberPhase == 4){
-            numberPhase = 1;
-        }
-
-        GLint vertexColorLocationNumberPhase = glGetUniformLocation(shaderProgram, "numberPhase");
-        glUniform1i(vertexColorLocationNumberPhase, numberPhase);
  
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-
-        previosPhaseValue = phaseValue;
 
         glfwSwapBuffers(window);
         glfwPollEvents();
