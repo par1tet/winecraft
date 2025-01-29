@@ -1,9 +1,9 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <SOIL/SOIL.h>
 #include "shader_utils.h"
 #include <cmath>
-#include <SOIL/SOIL.h>
 
 using namespace std;
 
@@ -26,32 +26,35 @@ int main() {
         return -1;
     }
 
+    glViewport(0, 0, 800, 600);
+
     GLfloat texCoords[] = {
-        1.0f, 0.0f,  // Нижний правый угол
-        0.5f, 1.0f,   // Верхняя центральная сторона
-        0.0f, 0.0f,  // Нижний левый угол 
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        0.0f, 0.0f,
     };
 
     GLfloat vertices[] = {
-         -0.5f,  -0.5f, 0.5f,
-         0.5f, -0.5f, 0.5f,
-         0.0f, 0.5f, -0.5f,
-        -0.5f, 0.5f, 0.5f,
+        0.27625f,  0.36f, 0.0f,
+        0.27625f, -0.36f, 0.0f,
+        -0.27625f, -0.36f, 0.0f,
+        -0.27625f, 0.36f, 0.0f, 
     };
 
     GLfloat colors[] = {
-        1.0f, 0.5f, 0.2f,
-        0.2f, 1.0f, 0.5f,
-        0.5f, 0.2f, 1.0f
+        1.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 0.0f,
     };
 
     GLuint indices[] = {
-        0, 1, 2,
-        //1, 0, 3
+        0, 1, 3,
+        1, 2, 3,
     };
 
     GLuint shaderProgram = createShaderProgram("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
-
 
     GLuint VAO, VBO, EBO, CBO, TBO;
 
@@ -76,34 +79,35 @@ int main() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     
-    glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(0);
 
-    glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, CBO);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(1);
 
-    glEnableVertexAttribArray(2);
     glBindBuffer(GL_ARRAY_BUFFER, TBO);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(2);
 
     glBindVertexArray(0); 
-
 
     GLuint texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    // Устанавливаем настройки фильтрации и преобразований (на текущей текстуре)
-    // Загружаем и генерируем текстуру
+
     int width, height;
-    unsigned char* image = SOIL_load_image("assets/textures/murych_cat.png", &width, &height, 0, SOIL_LOAD_RGB); 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    unsigned char* image = SOIL_load_image("assets/textures/murych_cat.png", &width, &height, 0, SOIL_LOAD_RGBA);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
     SOIL_free_image_data(image);
-    glBindTexture(GL_TEXTURE_2D, 0);   
-  // Main loop
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // Main loop
     while (!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+
         glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -111,12 +115,11 @@ int main() {
         glUseProgram(shaderProgram);
         glBindTexture(GL_TEXTURE_2D, texture); 
         glBindVertexArray(VAO); 
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0); 
 
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
     glDeleteVertexArrays(1, &VAO);
