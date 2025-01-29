@@ -5,8 +5,37 @@
 #include "shader_utils.h"
 #include <cmath>
 #include <vars.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace std;
+
+float x = 0, y = 0;
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+    if(key == GLFW_KEY_W && action == GLFW_PRESS)
+        y += 0.05f;
+        if(key == GLFW_KEY_W && action == GLFW_REPEAT)
+            y += 0.05f;
+
+    if(key == GLFW_KEY_S && action == GLFW_PRESS)
+        y -= 0.05f;
+        if(key == GLFW_KEY_S && action == GLFW_REPEAT)
+            y -= 0.05f;
+
+    if(key == GLFW_KEY_A && action == GLFW_PRESS)
+        x -= 0.05f;
+
+        if(key == GLFW_KEY_A && action == GLFW_REPEAT)
+            x -= 0.05f;
+
+    if(key == GLFW_KEY_D && action == GLFW_PRESS)
+        x += 0.05f;
+        if(key == GLFW_KEY_D && action == GLFW_REPEAT)
+            x += 0.05f;
+}
 
 int main() {
     if (!glfwInit()) {
@@ -28,6 +57,8 @@ int main() {
     }
 
     glViewport(0, 0, width, height);
+
+    glfwSetKeyCallback(window, key_callback);
 
     GLuint shaderProgram = createShaderProgram("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 
@@ -72,9 +103,16 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
+        GLdouble time = glfwGetTime();
         glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glm::mat4 trans = glm::mat4(1.0f);
+
+        trans = glm::translate(trans, glm::vec3(0.0f + x, 0.0f + y, 0.0f));
+
+        GLuint transLocation = glGetUniformLocation(shaderProgram, "transform");
+        glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
 
         glUseProgram(shaderProgram);
         glBindTexture(GL_TEXTURE_2D, texture); 
@@ -92,3 +130,4 @@ int main() {
     glfwTerminate();
     return 0;
 }
+
