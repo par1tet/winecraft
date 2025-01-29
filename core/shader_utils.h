@@ -13,4 +13,6 @@ GLuint createShader(const char* filePath, GLenum shaderType);
 // Создание программы шейдеров (объединяет вершинный и фрагментный шейдеры)
 GLuint createShaderProgram(const char* vertexPath, const char* fragmentPath);
 
+GLuint loadTexture(const char* filePath);
+
 #endif

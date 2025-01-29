@@ -3,7 +3,8 @@ project(winecraft VERSION 0.1.0)
 
 add_executable(winecraft 
     src/main.cpp
-    src/shader_utils.cpp
+    src/utils/shader_utils.cpp
+    src/utils/texture_loader.cpp
 )
 
 add_library(glad STATIC libs/glad/src/glad.c)
@@ -19,7 +20,8 @@ target_include_directories(winecraft PRIVATE
 
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(glm REQUIRED)
 
-target_link_libraries(winecraft soil ${OPENGL_LIBRARIES} glad glfw)
+target_link_libraries(winecraft soil ${OPENGL_LIBRARIES} glad glfw glm::glm)
 
 target_compile_definitions(winecraft PRIVATE ASSET_PATH="${CMAKE_SOURCE_DIR}/assets/")

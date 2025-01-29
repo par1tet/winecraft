@@ -4,6 +4,7 @@
 #include <SOIL/SOIL.h>
 #include "shader_utils.h"
 #include <cmath>
+#include <vars.h>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ int main() {
         return -1;
     }
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Window", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(width, height, "Winecraft 0.1", nullptr, nullptr);
     if (!window) {
         cerr << "Failed to create GLFW window" << endl;
         glfwTerminate();
@@ -26,33 +27,7 @@ int main() {
         return -1;
     }
 
-    glViewport(0, 0, 800, 600);
-
-    GLfloat texCoords[] = {
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 1.0f,
-        0.0f, 0.0f,
-    };
-
-    GLfloat vertices[] = {
-        0.27625f,  0.36f, 0.0f,
-        0.27625f, -0.36f, 0.0f,
-        -0.27625f, -0.36f, 0.0f,
-        -0.27625f, 0.36f, 0.0f, 
-    };
-
-    GLfloat colors[] = {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 0.0f,
-    };
-
-    GLuint indices[] = {
-        0, 1, 3,
-        1, 2, 3,
-    };
+    glViewport(0, 0, width, height);
 
     GLuint shaderProgram = createShaderProgram("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 
@@ -90,19 +65,8 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, TBO);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(2);
-
-    glBindVertexArray(0); 
-
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    int width, height;
-    unsigned char* image = SOIL_load_image("assets/textures/murych_cat.png", &width, &height, 0, SOIL_LOAD_RGBA);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    glGenerateMipmap(GL_TEXTURE_2D);
-    SOIL_free_image_data(image);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    //load texture 
+    GLuint texture = loadTexture("assets/textures/murych_cat.png");
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
