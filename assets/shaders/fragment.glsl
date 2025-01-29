@@ -1,12 +1,12 @@
 #version 330 core
-
-in vec4 vertexColor;
-in vec2 texCoords;
+in vec3 ourColor;
+in vec2 TexCoord;
 
 out vec4 color;
 
 uniform sampler2D ourTexture;
 
-void main() {
-    color = texture(ourTexture, texCoords);
+void main()
+{
+    color = texture(ourTexture, TexCoord);
 }

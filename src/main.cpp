@@ -2,9 +2,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "shader_utils.h"
-#include <algorithm>
-#include <random>
-#include <iterator>
 #include <cmath>
 #include <SOIL/SOIL.h>
 
@@ -29,10 +26,10 @@ int main() {
         return -1;
     }
 
-    GLfloat textureCoordinates[] = {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        0.5f, 1.0f,
+    GLfloat texCoords[] = {
+        1.0f, 0.0f,  // Нижний правый угол
+        0.5f, 1.0f,   // Верхняя центральная сторона
+        0.0f, 0.0f,  // Нижний левый угол 
     };
 
     GLfloat vertices[] = {
@@ -55,8 +52,6 @@ int main() {
 
     GLuint shaderProgram = createShaderProgram("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 
-    int width, height;
-    unsigned char* image = SOIL_load_image("assets/textures/murych_cat.png", &width, &height, 0, SOIL_LOAD_RGB);
 
     GLuint VAO, VBO, EBO, CBO, TBO;
 
@@ -76,7 +71,7 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, TBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(textureCoordinates), textureCoordinates, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -95,33 +90,28 @@ int main() {
 
     glBindVertexArray(0); 
 
-    glBindTexture(GL_TEXTURE_2D, 0); 
 
     GLuint texture;
     glGenTextures(1, &texture);
-    glBindBuffer(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// Set texture wrapping to GL_REPEAT (usually basic wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // Set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+    glBindTexture(GL_TEXTURE_2D, texture);
+    // Устанавливаем настройки фильтрации и преобразований (на текущей текстуре)
+    // Загружаем и генерируем текстуру
+    int width, height;
+    unsigned char* image = SOIL_load_image("assets/textures/murych_cat.png", &width, &height, 0, SOIL_LOAD_RGB); 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
     glGenerateMipmap(GL_TEXTURE_2D);
     SOIL_free_image_data(image);
-    glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
-
-    // Main loop
+    glBindTexture(GL_TEXTURE_2D, 0);   
+  // Main loop
     while (!glfwWindowShouldClose(window)) {
         glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glBindTexture(GL_TEXTURE_2D, texture);
 
         glUseProgram(shaderProgram);
+        glBindTexture(GL_TEXTURE_2D, texture); 
         glBindVertexArray(VAO); 
- 
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
