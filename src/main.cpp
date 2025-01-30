@@ -1,66 +1,102 @@
-#include <iostream>
-#include <glad/glad.h>
+#include "glad/glad.h"
+#include "shader_utils.h"
 #include <GLFW/glfw3.h>
 #include <SOIL/SOIL.h>
-#include "shader_utils.h"
 #include <cmath>
-#include <vars.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
+#include <vars.h>
 
 using namespace std;
 
 float x = 0, y = 0;
+bool PressedW = false;
+bool PressedS = false;
+bool PressedA = false;
+bool PressedD = false;
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-    if(key == GLFW_KEY_W && action == GLFW_PRESS)
-        y += 0.05f;
-        if(key == GLFW_KEY_W && action == GLFW_REPEAT)
-            y += 0.05f;
+const float moveXY = 0.05f;
 
-    if(key == GLFW_KEY_S && action == GLFW_PRESS)
-        y -= 0.05f;
-        if(key == GLFW_KEY_S && action == GLFW_REPEAT)
-            y -= 0.05f;
-
-    if(key == GLFW_KEY_A && action == GLFW_PRESS)
-        x -= 0.05f;
-
-        if(key == GLFW_KEY_A && action == GLFW_REPEAT)
-            x -= 0.05f;
-
-    if(key == GLFW_KEY_D && action == GLFW_PRESS)
-        x += 0.05f;
-        if(key == GLFW_KEY_D && action == GLFW_REPEAT)
-            x += 0.05f;
+void handleMoves() {
+  if (PressedW) {
+    y += moveXY;
+  }
+  if (PressedS) {
+    y -= moveXY;
+  }
+  if (PressedA) {
+    x -= moveXY;
+  }
+  if (PressedD) {
+    x += moveXY;
+  }
 }
 
-int main() {
+std::string getAssetPath(const std::string &relativePath) {
+  return std::string(ASSET_PATH) + relativePath;
+}
+
+void key_callback(GLFWwindow *window, int key, int scancode, int action,
+                  int mode) {
+  if (key == GLFW_KEY_W) {
+    if (action == GLFW_PRESS) {
+      PressedW = true;
+    } else if (action == GLFW_RELEASE) {
+      PressedW = false;
+    }
+  }
+  if (key == GLFW_KEY_S) {
+    if (action == GLFW_PRESS) {
+      PressedS = true;
+    } else if (action == GLFW_RELEASE) {
+      PressedS = false;
+    }
+  }
+  if (key == GLFW_KEY_A) {
+    if (action == GLFW_PRESS) {
+      PressedA = true;
+    } else if (action == GLFW_RELEASE) {
+      PressedA = false;
+    }
+  }
+  if (key == GLFW_KEY_D) {
+    if (action == GLFW_PRESS) {
+      PressedD = true;
+    } else if (action == GLFW_RELEASE) {
+      PressedD = false;
+    }
+  }
+}
+
+  int main() {
     if (!glfwInit()) {
-        cerr << "Failed to initialize GLFW" << endl;
-        return -1;
+      cerr << "Failed to initialize GLFW" << endl;
+      return -1;
     }
 
-    GLFWwindow* window = glfwCreateWindow(width, height, "Winecraft 0.1", nullptr, nullptr);
+    GLFWwindow *window =
+        glfwCreateWindow(width, height, "Winecraft 0.1", nullptr, nullptr);
     if (!window) {
-        cerr << "Failed to create GLFW window" << endl;
-        glfwTerminate();
-        return -1;
+      cerr << "Failed to create GLFW window" << endl;
+      glfwTerminate();
+      return -1;
     }
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        cerr << "Failed to initialize GLAD" << endl;
-        return -1;
+      cerr << "Failed to initialize GLAD" << endl;
+      return -1;
     }
 
     glViewport(0, 0, width, height);
 
     glfwSetKeyCallback(window, key_callback);
 
-    GLuint shaderProgram = createShaderProgram("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
+    GLuint shaderProgram =
+        createShaderProgram(getAssetPath("shaders/vertex.glsl").c_str(),
+                            getAssetPath("shaders/fragment.glsl").c_str());
 
     GLuint VAO, VBO, EBO, CBO, TBO;
 
@@ -70,7 +106,7 @@ int main() {
     glGenBuffers(1, &EBO);
     glGenBuffers(1, &CBO);
     glGenBuffers(1, &TBO);
-    
+
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -83,8 +119,9 @@ int main() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+                 GL_STATIC_DRAW);
+
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(0);
@@ -96,32 +133,34 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, TBO);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(2);
-    //load texture 
-    GLuint texture = loadTexture("assets/textures/murych_cat.png");
+    // load texture
+    GLuint texture = loadTexture(getAssetPath("textures/murych_cat.png").c_str());
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
+      glfwPollEvents();
 
-        GLdouble time = glfwGetTime();
-        glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+      /*GLdouble time = glfwGetTime();*/
 
-        glm::mat4 trans = glm::mat4(1.0f);
+      handleMoves();
 
-        trans = glm::translate(trans, glm::vec3(0.0f + x, 0.0f + y, 0.0f));
+      glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
+      glClear(GL_COLOR_BUFFER_BIT);
 
-        GLuint transLocation = glGetUniformLocation(shaderProgram, "transform");
-        glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
+      glm::mat4 trans = glm::mat4(1.0f);
+      trans = glm::translate(trans, glm::vec3(x, y, 0.0f));
 
-        glUseProgram(shaderProgram);
-        glBindTexture(GL_TEXTURE_2D, texture); 
-        glBindVertexArray(VAO); 
-        
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0); 
+      glUseProgram(shaderProgram);
+      GLuint transLocation = glGetUniformLocation(shaderProgram, "transform");
+      glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
 
-        glfwSwapBuffers(window);
+      glUseProgram(shaderProgram);
+      glBindTexture(GL_TEXTURE_2D, texture);
+      glBindVertexArray(VAO);
+
+      glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+      glBindVertexArray(0);
+      glfwSwapBuffers(window);
     }
 
     glDeleteVertexArrays(1, &VAO);
@@ -129,5 +168,5 @@ int main() {
 
     glfwTerminate();
     return 0;
-}
+  }
 
