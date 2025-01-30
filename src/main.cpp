@@ -17,7 +17,7 @@ bool PressedS = false;
 bool PressedA = false;
 bool PressedD = false;
 
-const float moveXY = 0.05f;
+const float moveXY = 0.025f;
 
 void handleMoves() {
   if (PressedW) {
@@ -38,8 +38,7 @@ std::string getAssetPath(const std::string &relativePath) {
   return std::string(ASSET_PATH) + relativePath;
 }
 
-void key_callback(GLFWwindow *window, int key, int scancode, int action,
-                  int mode) {
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode) {
   if (key == GLFW_KEY_W) {
     if (action == GLFW_PRESS) {
       PressedW = true;
@@ -119,8 +118,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
-                 GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
@@ -136,13 +134,24 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     // load texture
     GLuint texture = loadTexture(getAssetPath("textures/murych_cat.png").c_str());
 
+    GLdouble previosTimeDelay = 0.0f, previosTime = 0.0f, delayTime = moveXY/targetFps;
+    GLdouble fps;
+
     // Main loop
     while (!glfwWindowShouldClose(window)) {
       glfwPollEvents();
 
-      /*GLdouble time = glfwGetTime();*/
+      GLdouble time = glfwGetTime();
 
-      handleMoves();
+      if(time - previosTimeDelay >= delayTime){
+        handleMoves();
+        previosTimeDelay = time;
+      }
+
+      fps = 1 / (time-previosTime);
+      
+      system("clear");
+      cout << fps << endl;
 
       glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
       glClear(GL_COLOR_BUFFER_BIT);
@@ -161,6 +170,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
       glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
       glBindVertexArray(0);
       glfwSwapBuffers(window);
+      previosTime = time;
     }
 
     glDeleteVertexArrays(1, &VAO);
