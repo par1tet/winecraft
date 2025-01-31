@@ -8,7 +8,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <vars.h>
-#include <collisions.hpp>
+#include <collisions.h>
 
 using namespace std;
 
@@ -27,34 +27,34 @@ bool isCollision(){
     return true;
 }
 void handleMoves() {
-    if (isCollision()){
-       	if (PressedW) {
-            cubeCoordinates[0][1] += moveXY;
-       	}
-       	if (PressedS) {
-            cubeCoordinates[0][1] -= moveXY;
-       	}
-       	if (PressedA) {
-            cubeCoordinates[0][0] -= moveXY;
-       	}
-       	if (PressedD) {
-            cubeCoordinates[0][0] += moveXY;
-       	}
-    }
-
-	if(isCollision()){
-	    if (PressedUp) {
-			cubeCoordinates[1][1] += moveXY;
+	if(!isCollision(cubePositions, cubeSizes, 0)){
+		if (PressedW) {
+			cubePositions[0][1] += moveXY;
 		}
-  	    if (PressedDown) {
-           cubeCoordinates[1][1] -= moveXY;
-      	}
-      	if (PressedLeft) {
-           cubeCoordinates[1][0] -= moveXY;
-      	}
-      	if (PressedRight) {
-           cubeCoordinates[1][0] += moveXY;
-      	}
+		if (PressedS) {
+			cubePositions[0][1] -= moveXY;
+		}
+		if (PressedA) {
+			cubePositions[0][0] -= moveXY;
+		}
+		if (PressedD) {
+			cubePositions[0][0] += moveXY;
+		}
+	}
+
+	if(true){
+		if (PressedUp) {
+			cubePositions[1][1] += moveXY;
+		}
+		if (PressedDown) {
+			cubePositions[1][1] -= moveXY;
+		}
+		if (PressedLeft) {
+			cubePositions[1][0] -= moveXY;
+		}
+		if (PressedRight) {
+			cubePositions[1][0] += moveXY;
+		}
 	}
 }
 
@@ -207,9 +207,9 @@ int main() {
       		previosTimeDelay = time;
       	}
 
-      	fps = 1 / (time-previosTime);
-      	system("clear");
-      	cout << fps << endl;
+		fps = 1 / (time-previosTime);
+      	// system("clear");
+      	// cout << fps << endl;
 
       	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
       	glClear(GL_COLOR_BUFFER_BIT);
@@ -217,9 +217,9 @@ int main() {
       	glUseProgram(shaderProgram);
 
       	glm::mat4 viewMatrix = glm::mat4(1.0f);
-      	glm::mat4 projectionMatrix = glm::mat4(1.0f);
+      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -20.0f));
 
-      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -10.0f));
+      	glm::mat4 projectionMatrix = glm::mat4(1.0f);
       	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
 
       	GLuint modelMatrixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
@@ -227,6 +227,7 @@ int main() {
       	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
       	GLuint transLocation = glGetUniformLocation(shaderProgram, "transform");
       	GLuint colorLocation = glGetUniformLocation(shaderProgram, "colorCube");
+      	GLuint sizeLocation = glGetUniformLocation(shaderProgram, "sizeCube");
 
       	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
       	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
@@ -241,13 +242,14 @@ int main() {
         	modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
 
       		glm::mat4 trans = glm::mat4(1.0f);
-      		trans = glm::translate(trans, glm::vec3(cubeCoordinates[i][0], cubeCoordinates[i][1], 0.0f));
+      		trans = glm::translate(trans, glm::vec3(cubePositions[i][0], cubePositions[i][1], 0.0f));
 
         float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
 
       		glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
       		glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
-        	glUniform4fv(colorLocation, 1, color);
+			glUniform4fv(colorLocation, 1, color);
+			glUniform1f(sizeLocation, cubeSizes[i]);
 
       		glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
