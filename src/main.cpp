@@ -17,7 +17,7 @@ bool PressedS = false;
 bool PressedA = false;
 bool PressedD = false;
 
-const float moveXY = 0.025f;
+const float moveXY = 0.04f;
 
 void handleMoves() {
   if (PressedW) {
@@ -97,22 +97,18 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
         createShaderProgram(getAssetPath("shaders/vertex.glsl").c_str(),
                             getAssetPath("shaders/fragment.glsl").c_str());
 
-    GLuint VAO, VBO, EBO, CBO, TBO;
+    GLuint VAO, VBO, EBO, TBO;
 
     glGenVertexArrays(1, &VAO);
 
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
-    glGenBuffers(1, &CBO);
     glGenBuffers(1, &TBO);
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, CBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, TBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
@@ -124,13 +120,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, CBO);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glEnableVertexAttribArray(1);
-
     glBindBuffer(GL_ARRAY_BUFFER, TBO);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(1);
     // load texture
     GLuint texture = loadTexture(getAssetPath("textures/murych_cat.png").c_str());
 
@@ -160,14 +152,36 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
       trans = glm::translate(trans, glm::vec3(x, y, 0.0f));
 
       glUseProgram(shaderProgram);
+
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(-40.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+    glm::mat4 viewMatrix = glm::mat4(1.0f);
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
+
+    glm::mat4 projectionMatrix = glm::mat4(1.0f);
+    projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
+
+      GLuint modelMatixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
+      glUniformMatrix4fv(modelMatixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
+      GLuint viewMatixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+      glUniformMatrix4fv(viewMatixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+
+      GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
+      glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+
+
+
       GLuint transLocation = glGetUniformLocation(shaderProgram, "transform");
       glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
 
       glUseProgram(shaderProgram);
       glBindTexture(GL_TEXTURE_2D, texture);
       glBindVertexArray(VAO);
+      glDrawArrays(GL_TRIANGLES, 0, 36);
 
-      glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+      //glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
       glBindVertexArray(0);
       glfwSwapBuffers(window);
       previosTime = time;

@@ -1,18 +1,18 @@
 #version 330 core
 layout (location = 0) in vec3 position;
-layout (location = 1) in vec3 colors;
-layout (location = 2) in vec2 texCoord;
+layout (location = 1) in vec2 texCoord;
 
-out vec3 vertexColor;
 out vec2 TexCoords;
 out mat4 outTransform;
 
 uniform mat4 transform;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
 
 void main()
 {
-    gl_Position = transform * vec4(position, 1.0f);
-    vertexColor = colors;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * transform * vec4(position, 1.0f);
     TexCoords = texCoord;
     outTransform = transform;
 }
