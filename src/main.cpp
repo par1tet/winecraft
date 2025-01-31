@@ -12,6 +12,7 @@
 using namespace std;
 
 float x = 0, y = 0;
+
 bool PressedW = false;
 bool PressedS = false;
 bool PressedA = false;
@@ -20,82 +21,87 @@ bool PressedD = false;
 const float moveXY = 0.04f;
 
 void handleMoves() {
-  if (PressedW) {
-    y += moveXY;
-  }
-  if (PressedS) {
-    y -= moveXY;
-  }
-  if (PressedA) {
-    x -= moveXY;
-  }
-  if (PressedD) {
-    x += moveXY;
-  }
+  	if (PressedW) {
+		y += moveXY;
+  	}
+  	if (PressedS) {
+		y -= moveXY;
+  	}
+  	if (PressedA) {
+		x -= moveXY;
+  	}
+  	if (PressedD) {
+		x += moveXY;
+  	}
 }
 
 std::string getAssetPath(const std::string &relativePath) {
-  return std::string(ASSET_PATH) + relativePath;
+  	return std::string(ASSET_PATH) + relativePath;
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode) {
-  if (key == GLFW_KEY_W) {
-    if (action == GLFW_PRESS) {
-      PressedW = true;
-    } else if (action == GLFW_RELEASE) {
-      PressedW = false;
-    }
-  }
-  if (key == GLFW_KEY_S) {
-    if (action == GLFW_PRESS) {
-      PressedS = true;
-    } else if (action == GLFW_RELEASE) {
-      PressedS = false;
-    }
-  }
-  if (key == GLFW_KEY_A) {
-    if (action == GLFW_PRESS) {
-      PressedA = true;
-    } else if (action == GLFW_RELEASE) {
-      PressedA = false;
-    }
-  }
-  if (key == GLFW_KEY_D) {
-    if (action == GLFW_PRESS) {
-      PressedD = true;
-    } else if (action == GLFW_RELEASE) {
-      PressedD = false;
-    }
-  }
+  	if (key == GLFW_KEY_W) {
+		if (action == GLFW_PRESS) {
+	  		PressedW = true;
+		} else if (action == GLFW_RELEASE) {
+	  		PressedW = false;
+		}
+  	}
+
+  	if (key == GLFW_KEY_S) {
+		if (action == GLFW_PRESS) {
+	  		PressedS = true;
+	} else if (action == GLFW_RELEASE) {
+	  		PressedS = false;
+		}
+  	}
+
+  	if (key == GLFW_KEY_A) {
+		if (action == GLFW_PRESS) {
+	  		PressedA = true;
+		} else if (action == GLFW_RELEASE) {
+	  		PressedA = false;
+		}
+  	}
+  
+  	if (key == GLFW_KEY_D) {
+		if (action == GLFW_PRESS) {
+	  		PressedD = true;
+		} else if (action == GLFW_RELEASE) {
+	  		PressedD = false;
+		}
+  	}
 }
 
-  int main() {
+int main() {
     if (!glfwInit()) {
-      cerr << "Failed to initialize GLFW" << endl;
-      return -1;
-    }
+        cerr << "Failed to initialize GLFW" << endl;
+        return -1;
+  	}
 
-    GLFWwindow *window =
-        glfwCreateWindow(width, height, "Winecraft 0.1", nullptr, nullptr);
-    if (!window) {
-      cerr << "Failed to create GLFW window" << endl;
-      glfwTerminate();
-      return -1;
-    }
+	GLFWwindow *window = glfwCreateWindow(width, height, "Winecraft 0.1", nullptr, nullptr);
+	
+  	if (!window) {
+    	cerr << "Failed to create GLFW window" << endl;
+    	glfwTerminate();
+    	return -1;
+	}
+
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-      cerr << "Failed to initialize GLAD" << endl;
-      return -1;
+      	cerr << "Failed to initialize GLAD" << endl;
+      	return -1;
     }
 
     glViewport(0, 0, width, height);
 
     glfwSetKeyCallback(window, key_callback);
 
-    GLuint shaderProgram =
-        createShaderProgram(getAssetPath("shaders/vertex.glsl").c_str(),
-                            getAssetPath("shaders/fragment.glsl").c_str());
+    GLuint shaderProgram = createShaderProgram(
+      	getAssetPath("shaders/vertex.glsl").c_str(),
+      	getAssetPath("shaders/fragment.glsl").c_str()
+    );
 
     GLuint VAO, VBO, EBO, TBO;
 
@@ -129,62 +135,59 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     GLdouble previosTimeDelay = 0.0f, previosTime = 0.0f, delayTime = moveXY/targetFps;
     GLdouble fps;
 
-    // Main loop
+    glEnable(GL_DEPTH_TEST);
+
+    // Main loop : λι τνκ υζσλκ 
     while (!glfwWindowShouldClose(window)) {
-      glfwPollEvents();
+      	glfwPollEvents();
 
-      GLdouble time = glfwGetTime();
+      	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-      if(time - previosTimeDelay >= delayTime){
-        handleMoves();
-        previosTimeDelay = time;
-      }
+      	GLdouble time = glfwGetTime();
 
-      fps = 1 / (time-previosTime);
+      	if(time - previosTimeDelay >= delayTime){
+      		handleMoves();
+      		previosTimeDelay = time;
+      	}
+
+      	fps = 1 / (time-previosTime);
       
-      system("clear");
-      cout << fps << endl;
+      	system("clear");
+      	cout << fps << endl;
 
-      glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
-      glClear(GL_COLOR_BUFFER_BIT);
+      	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
+      	glClear(GL_COLOR_BUFFER_BIT);
 
-      glm::mat4 trans = glm::mat4(1.0f);
-      trans = glm::translate(trans, glm::vec3(x, y, 0.0f));
+      	glm::mat4 trans = glm::mat4(1.0f);
+      	trans = glm::translate(trans, glm::vec3(x, y, 0.0f));
+      	glUseProgram(shaderProgram);
 
-      glUseProgram(shaderProgram);
+      	glm::mat4 modelMatrix = glm::mat4(1.0f);
+      	glm::mat4 viewMatrix = glm::mat4(1.0f);
+      	glm::mat4 projectionMatrix = glm::mat4(1.0f);
+		
+      	modelMatrix = glm::rotate(modelMatrix, glm::radians(-50.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
+      	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
 
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
-    modelMatrix = glm::rotate(modelMatrix, glm::radians(-40.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+      	GLuint modelMatixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
+      	GLuint viewMatixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+      	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
+      	GLuint transLocation = glGetUniformLocation(shaderProgram, "transform");
 
-    glm::mat4 viewMatrix = glm::mat4(1.0f);
-    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -3.0f));
+      	glUniformMatrix4fv(modelMatixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+      	glUniformMatrix4fv(viewMatixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+      	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+      	glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
 
-    glm::mat4 projectionMatrix = glm::mat4(1.0f);
-    projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
+      	glUseProgram(shaderProgram);
+      	glBindTexture(GL_TEXTURE_2D, texture);
+      	glBindVertexArray(VAO);
+      	glDrawArrays(GL_TRIANGLES, 0, 36);
 
-      GLuint modelMatixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
-      glUniformMatrix4fv(modelMatixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-
-      GLuint viewMatixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
-      glUniformMatrix4fv(viewMatixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
-
-      GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
-      glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-
-
-
-      GLuint transLocation = glGetUniformLocation(shaderProgram, "transform");
-      glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
-
-      glUseProgram(shaderProgram);
-      glBindTexture(GL_TEXTURE_2D, texture);
-      glBindVertexArray(VAO);
-      glDrawArrays(GL_TRIANGLES, 0, 36);
-
-      //glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-      glBindVertexArray(0);
-      glfwSwapBuffers(window);
-      previosTime = time;
+      	glBindVertexArray(0);
+      	glfwSwapBuffers(window);
+      	previosTime = time;
     }
 
     glDeleteVertexArrays(1, &VAO);
@@ -192,5 +195,4 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 
     glfwTerminate();
     return 0;
-  }
-
+}

@@ -9,6 +9,7 @@ std::string loadShaderSource(const char* filePath) {
     std::ifstream file(filePath); // Открываем файл
     std::stringstream buffer;
 
+
     if (file.is_open()) {
         buffer << file.rdbuf(); // Читаем содержимое файла в строку
         file.close();           // Закрываем файл
@@ -21,7 +22,7 @@ std::string loadShaderSource(const char* filePath) {
 
 // Функция для создания и компиляции шейдера
 // filePath — путь к файлу с кодом шейдера
-// shaderType — тип шейдера (GL_VERTEX_SHADER или GL_FRAGMENT_SHADER)
+// shaderType — тип шейдера (GL_VEaRTEX_SHADER или GL_FRAGMENT_SHADER)
 GLuint createShader(const char* filePath, GLenum shaderType) {
     // Загружаем текст шейдера из файла
     std::string shaderCode = loadShaderSource(filePath);

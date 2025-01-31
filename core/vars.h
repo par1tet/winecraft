@@ -3,52 +3,53 @@
 int width = 800, height = 600;
 
 int targetFps = 60;
-
-GLfloat texCoords[] = {
-    -0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f,  0.5f, -0.5f,
-     0.5f,  0.5f, -0.5f,
-    -0.5f,  0.5f, -0.5f,
-    -0.5f, -0.5f, -0.5f,
-
-    -0.5f, -0.5f,  0.5f,
-     0.5f, -0.5f,  0.5f,
-     0.5f,  0.5f,  0.5f,
-     0.5f,  0.5f,  0.5f,
-    -0.5f,  0.5f,  0.5f,
-    -0.5f, -0.5f,  0.5f,
-
-    -0.5f,  0.5f,  0.5f,
-    -0.5f,  0.5f, -0.5f,
-    -0.5f, -0.5f, -0.5f,
-    -0.5f, -0.5f, -0.5f,
-    -0.5f, -0.5f,  0.5f,
-    -0.5f,  0.5f,  0.5f,
-
-     0.5f,  0.5f,  0.5f,
-     0.5f,  0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f,  0.5f,
-     0.5f,  0.5f,  0.5f,
-
-    -0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f, -0.5f,
-     0.5f, -0.5f,  0.5f,
-     0.5f, -0.5f,  0.5f,
-    -0.5f, -0.5f,  0.5f,
-    -0.5f, -0.5f, -0.5f,
-
-    -0.5f,  0.5f, -0.5f,
-     0.5f,  0.5f, -0.5f,
-     0.5f,  0.5f,  0.5f,
-     0.5f,  0.5f,  0.5f,
-    -0.5f,  0.5f,  0.5f,
-    -0.5f,  0.5f, -0.5f,
-};
+float sizeCube = 0.6f;
 
 GLfloat vertices[] = {
+    -sizeCube, -sizeCube, -sizeCube,
+     sizeCube, -sizeCube, -sizeCube,
+     sizeCube,  sizeCube, -sizeCube,
+     sizeCube,  sizeCube, -sizeCube,
+    -sizeCube,  sizeCube, -sizeCube,
+    -sizeCube, -sizeCube, -sizeCube,
+
+    -sizeCube, -sizeCube,  sizeCube,
+     sizeCube, -sizeCube,  sizeCube,
+     sizeCube,  sizeCube,  sizeCube,
+     sizeCube,  sizeCube,  sizeCube,
+    -sizeCube,  sizeCube,  sizeCube,
+    -sizeCube, -sizeCube,  sizeCube,
+
+    -sizeCube,  sizeCube,  sizeCube,
+    -sizeCube,  sizeCube, -sizeCube,
+    -sizeCube, -sizeCube, -sizeCube,
+    -sizeCube, -sizeCube, -sizeCube,
+    -sizeCube, -sizeCube,  sizeCube,
+    -sizeCube,  sizeCube,  sizeCube,
+
+     sizeCube,  sizeCube,  sizeCube,
+     sizeCube,  sizeCube, -sizeCube,
+     sizeCube, -sizeCube, -sizeCube,
+     sizeCube, -sizeCube, -sizeCube,
+     sizeCube, -sizeCube,  sizeCube,
+     sizeCube,  sizeCube,  sizeCube,
+
+    -sizeCube, -sizeCube, -sizeCube,
+     sizeCube, -sizeCube, -sizeCube,
+     sizeCube, -sizeCube,  sizeCube,
+     sizeCube, -sizeCube,  sizeCube,
+    -sizeCube, -sizeCube,  sizeCube,
+    -sizeCube, -sizeCube, -sizeCube,
+
+    -sizeCube,  sizeCube, -sizeCube,
+     sizeCube,  sizeCube, -sizeCube,
+     sizeCube,  sizeCube,  sizeCube,
+     sizeCube,  sizeCube,  sizeCube,
+    -sizeCube,  sizeCube,  sizeCube,
+    -sizeCube,  sizeCube, -sizeCube,
+};
+
+GLfloat texCoords[] = {
     0.0f, 0.0f,
     1.0f, 0.0f,
     1.0f, 1.0f,
