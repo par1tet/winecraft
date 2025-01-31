@@ -8,6 +8,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <vars.h>
+#include <collisions.hpp>
 
 using namespace std;
 
@@ -22,32 +23,39 @@ bool PressedDown = false;
 
 const float moveXY = 0.1f;
 
+bool isCollision(){
+    return true;
+}
 void handleMoves() {
-  	if (PressedW) {
-		cubeCoordinates[0][1] += moveXY;
-  	}
-  	if (PressedS) {
-		cubeCoordinates[0][1] -= moveXY;
-  	}
-  	if (PressedA) {
-		cubeCoordinates[0][0] -= moveXY;
-  	}
-  	if (PressedD) {
-		cubeCoordinates[0][0] += moveXY;
-  	}
+    if (isCollision()){
+       	if (PressedW) {
+            cubeCoordinates[0][1] += moveXY;
+       	}
+       	if (PressedS) {
+            cubeCoordinates[0][1] -= moveXY;
+       	}
+       	if (PressedA) {
+            cubeCoordinates[0][0] -= moveXY;
+       	}
+       	if (PressedD) {
+            cubeCoordinates[0][0] += moveXY;
+       	}
+    }
 
-	if (PressedUp) {
-		cubeCoordinates[1][1] += moveXY;
-  	}
-  	if (PressedDown) {
-		cubeCoordinates[1][1] -= moveXY;
-  	}
-  	if (PressedLeft) {
-		cubeCoordinates[1][0] -= moveXY;
-  	}
-  	if (PressedRight) {
-		cubeCoordinates[1][0] += moveXY;
-  	}
+	if(isCollision()){
+	    if (PressedUp) {
+			cubeCoordinates[1][1] += moveXY;
+		}
+  	    if (PressedDown) {
+           cubeCoordinates[1][1] -= moveXY;
+      	}
+      	if (PressedLeft) {
+           cubeCoordinates[1][0] -= moveXY;
+      	}
+      	if (PressedRight) {
+           cubeCoordinates[1][0] += moveXY;
+      	}
+	}
 }
 
 std::string getAssetPath(const std::string &relativePath) {
@@ -55,6 +63,8 @@ std::string getAssetPath(const std::string &relativePath) {
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode) {
+
+
   	if (key == GLFW_KEY_W) {
 		if (action == GLFW_PRESS) {
 	  		PressedW = true;
@@ -110,7 +120,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 	  		PressedRight = false;
 		}
   	}
-	
+
   	if (key == GLFW_KEY_DOWN) {
 		if (action == GLFW_PRESS) {
 	  		PressedDown = true;
@@ -127,7 +137,7 @@ int main() {
   	}
 
 	GLFWwindow *window = glfwCreateWindow(width, height, "Winecraft 0.1", nullptr, nullptr);
-	
+
   	if (!window) {
     	cerr << "Failed to create GLFW window" << endl;
     	glfwTerminate();
@@ -184,7 +194,7 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
-    // Main loop : λι τνκ υζσλκ 
+    // Main loop : λι τνκ υζσλκ
     while (!glfwWindowShouldClose(window)) {
       	glfwPollEvents();
 
@@ -208,7 +218,7 @@ int main() {
 
       	glm::mat4 viewMatrix = glm::mat4(1.0f);
       	glm::mat4 projectionMatrix = glm::mat4(1.0f);
-		
+
       	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -10.0f));
       	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
 
@@ -224,28 +234,23 @@ int main() {
       	glUseProgram(shaderProgram);
       	glBindTexture(GL_TEXTURE_2D, texture);
 
-		// ιλυτ κβνμ
-
       	glBindVertexArray(VAO);
 
-		// θιτ νβκα
-		
-		for(int i = 0;i <= 1;i++){
+        for(int i = 0;i <= 1;i++){
       		glm::mat4 modelMatrix = glm::mat4(1.0f);
-			modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
+        	modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
 
       		glm::mat4 trans = glm::mat4(1.0f);
       		trans = glm::translate(trans, glm::vec3(cubeCoordinates[i][0], cubeCoordinates[i][1], 0.0f));
 
-			float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
+        float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
 
       		glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
       		glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
-			glUniform4fv(colorLocation, 1, color);
+        	glUniform4fv(colorLocation, 1, color);
 
       		glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-
 
       	glBindVertexArray(0);
       	glfwSwapBuffers(window);
