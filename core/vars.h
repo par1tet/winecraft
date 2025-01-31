@@ -1,9 +1,20 @@
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 int width = 800, height = 600;
 
 int targetFps = 60;
 float sizeCube = 0.6f;
+
+float cubeCoordinates[][2] {
+    {0.0f, 0.0f},
+    {0.0f, 0.0f},
+};
+
+glm::vec3 cubePositions[] = {
+    glm::vec3( -1.0f,  -1.5f,  0.0f), 
+    glm::vec3( 1.0f,  3.0f,  0.0f), 
+};
 
 GLfloat vertices[] = {
     -sizeCube, -sizeCube, -sizeCube,
@@ -50,27 +61,6 @@ GLfloat vertices[] = {
 };
 
 GLfloat texCoords[] = {
-    0.0f, 0.0f,
-    1.0f, 0.0f,
-    1.0f, 1.0f,
-    1.0f, 1.0f,
-    0.0f, 1.0f,
-    0.0f, 0.0f,
-
-    0.0f, 0.0f,
-    1.0f, 0.0f,
-    1.0f, 1.0f,
-    1.0f, 1.0f,
-    0.0f, 1.0f,
-    0.0f, 0.0f,
-
-    1.0f, 0.0f,
-    1.0f, 1.0f,
-    0.0f, 1.0f,
-    0.0f, 1.0f,
-    0.0f, 0.0f,
-    1.0f, 0.0f,
-
     1.0f, 0.0f,
     1.0f, 1.0f,
     0.0f, 1.0f,
@@ -90,10 +80,31 @@ GLfloat texCoords[] = {
     1.0f, 0.0f,
     1.0f, 0.0f,
     0.0f, 0.0f,
-    0.0f, 1.0f
+    0.0f, 1.0f,
+
+    0.0f, 0.0f,
+    1.0f, 0.0f,
+    1.0f, 1.0f,
+    1.0f, 1.0f,
+    0.0f, 1.0f,
+    0.0f, 0.0f,
+
+    0.0f, 0.0f,
+    1.0f, 0.0f,
+    1.0f, 1.0f,
+    1.0f, 1.0f,
+    0.0f, 1.0f,
+    0.0f, 0.0f,
+
+    1.0f, 0.0f,
+    1.0f, 1.0f,
+    0.0f, 1.0f,
+    0.0f, 1.0f,
+    0.0f, 0.0f,
+    1.0f, 0.0f,
 };
 
 GLuint indices[] = {
     0, 1, 3,
-    1, 2, 3,
+    1, 2, 3
 };
