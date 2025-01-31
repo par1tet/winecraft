@@ -1,1 +1,3 @@
-bool isCollision(float coordinates[][2], float sizes[], int index);
+#include <glm/glm.hpp>
+
+bool isCollision(glm::vec3 coordinates[], float sizes[], int index);

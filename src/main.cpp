@@ -24,33 +24,33 @@ bool PressedDown = false;
 const float moveXY = 0.1f;
 
 void handleMoves() {
-	if(isCollision(cubeCoordinates, cubeSizes, 0)){
+	if(!isCollision(cubePositions, cubeSizes, 0)){
 		if (PressedW) {
-			cubeCoordinates[0][1] += moveXY;
+			cubePositions[0][1] += moveXY;
 		}
 		if (PressedS) {
-			cubeCoordinates[0][1] -= moveXY;
+			cubePositions[0][1] -= moveXY;
 		}
 		if (PressedA) {
-			cubeCoordinates[0][0] -= moveXY;
+			cubePositions[0][0] -= moveXY;
 		}
 		if (PressedD) {
-			cubeCoordinates[0][0] += moveXY;
+			cubePositions[0][0] += moveXY;
 		}
 	}
 
-	if(isCollision(cubeCoordinates, cubeSizes, 1)){
+	if(true){
 		if (PressedUp) {
-			cubeCoordinates[1][1] += moveXY;
+			cubePositions[1][1] += moveXY;
 		}
 		if (PressedDown) {
-			cubeCoordinates[1][1] -= moveXY;
+			cubePositions[1][1] -= moveXY;
 		}
 		if (PressedLeft) {
-			cubeCoordinates[1][0] -= moveXY;
+			cubePositions[1][0] -= moveXY;
 		}
 		if (PressedRight) {
-			cubeCoordinates[1][0] += moveXY;
+			cubePositions[1][0] += moveXY;
 		}
 	}
 }
@@ -202,9 +202,9 @@ int main() {
       		previosTimeDelay = time;
       	}
 
-      	fps = 1 / (time-previosTime);
-      	system("clear");
-      	cout << fps << endl;
+		fps = 1 / (time-previosTime);
+      	// system("clear");
+      	// cout << fps << endl;
 
       	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
       	glClear(GL_COLOR_BUFFER_BIT);
@@ -212,7 +212,7 @@ int main() {
       	glUseProgram(shaderProgram);
 
       	glm::mat4 viewMatrix = glm::mat4(1.0f);
-      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -10.0f));
+      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -20.0f));
 
       	glm::mat4 projectionMatrix = glm::mat4(1.0f);
       	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
@@ -241,7 +241,7 @@ int main() {
 			modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
 
       		glm::mat4 trans = glm::mat4(1.0f);
-      		trans = glm::translate(trans, glm::vec3(cubeCoordinates[i][0], cubeCoordinates[i][1], 0.0f));
+      		trans = glm::translate(trans, glm::vec3(cubePositions[i][0], cubePositions[i][1], 0.0f));
 
 			float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
 
