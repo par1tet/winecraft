@@ -8,6 +8,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <vars.h>
+#include <collisions.h>
 
 using namespace std;
 
@@ -23,31 +24,35 @@ bool PressedDown = false;
 const float moveXY = 0.1f;
 
 void handleMoves() {
-  	if (PressedW) {
-		cubeCoordinates[0][1] += moveXY;
-  	}
-  	if (PressedS) {
-		cubeCoordinates[0][1] -= moveXY;
-  	}
-  	if (PressedA) {
-		cubeCoordinates[0][0] -= moveXY;
-  	}
-  	if (PressedD) {
-		cubeCoordinates[0][0] += moveXY;
-  	}
+	if(isCollision(cubeCoordinates, cubeSizes, 0)){
+		if (PressedW) {
+			cubeCoordinates[0][1] += moveXY;
+		}
+		if (PressedS) {
+			cubeCoordinates[0][1] -= moveXY;
+		}
+		if (PressedA) {
+			cubeCoordinates[0][0] -= moveXY;
+		}
+		if (PressedD) {
+			cubeCoordinates[0][0] += moveXY;
+		}
+	}
 
-	if (PressedUp) {
-		cubeCoordinates[1][1] += moveXY;
-  	}
-  	if (PressedDown) {
-		cubeCoordinates[1][1] -= moveXY;
-  	}
-  	if (PressedLeft) {
-		cubeCoordinates[1][0] -= moveXY;
-  	}
-  	if (PressedRight) {
-		cubeCoordinates[1][0] += moveXY;
-  	}
+	if(isCollision(cubeCoordinates, cubeSizes, 1)){
+		if (PressedUp) {
+			cubeCoordinates[1][1] += moveXY;
+		}
+		if (PressedDown) {
+			cubeCoordinates[1][1] -= moveXY;
+		}
+		if (PressedLeft) {
+			cubeCoordinates[1][0] -= moveXY;
+		}
+		if (PressedRight) {
+			cubeCoordinates[1][0] += moveXY;
+		}
+	}
 }
 
 std::string getAssetPath(const std::string &relativePath) {
@@ -207,9 +212,9 @@ int main() {
       	glUseProgram(shaderProgram);
 
       	glm::mat4 viewMatrix = glm::mat4(1.0f);
-      	glm::mat4 projectionMatrix = glm::mat4(1.0f);
-		
       	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -10.0f));
+
+      	glm::mat4 projectionMatrix = glm::mat4(1.0f);
       	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
 
       	GLuint modelMatrixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
@@ -217,6 +222,7 @@ int main() {
       	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
       	GLuint transLocation = glGetUniformLocation(shaderProgram, "transform");
       	GLuint colorLocation = glGetUniformLocation(shaderProgram, "colorCube");
+      	GLuint sizeLocation = glGetUniformLocation(shaderProgram, "sizeCube");
 
       	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
       	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
@@ -242,6 +248,7 @@ int main() {
       		glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
       		glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
 			glUniform4fv(colorLocation, 1, color);
+			glUniform1f(sizeLocation, cubeSizes[i]);
 
       		glDrawArrays(GL_TRIANGLES, 0, 36);
 		}

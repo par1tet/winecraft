@@ -4,11 +4,16 @@
 int width = 800, height = 600;
 
 int targetFps = 60;
-float sizeCube = 0.6f;
+float sizeCube = 1.0f;
 
 float cubeCoordinates[][2] {
     {0.0f, 0.0f},
     {0.0f, 0.0f},
+};
+
+float cubeSizes[] {
+    0.5f,
+    1.0f
 };
 
 glm::vec3 cubePositions[] = {

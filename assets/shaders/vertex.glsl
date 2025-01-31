@@ -9,10 +9,11 @@ uniform mat4 transform;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
+uniform float sizeCube;
 
 void main()
 {
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * transform * vec4(position, 1.0f);
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * transform * vec4((position * sizeCube), 1.0f);
     TexCoords = texCoord;
     outTransform = transform;
 }
