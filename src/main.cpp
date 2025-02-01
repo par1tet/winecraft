@@ -9,22 +9,15 @@
 #include <iostream>
 #include <vars.h>
 #include <collisions.h>
+#include "assets.h"
+#include "controls.hpp"
 
 using namespace std;
 
-bool PressedW = false;
-bool PressedS = false;
-bool PressedA = false;
-bool PressedD = false;
-bool PressedUp = false;
-bool PressedLeft = false;
-bool PressedRight = false;
-bool PressedDown = false;
-
 const float moveXY = 0.1f;
 
-void handleMoves(const AABB& box1, const AABB& box2) {
-	if(!checkCollision(box1, box2)){
+void handleMoves(const std::vector<AABB>& objects) {
+	if(!checkCollisions(objects)){
 		if (PressedW) {
 			cubePositions[0][1] += moveXY;
 		}
@@ -39,7 +32,7 @@ void handleMoves(const AABB& box1, const AABB& box2) {
 		}
 	}
 
-	if(!checkCollision(box1, box2)){
+	if(!checkCollisions(objects)){
 		if (PressedUp) {
 			cubePositions[1][1] += moveXY;
 		}
@@ -53,78 +46,6 @@ void handleMoves(const AABB& box1, const AABB& box2) {
 			cubePositions[1][0] += moveXY;
 		}
 	}
-}
-
-std::string getAssetPath(const std::string &relativePath) {
-  	return std::string(ASSET_PATH) + relativePath;
-}
-
-void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode) {
-
-
-  	if (key == GLFW_KEY_W) {
-		if (action == GLFW_PRESS) {
-	  		PressedW = true;
-		} else if (action == GLFW_RELEASE) {
-	  		PressedW = false;
-		}
-  	}
-
-  	if (key == GLFW_KEY_S) {
-		if (action == GLFW_PRESS) {
-	  		PressedS = true;
-	} else if (action == GLFW_RELEASE) {
-	  		PressedS = false;
-		}
-  	}
-
-  	if (key == GLFW_KEY_A) {
-		if (action == GLFW_PRESS) {
-	  		PressedA = true;
-		} else if (action == GLFW_RELEASE) {
-	  		PressedA = false;
-		}
-  	}
-
-	if (key == GLFW_KEY_D) {
-		if (action == GLFW_PRESS) {
-	  		PressedD = true;
-		} else if (action == GLFW_RELEASE) {
-	  		PressedD = false;
-		}
-  	}
-
-	if (key == GLFW_KEY_UP) {
-		if (action == GLFW_PRESS) {
-	  		PressedUp = true;
-		} else if (action == GLFW_RELEASE) {
-	  		PressedUp = false;
-		}
-  	}
-
-	if (key == GLFW_KEY_LEFT) {
-		if (action == GLFW_PRESS) {
-	  		PressedLeft = true;
-		} else if (action == GLFW_RELEASE) {
-	  		PressedLeft = false;
-		}
-  	}
-
-  	if (key == GLFW_KEY_RIGHT) {
-		if (action == GLFW_PRESS) {
-	  		PressedRight = true;
-		} else if (action == GLFW_RELEASE) {
-	  		PressedRight = false;
-		}
-  	}
-
-  	if (key == GLFW_KEY_DOWN) {
-		if (action == GLFW_PRESS) {
-	  		PressedDown = true;
-		} else if (action == GLFW_RELEASE) {
-	  		PressedDown = false;
-		}
-  	}
 }
 
 int main() {
@@ -197,18 +118,9 @@ int main() {
 
       	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        AABB box1 = calculateAABB(cubePositions[0], cubeSizes[0]);
-        AABB box2 =calculateAABB(cubePositions[1], cubeSizes[1]);
       	GLdouble time = glfwGetTime();
 
-      	if(time - previosTimeDelay >= delayTime){
-      		handleMoves(box1, box2);
-      		previosTimeDelay = time;
-      	}
-
-		fps = 1 / (time-previosTime);
-      	// system("clear");
-      	// cout << fps << endl;
+        vector<AABB> positions;
 
       	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
       	glClear(GL_COLOR_BUFFER_BIT);
@@ -236,28 +148,34 @@ int main() {
 
       	glBindVertexArray(VAO);
 
-        for(int i = 0;i <= 1;i++){
+        for(int i = 0;i < sizeof(cubePositions)/sizeof(cubePositions[0]); i++){
       		glm::mat4 modelMatrix = glm::mat4(1.0f);
         	modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
           
       		glm::mat4 trans = glm::mat4(1.0f);
       		trans = glm::translate(trans, glm::vec3(cubePositions[i][0], cubePositions[i][1], 0.0f));
-
+          positions.push_back(calculateAABB(cubePositions[i], cubeSizes[i]));
         float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
 
       		glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
       		glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
-			glUniform4fv(colorLocation, 1, color);
-			glUniform1f(sizeLocation, cubeSizes[i]);
+          glUniform4fv(colorLocation, 1, color);
+          glUniform1f(sizeLocation, cubeSizes[i]);
 
       		glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
+      
+      	if(time - previosTimeDelay >= delayTime){
+      		handleMoves(positions);
+      		previosTimeDelay = time;
+      	}
 
+        fps = 1 / (time-previosTime);
       	glBindVertexArray(0);
       	glfwSwapBuffers(window);
       	previosTime = time;
+    positions.clear();
     }
-
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 

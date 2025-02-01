@@ -6,11 +6,13 @@ int width = 800, height = 600;
 int targetFps = 60;
 float sizeCube = 1.0f;
 
-float cubeSizes[] = {1.0f, 0.5f};
+float cubeSizes[] = {0.5f, 0.5f, 0.5f, 0.5f};
 
 glm::vec3 cubePositions[] = {
     glm::vec3( -1.0f,  -1.5f,  0.0f), 
     glm::vec3( 1.0f,  3.0f,  0.0f), 
+    glm::vec3(-1.5f, -2.2f, 0.0f),  
+    glm::vec3(-3.8f, -2.0f, 0.0f),  
 };
 
 GLfloat vertices[] = {

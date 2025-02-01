@@ -1,4 +1,5 @@
 #include <glm/glm.hpp>
+#include <vector>
 
 struct AABB {
     glm::vec3 min;
@@ -6,4 +7,4 @@ struct AABB {
 };
 
 AABB calculateAABB(const glm::vec3& position, float size);
-bool checkCollision(const AABB& box1, const AABB& box2);
+bool checkCollisions(const std::vector<AABB>& objects);

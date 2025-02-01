@@ -1,5 +1,6 @@
 #include <glm/vec3.hpp>
 #include <collisions.h>
+#include <iostream>
 #include <math.h>
 
 
@@ -10,8 +11,20 @@ AABB calculateAABB(const glm::vec3& position, float size) {
     return box;
 }
 
-bool checkCollision(const AABB& box1, const AABB& box2) {
-    return (box1.min.x <= box2.max.x && box1.max.x >= box2.min.x) &&
-           (box1.min.y <= box2.max.y && box1.max.y >= box2.min.y) &&
-           (box1.min.z <= box2.max.z && box1.max.z >= box2.min.z);
+bool isColliding(const AABB& a, const AABB& b) {
+    return (a.min.x <= b.max.x && a.max.x >= b.min.x) &&
+           (a.min.y <= b.max.y && a.max.y >= b.min.y) &&
+           (a.min.z <= b.max.z && a.max.z >= b.min.z);
+}
+
+bool checkCollisions(const std::vector<AABB>& objects) {
+    for (size_t i = 0; i < objects.size(); ++i) {
+        for (size_t j = i + 1; j < objects.size(); ++j) {
+          if (isColliding(objects[i], objects[j])){
+            std::cout << "collisions worked" << std::endl; 
+            return true;
+         }
+        }
+    }
+    return false;
 }
