@@ -23,11 +23,8 @@ bool PressedDown = false;
 
 const float moveXY = 0.1f;
 
-bool isCollision(){
-    return true;
-}
-void handleMoves() {
-	if(!isCollision(cubePositions, cubeSizes, 0)){
+void handleMoves(const AABB& box1, const AABB& box2) {
+	if(!checkCollision(box1, box2)){
 		if (PressedW) {
 			cubePositions[0][1] += moveXY;
 		}
@@ -42,7 +39,7 @@ void handleMoves() {
 		}
 	}
 
-	if(true){
+	if(!checkCollision(box1, box2)){
 		if (PressedUp) {
 			cubePositions[1][1] += moveXY;
 		}
@@ -200,10 +197,12 @@ int main() {
 
       	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        AABB box1 = calculateAABB(cubePositions[0], cubeSizes[0]);
+        AABB box2 =calculateAABB(cubePositions[1], cubeSizes[1]);
       	GLdouble time = glfwGetTime();
 
       	if(time - previosTimeDelay >= delayTime){
-      		handleMoves();
+      		handleMoves(box1, box2);
       		previosTimeDelay = time;
       	}
 
@@ -240,7 +239,7 @@ int main() {
         for(int i = 0;i <= 1;i++){
       		glm::mat4 modelMatrix = glm::mat4(1.0f);
         	modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
-
+          
       		glm::mat4 trans = glm::mat4(1.0f);
       		trans = glm::translate(trans, glm::vec3(cubePositions[i][0], cubePositions[i][1], 0.0f));
 
