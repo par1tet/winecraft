@@ -11,41 +11,69 @@
 #include <collisions.h>
 #include "assets.h"
 #include "controls.hpp"
+#include "entity.hpp"
+#include "cube.hpp"
 
 using namespace std;
 
 const float moveXY = 0.1f;
 
-void handleMoves(const std::vector<AABB>& objects) {
-	if(!checkCollisions(objects)){
-		if (PressedW) {
-			cubePositions[0][1] += moveXY;
-		}
-		if (PressedS) {
-			cubePositions[0][1] -= moveXY;
-		}
-		if (PressedA) {
-			cubePositions[0][0] -= moveXY;
-		}
-		if (PressedD) {
-			cubePositions[0][0] += moveXY;
-		}
+vector<Entity> deepCopy(vector<Entity> arrayForCopy, size_t sizeCopy){
+	vector<Entity> arrayCopy;
+
+	for(int i = 0;i != sizeCopy;i++){
+		arrayCopy.push_back(arrayForCopy[i]) ;
 	}
 
-	if(!checkCollisions(objects)){
-		if (PressedUp) {
-			cubePositions[1][1] += moveXY;
-		}
-		if (PressedDown) {
-			cubePositions[1][1] -= moveXY;
-		}
-		if (PressedLeft) {
-			cubePositions[1][0] -= moveXY;
-		}
-		if (PressedRight) {
-			cubePositions[1][0] += moveXY;
-		}
+	return arrayCopy;
+}
+
+
+void handleMoves(vector<Entity> &entitiesList, int countCubes) {
+	vector<AABB> collisionObjects;
+
+    vector<AABB> positions;
+	vector<Entity> newEntitiesList = deepCopy(entitiesList, entitiesList.size());
+
+	if (PressedW) {
+		newEntitiesList[0].position[1] += moveXY;
 	}
+	if (PressedS) {
+		newEntitiesList[0].position[1] -= moveXY;
+	}
+	if (PressedA) {
+		newEntitiesList[0].position[0] += moveXY;
+	}
+	if (PressedD) {
+		newEntitiesList[0].position[0] -= moveXY;
+	}
+
+	if (PressedUp) {
+		newEntitiesList[1].position[1] += moveXY;
+	}
+	if (PressedDown) {
+		newEntitiesList[1].position[1] -= moveXY;
+	}
+	if (PressedLeft) {
+		newEntitiesList[1].position[0] -= moveXY;
+	}
+	if (PressedRight) {
+		newEntitiesList[1].position[0] += moveXY;
+	}
+
+	for(int i = 0;i != countCubes;i++){
+    	positions.push_back(calculateAABB(newEntitiesList[i].position, newEntitiesList[i].size));
+	}
+
+	if(checkCollisions(positions)) {
+		return;
+	}
+
+	for(int i = 0;i != 4;i++){
+		entitiesList[i] = newEntitiesList[i];
+	}
+
+    positions.clear();
 }
 
 int main() {
@@ -94,9 +122,6 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, TBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(0);
@@ -120,7 +145,6 @@ int main() {
 
       	GLdouble time = glfwGetTime();
 
-        vector<AABB> positions;
 
       	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
       	glClear(GL_COLOR_BUFFER_BIT);
@@ -148,34 +172,35 @@ int main() {
 
       	glBindVertexArray(VAO);
 
-        for(int i = 0;i < sizeof(cubePositions)/sizeof(cubePositions[0]); i++){
-      		glm::mat4 modelMatrix = glm::mat4(1.0f);
-        	modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
-          
-      		glm::mat4 trans = glm::mat4(1.0f);
-      		trans = glm::translate(trans, glm::vec3(cubePositions[i][0], cubePositions[i][1], 0.0f));
-          positions.push_back(calculateAABB(cubePositions[i], cubeSizes[i]));
-        float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
+		for(int i = 0;i < entitiesList.size(); i++){
+			glm::mat4 modelMatrix = glm::mat4(1.0f);
+			modelMatrix = glm::translate(modelMatrix, entitiesList[i].position);
+		
+			glm::mat4 trans = glm::mat4(1.0f);
+			trans = glm::translate(trans, glm::vec3(entitiesList[i].position[0], entitiesList[i].position[1], 0.0f));
+			
 
-      		glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-      		glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
-          glUniform4fv(colorLocation, 1, color);
-          glUniform1f(sizeLocation, cubeSizes[i]);
+			float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
 
-      		glDrawArrays(GL_TRIANGLES, 0, 36);
+			glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+			glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
+			glUniform4fv(colorLocation, 1, color);
+			glUniform1f(sizeLocation, entitiesList[i].size);
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-      
-      	if(time - previosTimeDelay >= delayTime){
-      		handleMoves(positions);
-      		previosTimeDelay = time;
-      	}
+	
+		if(time - previosTimeDelay >= delayTime){
+			handleMoves(entitiesList, 4);
+			previosTimeDelay = time;
+		}
 
         fps = 1 / (time-previosTime);
       	glBindVertexArray(0);
       	glfwSwapBuffers(window);
       	previosTime = time;
-    positions.clear();
     }
+
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 

@@ -8,6 +8,7 @@ add_executable(winecraft
     src/graphics/collisions.cpp
     src/utils/assets.cpp
     src/control/movement.cpp
+    src/entities/cube.cpp
 )
 
 add_library(glad STATIC libs/glad/src/glad.c)
@@ -20,6 +21,11 @@ target_include_directories(soil PUBLIC libs/soil/include)
 target_include_directories(winecraft PRIVATE
     ${CMAKE_SOURCE_DIR}/core
 )
+
+target_include_directories(winecraft PRIVATE
+    ${CMAKE_SOURCE_DIR}/core/entities
+)
+
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
