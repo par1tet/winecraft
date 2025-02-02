@@ -11,65 +11,67 @@
 #include <collisions.h>
 #include "assets.h"
 #include "controls.hpp"
-#include "entity.hpp"
-#include "cube.hpp"
 
 using namespace std;
 
 const float moveXY = 0.1f;
 
-vector<Entity> deepCopy(vector<Entity> arrayForCopy, size_t sizeCopy){
-	vector<Entity> arrayCopy;
+vector<Entity*> deepCopy(vector<Entity*> arrayForCopy, size_t sizeCopy){
+	vector<Entity*> arrayCopy;
 
 	for(int i = 0;i != sizeCopy;i++){
-		arrayCopy.push_back(arrayForCopy[i]) ;
+		arrayCopy.push_back(arrayForCopy[i]);
+		arrayCopy[i]->position = arrayForCopy[i]->position;
+		arrayCopy[i]->size = arrayForCopy[i]->size;
 	}
 
 	return arrayCopy;
 }
 
 
-void handleMoves(vector<Entity> &entitiesList, int countCubes) {
+void handleMoves(vector<Entity*> entitiesList, int countCubes) {
 	vector<AABB> collisionObjects;
 
     vector<AABB> positions;
-	vector<Entity> newEntitiesList = deepCopy(entitiesList, entitiesList.size());
+	vector<Entity*> newEntitiesList = deepCopy(entitiesList, entitiesList.size());
 
 	if (PressedW) {
-		newEntitiesList[0].position[1] += moveXY;
+		newEntitiesList[0]->position[1] += moveXY;
 	}
 	if (PressedS) {
-		newEntitiesList[0].position[1] -= moveXY;
+		newEntitiesList[0]->position[1] -= moveXY;
 	}
 	if (PressedA) {
-		newEntitiesList[0].position[0] += moveXY;
+		newEntitiesList[0]->position[0] -= moveXY;
 	}
 	if (PressedD) {
-		newEntitiesList[0].position[0] -= moveXY;
+		newEntitiesList[0]->position[0] += moveXY;
 	}
 
 	if (PressedUp) {
-		newEntitiesList[1].position[1] += moveXY;
+		newEntitiesList[1]->position[1] += moveXY;
 	}
 	if (PressedDown) {
-		newEntitiesList[1].position[1] -= moveXY;
+		newEntitiesList[1]->position[1] -= moveXY;
 	}
 	if (PressedLeft) {
-		newEntitiesList[1].position[0] -= moveXY;
+		newEntitiesList[1]->position[0] -= moveXY;
 	}
 	if (PressedRight) {
-		newEntitiesList[1].position[0] += moveXY;
+		newEntitiesList[1]->position[0] += moveXY;
 	}
 
+	cout << newEntitiesList[0]->position[0] << " : " << entitiesList[0]->position[0] << endl;
+
 	for(int i = 0;i != countCubes;i++){
-    	positions.push_back(calculateAABB(newEntitiesList[i].position, newEntitiesList[i].size));
+    	positions.push_back(calculateAABB(newEntitiesList[i]->position, newEntitiesList[i]->size));
 	}
 
 	if(checkCollisions(positions)) {
 		return;
 	}
 
-	for(int i = 0;i != 4;i++){
+	for(int i = 0;i != entitiesList.size();i++){
 		entitiesList[i] = newEntitiesList[i];
 	}
 
@@ -77,6 +79,9 @@ void handleMoves(vector<Entity> &entitiesList, int countCubes) {
 }
 
 int main() {
+	entitiesList.push_back(new Cube(glm::vec3(0.0f, 0.0f, 0.0f), "assets/textures/murych_cat", 1.0f));
+	entitiesList.push_back(new Cube(glm::vec3(1.2f, 1.2f, 0.0f), "assets/textures/murych_cat", 1.0f));
+
     if (!glfwInit()) {
         cerr << "Failed to initialize GLFW" << endl;
         return -1;
@@ -174,10 +179,10 @@ int main() {
 
 		for(int i = 0;i < entitiesList.size(); i++){
 			glm::mat4 modelMatrix = glm::mat4(1.0f);
-			modelMatrix = glm::translate(modelMatrix, entitiesList[i].position);
+			modelMatrix = glm::translate(modelMatrix, entitiesList[i]->position);
 		
 			glm::mat4 trans = glm::mat4(1.0f);
-			trans = glm::translate(trans, glm::vec3(entitiesList[i].position[0], entitiesList[i].position[1], 0.0f));
+			trans = glm::translate(trans, glm::vec3(entitiesList[i]->position[0], entitiesList[i]->position[1], 0.0f));
 			
 
 			float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
@@ -185,13 +190,13 @@ int main() {
 			glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 			glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
 			glUniform4fv(colorLocation, 1, color);
-			glUniform1f(sizeLocation, entitiesList[i].size);
+			glUniform1f(sizeLocation, entitiesList[i]->size);
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 	
 		if(time - previosTimeDelay >= delayTime){
-			handleMoves(entitiesList, 4);
+			handleMoves(entitiesList, entitiesList.size());
 			previosTimeDelay = time;
 		}
 

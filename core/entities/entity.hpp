@@ -1,18 +1,16 @@
 #include <glm/glm.hpp>
-
-
-
+#include <string>
 
 class Entity {
 public:
     // Конструктор Entity с параметрами
-    Entity(glm::vec3 entityPosition, char* entityTexturePath, float entitySize)
+    Entity(glm::vec3 entityPosition, std::string entityTexturePath, float entitySize)
         : position(entityPosition), texturePath(entityTexturePath), size(entitySize) {
 
         }
 
     glm::vec3 position;
-    char* texturePath;
+    std::string texturePath;
     float size;
 };
 
