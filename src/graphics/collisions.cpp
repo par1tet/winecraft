@@ -2,12 +2,12 @@
 #include <collisions.h>
 #include <iostream>
 #include <math.h>
+#include <vector>
 
-
-AABB calculateAABB(const glm::vec3& position, float size) {
+AABB calculateAABB(Entity* hitBox) {
     AABB box;
-    box.min = position - glm::vec3(size / 2.0f);
-    box.max = position + glm::vec3(size / 2.0f);
+    box.min = hitBox->position - glm::vec3(hitBox->size / 2.0f);
+    box.max = hitBox->position + glm::vec3(hitBox->size / 2.0f);
     return box;
 }
 
@@ -17,13 +17,19 @@ bool isColliding(const AABB& a, const AABB& b) {
            (a.min.z <= b.max.z && a.max.z >= b.min.z);
 }
 
-bool checkCollisions(const std::vector<AABB>& objects) {
+bool checkCollisions(std::vector<Entity*> objects) {
+    std::vector<AABB> hitBoxes;
+
+    for(int i = 0;i != objects.size();i++){
+        hitBoxes.push_back(calculateAABB(objects[i]));
+    }
+
     for (size_t i = 0; i < objects.size(); ++i) {
         for (size_t j = i + 1; j < objects.size(); ++j) {
-          if (isColliding(objects[i], objects[j])){
-            std::cout << "collisions worked" << std::endl; 
+            if (isColliding(hitBoxes[i], hitBoxes[j])){
+                std::cout << "collisions worked" << std::endl; 
             return true;
-         }
+            }
         }
     }
     return false;

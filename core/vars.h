@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <cube.hpp>
+#include <collisions.h>
 #include <vector>
 
 using namespace std;

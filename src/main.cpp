@@ -8,7 +8,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <vars.h>
-#include <collisions.h>
 #include "assets.h"
 #include "controls.hpp"
 
@@ -16,24 +15,21 @@ using namespace std;
 
 const float moveXY = 0.1f;
 
-vector<Entity*> deepCopy(vector<Entity*> arrayForCopy, size_t sizeCopy){
+vector<Entity*> deepCopy(vector<Entity*> arrayForCopy){
 	vector<Entity*> arrayCopy;
 
-	for(int i = 0;i != sizeCopy;i++){
-		arrayCopy.push_back(arrayForCopy[i]);
-		arrayCopy[i]->position = arrayForCopy[i]->position;
-		arrayCopy[i]->size = arrayForCopy[i]->size;
+	for(int i = 0;i != arrayForCopy.size();i++){
+		arrayCopy.push_back(new Entity(*(arrayForCopy[i])));
 	}
 
 	return arrayCopy;
 }
 
 
-void handleMoves(vector<Entity*> entitiesList, int countCubes) {
+vector<Entity*> handleMoves(vector<Entity*> entitiesList, int countCubes) {
 	vector<AABB> collisionObjects;
 
-    vector<AABB> positions;
-	vector<Entity*> newEntitiesList = deepCopy(entitiesList, entitiesList.size());
+	vector<Entity*> newEntitiesList = deepCopy(entitiesList);
 
 	if (PressedW) {
 		newEntitiesList[0]->position[1] += moveXY;
@@ -63,19 +59,23 @@ void handleMoves(vector<Entity*> entitiesList, int countCubes) {
 
 	cout << newEntitiesList[0]->position[0] << " : " << entitiesList[0]->position[0] << endl;
 
-	for(int i = 0;i != countCubes;i++){
-    	positions.push_back(calculateAABB(newEntitiesList[i]->position, newEntitiesList[i]->size));
+	if(checkCollisions(newEntitiesList)) {
+		return entitiesList;
 	}
 
-	if(checkCollisions(positions)) {
-		return;
-	}
+	cout << "penis" << endl;
+
+	cout << newEntitiesList[0]->position[0] << " : " << entitiesList[0]->position[0] << endl;
 
 	for(int i = 0;i != entitiesList.size();i++){
-		entitiesList[i] = newEntitiesList[i];
+		entitiesList = deepCopy(newEntitiesList);
 	}
 
-    positions.clear();
+	cout << newEntitiesList[0]->position[0] << " : " << entitiesList[0]->position[0] << endl;
+
+	cout << "penis" << endl;
+
+	return entitiesList;
 }
 
 int main() {
@@ -196,7 +196,7 @@ int main() {
 		}
 	
 		if(time - previosTimeDelay >= delayTime){
-			handleMoves(entitiesList, entitiesList.size());
+			entitiesList = handleMoves(entitiesList, entitiesList.size());
 			previosTimeDelay = time;
 		}
 
