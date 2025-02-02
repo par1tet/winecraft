@@ -63,24 +63,14 @@ vector<Entity*> handleMoves(vector<Entity*> entitiesList, int countCubes) {
 		return entitiesList;
 	}
 
-	cout << "penis" << endl;
-
-	cout << newEntitiesList[0]->position[0] << " : " << entitiesList[0]->position[0] << endl;
-
-	for(int i = 0;i != entitiesList.size();i++){
-		entitiesList = deepCopy(newEntitiesList);
-	}
-
-	cout << newEntitiesList[0]->position[0] << " : " << entitiesList[0]->position[0] << endl;
-
-	cout << "penis" << endl;
-
-	return entitiesList;
+	return newEntitiesList;
 }
 
 int main() {
 	entitiesList.push_back(new Cube(glm::vec3(0.0f, 0.0f, 0.0f), "assets/textures/murych_cat", 1.0f));
 	entitiesList.push_back(new Cube(glm::vec3(1.2f, 1.2f, 0.0f), "assets/textures/murych_cat", 1.0f));
+	entitiesList.push_back(new Cube(glm::vec3(2.2f, -1.2f, 0.0f), "assets/textures/murych_cat", 1.0f));
+	entitiesList.push_back(new Cube(glm::vec3(-3.2f, -1.2f, 0.0f), "assets/textures/murych_cat", 1.0f));
 
     if (!glfwInit()) {
         cerr << "Failed to initialize GLFW" << endl;
@@ -157,7 +147,7 @@ int main() {
       	glUseProgram(shaderProgram);
 
       	glm::mat4 viewMatrix = glm::mat4(1.0f);
-      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -20.0f));
+      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -40.0f));
 
       	glm::mat4 projectionMatrix = glm::mat4(1.0f);
       	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
