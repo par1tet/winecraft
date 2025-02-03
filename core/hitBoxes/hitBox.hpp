@@ -41,7 +41,7 @@ public:
             OtherHitBox->position + (OtherHitBox->size / 2.0f),
         };
 
-        if((diaFirst[1][0] >= diaSecond[0][0] && diaSecond[1][1] >= diaFirst[0][0]) &&
+        if((diaFirst[1][0] >= diaSecond[0][0] && diaSecond[1][0] >= diaFirst[0][0]) &&
            (diaFirst[1][1] >= diaSecond[0][1] && diaSecond[1][1] >= diaFirst[0][1]) &&
            (diaFirst[1][2] >= diaSecond[0][2] && diaSecond[1][2] >= diaFirst[0][2])){
             return true;
