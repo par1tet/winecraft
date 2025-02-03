@@ -5,7 +5,6 @@ add_executable(winecraft
     src/main.cpp
     src/utils/shader_utils.cpp
     src/utils/texture_loader.cpp
-    src/graphics/collisions.cpp
     src/utils/assets.cpp
     src/control/movement.cpp
 )

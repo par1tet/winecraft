@@ -6,7 +6,7 @@
 
 class Entity {
 public:
-    Entity(glm::vec3 position, std::vector<Object*> objects, Collision collision): _collision(collision) {
+    Entity(glm::vec3 position, std::vector<Object*> objects, Collision *collision): _collision(collision) {
         this->position = position;
         this->objects = objects;
     }
@@ -21,13 +21,13 @@ public:
         for(int i = 0;i != objects.size();i++){
             objects[i]->position += dPos;
         }
-        for(int i = 0;i != _collision.hitBoxes.size();i++){
-            _collision.hitBoxes[i].position += dPos;
+        for(int i = 0;i != _collision->hitBoxes.size();i++){
+            _collision->hitBoxes[i]->position += dPos;
         }
     }
 
     glm::vec3 position;
     std::vector<Object*> objects;
-    Collision _collision;
+    Collision *_collision;
 };
 

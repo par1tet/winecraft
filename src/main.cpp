@@ -13,69 +13,103 @@
 
 using namespace std;
 
-const float moveXY = 0.1f;
+const float moveXY = 0.2f;
 
-vector<Entity*> deepCopy(vector<Entity*> arrayForCopy){
-	vector<Entity*> arrayCopy;
+// vector<Entity*> deepCopy(vector<Entity*> arrayForCopy){
+// 	vector<Entity*> arrayCopy;
 
-	for(int i = 0;i != arrayForCopy.size();i++){
-		arrayCopy.push_back(new Entity(*(arrayForCopy[i])));
-	}
+// 	for(int i = 0;i != arrayForCopy.size();i++){
+// 		arrayCopy.push_back(new Entity(*(arrayForCopy[i])));
+// 	}
 
-	return arrayCopy;
-}
+// 	return arrayCopy;
+// }
 
-
-vector<Entity*> handleMoves(vector<Entity*> entitiesList, int countCubes) {
-	//vector<AABB> collisionObjects;
-
-	vector<Entity*> newEntitiesList = deepCopy(entitiesList);
+void handleMoves(vector<Entity*> entitiesList, int countCubes) {
+	// vector<Entity*> entitiesList = deepCopy(entitiesList);
+	glm::vec3 backPos;
+	int indexEntity;
 
 	if (PressedW) {
-		newEntitiesList[0]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
+		entitiesList[0]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
+		backPos = (glm::vec3{0.0f, moveXY, 0.0f});
+		indexEntity = 0;
 	}
 	if (PressedS) {
-		newEntitiesList[0]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
+		entitiesList[0]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
+		backPos = (glm::vec3{0.0f, -moveXY, 0.0f});
+		indexEntity = 0;
 	}
 	if (PressedA) {
-		newEntitiesList[0]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
+		entitiesList[0]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
+		backPos = (glm::vec3{-moveXY, 0.0f,  0.0f});
+		indexEntity = 0;
 	}
+
 	if (PressedD) {
-		newEntitiesList[0]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
+		entitiesList[0]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
+		backPos = (glm::vec3{moveXY, 0.0f, 0.0f});
+		indexEntity = 0;
 	}
 
 	if (PressedUp) {
-		newEntitiesList[1]->position[1] += moveXY;
+		entitiesList[1]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
+		backPos = (glm::vec3{ 0.0f, moveXY, 0.0f});
+		indexEntity = 1;
 	}
 	if (PressedDown) {
-		newEntitiesList[1]->position[1] -= moveXY;
+		entitiesList[1]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
+		backPos = (glm::vec3{0.0f, -moveXY, 0.0f});
+		indexEntity = 1;
 	}
 	if (PressedLeft) {
-		newEntitiesList[1]->position[0] -= moveXY;
+		entitiesList[1]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
+		backPos = (glm::vec3{-moveXY, 0.0f, 0.0f});
+		indexEntity = 1;
 	}
 	if (PressedRight) {
-		newEntitiesList[1]->position[0] += moveXY;
+		entitiesList[1]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
+		backPos = (glm::vec3{moveXY, 0.0f, 0.0f});
+		indexEntity = 1;
 	}
 
-	cout << newEntitiesList[0]->position[0] << " : " << entitiesList[0]->position[0] << endl;
+	for(int i = 0;i != entitiesList.size();i++){
+		for(int j = 0;j != entitiesList.size();j++){
+			if(i == j) continue;
 
-	if(false) {
-		return entitiesList;
+			if(entitiesList[i]->_collision->checkCollision(entitiesList[j]->_collision)){
+				entitiesList[indexEntity]->changePosition(backPos * -1.0f);
+				cout << "worked" << endl;
+				return;
+			};
+		}
 	}
-
-	return newEntitiesList;
 }
 
 int main() {
 	std::vector<Object*> objects;
 	objects.push_back(new Cube(glm::vec3(0.0f,0.0f,0.0f), "assets/textures/murych_cat.png", glm::vec3(3.0f, 1.0f, 1.0f)));
 
-	vector<HitBox> hitBoxes;
-	hitBoxes.push_back(HitBoxAABB(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{3.0f, 1.0f, 1.0f}));
+	vector<HitBox*> hitBoxes;
+	hitBoxes.push_back(new HitBoxAABB(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{3.0f, 1.0f, 1.0f}));
 
-	Collision collision{hitBoxes};
+	Collision* collision = new Collision(hitBoxes);
 
 	entitiesList.push_back(new Entity(glm::vec3(0.0f,0.0f,0.0f), objects, collision));
+//------
+	std::vector<Object*> objects1;
+	objects1.push_back(new Cube(glm::vec3(3.0f,3.0f,0.0f), "assets/textures/murych_cat.png", glm::vec3(3.0f, 2.0f, 1.0f)));
+	objects1.push_back(new Cube(glm::vec3(3.0f,4.0f,0.0f), "assets/textures/murych_cat.png", glm::vec3(1.0f, 1.0f, 1.0f)));
+
+	vector<HitBox*> hitBoxes1;
+	hitBoxes1.push_back(new HitBoxAABB(glm::vec3{3.0f, 3.0f, 0.0f}, glm::vec3{3.0f, 2.0f, 1.0f}));
+	hitBoxes1.push_back(new HitBoxAABB(glm::vec3{3.0f, 4.0f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}));
+
+	Collision* collision1 = new Collision(hitBoxes1);
+
+	entitiesList.push_back(new Entity(glm::vec3(3.0f,3.0f,0.0f), objects1, collision1));
+
+
 
     if (!glfwInit()) {
         cerr << "Failed to initialize GLFW" << endl;
@@ -192,7 +226,7 @@ int main() {
 		}
 	
 		if(time - previosTimeDelay >= delayTime){
-			entitiesList = handleMoves(entitiesList, entitiesList.size());
+			handleMoves(entitiesList, entitiesList.size());
 			previosTimeDelay = time;
 		}
 
