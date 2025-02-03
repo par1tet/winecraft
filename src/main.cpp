@@ -27,21 +27,21 @@ vector<Entity*> deepCopy(vector<Entity*> arrayForCopy){
 
 
 vector<Entity*> handleMoves(vector<Entity*> entitiesList, int countCubes) {
-	vector<AABB> collisionObjects;
+	//vector<AABB> collisionObjects;
 
 	vector<Entity*> newEntitiesList = deepCopy(entitiesList);
 
 	if (PressedW) {
-		newEntitiesList[0]->position[1] += moveXY;
+		newEntitiesList[0]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
 	}
 	if (PressedS) {
-		newEntitiesList[0]->position[1] -= moveXY;
+		newEntitiesList[0]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
 	}
 	if (PressedA) {
-		newEntitiesList[0]->position[0] -= moveXY;
+		newEntitiesList[0]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
 	}
 	if (PressedD) {
-		newEntitiesList[0]->position[0] += moveXY;
+		newEntitiesList[0]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
 	}
 
 	if (PressedUp) {
@@ -59,7 +59,7 @@ vector<Entity*> handleMoves(vector<Entity*> entitiesList, int countCubes) {
 
 	cout << newEntitiesList[0]->position[0] << " : " << entitiesList[0]->position[0] << endl;
 
-	if(checkCollisions(newEntitiesList)) {
+	if(false) {
 		return entitiesList;
 	}
 
@@ -67,10 +67,15 @@ vector<Entity*> handleMoves(vector<Entity*> entitiesList, int countCubes) {
 }
 
 int main() {
-	entitiesList.push_back(new Cube(glm::vec3(0.0f, 0.0f, 0.0f), "assets/textures/murych_cat", 1.0f));
-	entitiesList.push_back(new Cube(glm::vec3(1.2f, 1.2f, 0.0f), "assets/textures/murych_cat", 1.0f));
-	entitiesList.push_back(new Cube(glm::vec3(2.2f, -1.2f, 0.0f), "assets/textures/murych_cat", 1.0f));
-	entitiesList.push_back(new Cube(glm::vec3(-3.2f, -1.2f, 0.0f), "assets/textures/murych_cat", 1.0f));
+	std::vector<Object*> objects;
+	objects.push_back(new Cube(glm::vec3(0.0f,0.0f,0.0f), "assets/textures/murych_cat.png", glm::vec3(3.0f, 1.0f, 1.0f)));
+
+	vector<HitBox> hitBoxes;
+	hitBoxes.push_back(HitBoxAABB(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{3.0f, 1.0f, 1.0f}));
+
+	Collision collision{hitBoxes};
+
+	entitiesList.push_back(new Entity(glm::vec3(0.0f,0.0f,0.0f), objects, collision));
 
     if (!glfwInit()) {
         cerr << "Failed to initialize GLFW" << endl;
@@ -168,21 +173,22 @@ int main() {
       	glBindVertexArray(VAO);
 
 		for(int i = 0;i < entitiesList.size(); i++){
-			glm::mat4 modelMatrix = glm::mat4(1.0f);
-			modelMatrix = glm::translate(modelMatrix, entitiesList[i]->position);
-		
-			glm::mat4 trans = glm::mat4(1.0f);
-			trans = glm::translate(trans, glm::vec3(entitiesList[i]->position[0], entitiesList[i]->position[1], 0.0f));
+			for(int j = 0;j < entitiesList[i]->objects.size();j++){
+				glm::mat4 modelMatrix = glm::mat4(1.0f);
+				modelMatrix = glm::translate(modelMatrix, entitiesList[i]->objects[j]->position);
 			
+				glm::mat4 trans = glm::mat4(1.0f);
+				trans = glm::translate(trans, entitiesList[i]->objects[j]->position);
+				
+				float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
 
-			float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
+				glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+				glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
+				glUniform4fv(colorLocation, 1, color);
+				glUniform3fv(sizeLocation, 1, glm::value_ptr(((dynamic_cast<Cube*>((entitiesList[i])->objects[j])))->size));
 
-			glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-			glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
-			glUniform4fv(colorLocation, 1, color);
-			glUniform1f(sizeLocation, entitiesList[i]->size);
-
-			glDrawArrays(GL_TRIANGLES, 0, 36);
+				glDrawArrays(GL_TRIANGLES, 0, 36);
+			}
 		}
 	
 		if(time - previosTimeDelay >= delayTime){

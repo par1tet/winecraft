@@ -9,7 +9,7 @@ uniform mat4 transform;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
-uniform float sizeCube;
+uniform vec3 sizeCube;
 
 void main()
 {

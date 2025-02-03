@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <collisions.h>
+#include <entities/entity.hpp>
 #include <vector>
 
 using namespace std;

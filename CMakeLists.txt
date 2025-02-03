@@ -8,7 +8,6 @@ add_executable(winecraft
     src/graphics/collisions.cpp
     src/utils/assets.cpp
     src/control/movement.cpp
-    src/entities/cube.cpp
 )
 
 add_library(glad STATIC libs/glad/src/glad.c)
