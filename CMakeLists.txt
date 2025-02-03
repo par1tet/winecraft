@@ -7,6 +7,11 @@ add_executable(winecraft
     src/utils/texture_loader.cpp
     src/utils/assets.cpp
     src/control/movement.cpp
+    src/entities/Entity.cpp
+    src/objects/Cube.cpp
+    src/objects/Object.cpp
+    src/physics/Collision.cpp
+    src/physics/HitBox.cpp
 )
 
 add_library(glad STATIC libs/glad/src/glad.c)

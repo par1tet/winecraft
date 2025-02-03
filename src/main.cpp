@@ -1,6 +1,11 @@
+// clang-format off
 #include "glad/glad.h"
-#include "shader_utils.h"
 #include <GLFW/glfw3.h>
+#include "assets.h"
+#include "controls.hpp"
+#include "objects/cube.hpp"
+#include "entities/entity.hpp"
+#include "shader_utils.h"
 #include <SOIL/SOIL.h>
 #include <cmath>
 #include <glm/glm.hpp>
@@ -8,8 +13,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <vars.h>
-#include "assets.h"
-#include "controls.hpp"
 
 using namespace std;
 
@@ -25,223 +28,245 @@ const float moveXY = 0.2f;
 // 	return arrayCopy;
 // }
 
-void handleMoves(vector<Entity*> entitiesList, int countCubes) {
-	// vector<Entity*> entitiesList = deepCopy(entitiesList);
-	vector<glm::vec3> backPos;
-	vector<int> indexEntity;
+void handleMoves(vector<Entity *> entitiesList, int countCubes) {
+  // vector<Entity*> entitiesList = deepCopy(entitiesList);
+  vector<glm::vec3> backPos;
+  vector<int> indexEntity;
 
+  if (PressedW) {
+    entitiesList[0]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
+    backPos.push_back(glm::vec3{0.0f, moveXY, 0.0f});
+    indexEntity.push_back(0);
+  }
+  if (PressedS) {
+    entitiesList[0]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
+    backPos.push_back(glm::vec3{0.0f, -moveXY, 0.0f});
+    indexEntity.push_back(0);
+  }
+  if (PressedA) {
+    entitiesList[0]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
+    backPos.push_back(glm::vec3{-moveXY, 0.0f, 0.0f});
+    indexEntity.push_back(0);
+  }
 
-	if (PressedW) {
-		entitiesList[0]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
-		backPos.push_back(glm::vec3{0.0f, moveXY, 0.0f});
-		indexEntity.push_back(0);
-	}
-	if (PressedS) {
-		entitiesList[0]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
-		backPos.push_back(glm::vec3{0.0f, -moveXY, 0.0f});
-		indexEntity.push_back(0);
-	}
-	if (PressedA) {
-		entitiesList[0]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
-		backPos.push_back(glm::vec3{-moveXY, 0.0f,  0.0f});
-		indexEntity.push_back(0);
-	}
+  if (PressedD) {
+    entitiesList[0]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
+    backPos.push_back(glm::vec3{moveXY, 0.0f, 0.0f});
+    indexEntity.push_back(0);
+  }
 
-	if (PressedD) {
-		entitiesList[0]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
-		backPos.push_back(glm::vec3{moveXY, 0.0f, 0.0f});
-		indexEntity.push_back(0);
-	}
+  if (PressedUp) {
+    entitiesList[1]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
+    backPos.push_back(glm::vec3{0.0f, moveXY, 0.0f});
+    indexEntity.push_back(1);
+  }
+  if (PressedDown) {
+    entitiesList[1]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
+    backPos.push_back(glm::vec3{0.0f, -moveXY, 0.0f});
+    indexEntity.push_back(1);
+  }
+  if (PressedLeft) {
+    entitiesList[1]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
+    backPos.push_back(glm::vec3{-moveXY, 0.0f, 0.0f});
+    indexEntity.push_back(1);
+  }
+  if (PressedRight) {
+    entitiesList[1]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
+    backPos.push_back(glm::vec3{moveXY, 0.0f, 0.0f});
+    indexEntity.push_back(1);
+  }
 
-	if (PressedUp) {
-		entitiesList[1]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
-		backPos.push_back(glm::vec3{ 0.0f, moveXY, 0.0f});
-		indexEntity.push_back(1);
-	}
-	if (PressedDown) {
-		entitiesList[1]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
-		backPos.push_back(glm::vec3{0.0f, -moveXY, 0.0f});
-		indexEntity.push_back(1);
-	}
-	if (PressedLeft) {
-		entitiesList[1]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
-		backPos.push_back(glm::vec3{-moveXY, 0.0f, 0.0f});
-		indexEntity.push_back(1);
-	}
-	if (PressedRight) {
-		entitiesList[1]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
-		backPos.push_back(glm::vec3{moveXY, 0.0f, 0.0f});
-		indexEntity.push_back(1);
-	}
+  for (int i = 0; i != entitiesList.size(); i++) {
+    for (int j = 0; j != entitiesList.size(); j++) {
+      if (i == j)
+        continue;
 
-	for(int i = 0;i != entitiesList.size();i++){
-		for(int j = 0;j != entitiesList.size();j++){
-			if(i == j) continue;
-
-			if(entitiesList[i]->_collision->checkCollision(entitiesList[j]->_collision)){
-				for(int i = 0;i != backPos.size();i++){
-					entitiesList[indexEntity[i]]->changePosition(backPos[i] * -1.0f);
-				}
-				cout << "worked" << endl;
-				return;
-			};
-		}
-	}
+      if (entitiesList[i]->_collision->checkCollision(
+              entitiesList[j]->_collision)) {
+        for (int i = 0; i != backPos.size(); i++) {
+          entitiesList[indexEntity[i]]->changePosition(backPos[i] * -1.0f);
+        }
+        cout << "worked" << endl;
+        return;
+      };
+    }
+  }
 }
 
 int main() {
-	std::vector<Object*> objects;
-	objects.push_back(new Cube(glm::vec3(0.0f,0.0f,0.0f), "assets/textures/murych_cat.png", glm::vec3(3.0f, 1.0f, 1.0f)));
+  std::vector<Object *> objects;
+  objects.push_back(new Cube(glm::vec3(0.0f, 0.0f, 0.0f),
+                             "assets/textures/murych_cat.png",
+                             glm::vec3(3.0f, 1.0f, 1.0f)));
 
-	vector<HitBox*> hitBoxes;
-	hitBoxes.push_back(new HitBoxAABB(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{3.0f, 1.0f, 1.0f}));
+  vector<HitBox *> hitBoxes;
+  hitBoxes.push_back(
+      new HitBoxAABB(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{3.0f, 1.0f, 1.0f}));
 
-	Collision* collision = new Collision(hitBoxes);
+  Collision *collision = new Collision(hitBoxes);
 
-	entitiesList.push_back(new Entity(glm::vec3(0.0f,0.0f,0.0f), objects, collision));
-//------
-	std::vector<Object*> objects1;
-	objects1.push_back(new Cube(glm::vec3(3.0f,3.0f,0.0f), "assets/textures/murych_cat.png", glm::vec3(3.0f, 2.0f, 1.0f)));
-	objects1.push_back(new Cube(glm::vec3(3.0f,4.0f,0.0f), "assets/textures/murych_cat.png", glm::vec3(1.0f, 1.0f, 1.0f)));
+  entitiesList.push_back(
+      new Entity(glm::vec3(0.0f, 0.0f, 0.0f), objects, collision));
+  //------
+  std::vector<Object *> objects1;
+  objects1.push_back(new Cube(glm::vec3(3.0f, 3.0f, 0.0f),
+                              "assets/textures/murych_cat.png",
+                              glm::vec3(3.0f, 2.0f, 1.0f)));
+  objects1.push_back(new Cube(glm::vec3(3.0f, 4.0f, 0.0f),
+                              "assets/textures/murych_cat.png",
+                              glm::vec3(1.0f, 1.0f, 1.0f)));
 
-	vector<HitBox*> hitBoxes1;
-	hitBoxes1.push_back(new HitBoxAABB(glm::vec3{3.0f, 3.0f, 0.0f}, glm::vec3{3.0f, 2.0f, 1.0f}));
-	hitBoxes1.push_back(new HitBoxAABB(glm::vec3{3.0f, 4.0f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}));
+  vector<HitBox *> hitBoxes1;
+  hitBoxes1.push_back(
+      new HitBoxAABB(glm::vec3{3.0f, 3.0f, 0.0f}, glm::vec3{3.0f, 2.0f, 1.0f}));
+  hitBoxes1.push_back(
+      new HitBoxAABB(glm::vec3{3.0f, 4.0f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}));
 
-	Collision* collision1 = new Collision(hitBoxes1);
+  Collision *collision1 = new Collision(hitBoxes1);
 
-	entitiesList.push_back(new Entity(glm::vec3(3.0f,3.0f,0.0f), objects1, collision1));
+  entitiesList.push_back(
+      new Entity(glm::vec3(3.0f, 3.0f, 0.0f), objects1, collision1));
 
+  if (!glfwInit()) {
+    cerr << "Failed to initialize GLFW" << endl;
+    return -1;
+  }
 
+  GLFWwindow *window =
+      glfwCreateWindow(width, height, "Winecraft 0.1", nullptr, nullptr);
 
-    if (!glfwInit()) {
-        cerr << "Failed to initialize GLFW" << endl;
-        return -1;
-  	}
+  if (!window) {
+    cerr << "Failed to create GLFW window" << endl;
+    glfwTerminate();
+    return -1;
+  }
 
-	GLFWwindow *window = glfwCreateWindow(width, height, "Winecraft 0.1", nullptr, nullptr);
+  glfwMakeContextCurrent(window);
 
-  	if (!window) {
-    	cerr << "Failed to create GLFW window" << endl;
-    	glfwTerminate();
-    	return -1;
-	}
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    cerr << "Failed to initialize GLAD" << endl;
+    return -1;
+  }
 
-    glfwMakeContextCurrent(window);
+  glViewport(0, 0, width, height);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-      	cerr << "Failed to initialize GLAD" << endl;
-      	return -1;
-    }
+  glfwSetKeyCallback(window, key_callback);
 
-    glViewport(0, 0, width, height);
+  GLuint shaderProgram =
+      createShaderProgram(getAssetPath("shaders/vertex.glsl").c_str(),
+                          getAssetPath("shaders/fragment.glsl").c_str());
 
-    glfwSetKeyCallback(window, key_callback);
+  GLuint VAO, VBO, EBO, TBO;
 
-    GLuint shaderProgram = createShaderProgram(
-      	getAssetPath("shaders/vertex.glsl").c_str(),
-      	getAssetPath("shaders/fragment.glsl").c_str()
-    );
+  glGenVertexArrays(1, &VAO);
 
-    GLuint VAO, VBO, EBO, TBO;
+  glGenBuffers(1, &VBO);
+  glGenBuffers(1, &EBO);
+  glGenBuffers(1, &TBO);
 
-    glGenVertexArrays(1, &VAO);
+  glBindVertexArray(VAO);
 
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    glGenBuffers(1, &TBO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ARRAY_BUFFER, TBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+  glEnableVertexAttribArray(0);
+
+  glBindBuffer(GL_ARRAY_BUFFER, TBO);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+  glEnableVertexAttribArray(1);
+  // load texture
+  GLuint texture = loadTexture(getAssetPath("textures/murych_cat.png").c_str());
+
+  GLdouble previosTimeDelay = 0.0f, previosTime = 0.0f,
+           delayTime = moveXY / targetFps;
+  int fps;
+
+  glEnable(GL_DEPTH_TEST);
+
+  // Main loop : λι τνκ υζσλκ
+  while (!glfwWindowShouldClose(window)) {
+    glfwPollEvents();
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    GLdouble time = glfwGetTime();
+
+    glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glUseProgram(shaderProgram);
+
+    glm::mat4 viewMatrix = glm::mat4(1.0f);
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -40.0f));
+
+    glm::mat4 projectionMatrix = glm::mat4(1.0f);
+    projectionMatrix = glm::perspective(glm::radians(45.0f),
+                                        float(width / height), 0.1f, 100.0f);
+
+    GLuint modelMatrixLocation =
+        glGetUniformLocation(shaderProgram, "modelMatrix");
+    GLuint viewMatrixLocation =
+        glGetUniformLocation(shaderProgram, "viewMatrix");
+    GLuint projectionMatrixLocation =
+        glGetUniformLocation(shaderProgram, "projectionMatrix");
+    GLuint transLocation = glGetUniformLocation(shaderProgram, "transform");
+    GLuint colorLocation = glGetUniformLocation(shaderProgram, "colorCube");
+    GLuint sizeLocation = glGetUniformLocation(shaderProgram, "sizeCube");
+
+    glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE,
+                       glm::value_ptr(viewMatrix));
+    glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE,
+                       glm::value_ptr(projectionMatrix));
+
+    glUseProgram(shaderProgram);
+    glBindTexture(GL_TEXTURE_2D, texture);
 
     glBindVertexArray(VAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    for (int i = 0; i < entitiesList.size(); i++) {
+      for (int j = 0; j < entitiesList[i]->objects.size(); j++) {
+        glm::mat4 modelMatrix = glm::mat4(1.0f);
+        modelMatrix =
+            glm::translate(modelMatrix, entitiesList[i]->objects[j]->position);
 
-    glBindBuffer(GL_ARRAY_BUFFER, TBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::translate(trans, entitiesList[i]->objects[j]->position);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glEnableVertexAttribArray(0);
+        float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
 
-    glBindBuffer(GL_ARRAY_BUFFER, TBO);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glEnableVertexAttribArray(1);
-    // load texture
-    GLuint texture = loadTexture(getAssetPath("textures/murych_cat.png").c_str());
+        glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE,
+                           glm::value_ptr(modelMatrix));
+        glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
+        glUniform4fv(colorLocation, 1, color);
+        glUniform3fv(
+            sizeLocation, 1,
+            glm::value_ptr(
+                ((dynamic_cast<Cube *>((entitiesList[i])->objects[j])))->size));
 
-    GLdouble previosTimeDelay = 0.0f, previosTime = 0.0f, delayTime = moveXY/targetFps;
-    int fps;
-
-    glEnable(GL_DEPTH_TEST);
-
-    // Main loop : λι τνκ υζσλκ
-    while (!glfwWindowShouldClose(window)) {
-      	glfwPollEvents();
-
-      	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-      	GLdouble time = glfwGetTime();
-
-
-      	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
-      	glClear(GL_COLOR_BUFFER_BIT);
-
-      	glUseProgram(shaderProgram);
-
-      	glm::mat4 viewMatrix = glm::mat4(1.0f);
-      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -40.0f));
-
-      	glm::mat4 projectionMatrix = glm::mat4(1.0f);
-      	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
-
-      	GLuint modelMatrixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
-      	GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
-      	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
-      	GLuint transLocation = glGetUniformLocation(shaderProgram, "transform");
-      	GLuint colorLocation = glGetUniformLocation(shaderProgram, "colorCube");
-      	GLuint sizeLocation = glGetUniformLocation(shaderProgram, "sizeCube");
-
-      	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
-      	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-
-      	glUseProgram(shaderProgram);
-      	glBindTexture(GL_TEXTURE_2D, texture);
-
-      	glBindVertexArray(VAO);
-
-		for(int i = 0;i < entitiesList.size(); i++){
-			for(int j = 0;j < entitiesList[i]->objects.size();j++){
-				glm::mat4 modelMatrix = glm::mat4(1.0f);
-				modelMatrix = glm::translate(modelMatrix, entitiesList[i]->objects[j]->position);
-			
-				glm::mat4 trans = glm::mat4(1.0f);
-				trans = glm::translate(trans, entitiesList[i]->objects[j]->position);
-				
-				float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
-
-				glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-				glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
-				glUniform4fv(colorLocation, 1, color);
-				glUniform3fv(sizeLocation, 1, glm::value_ptr(((dynamic_cast<Cube*>((entitiesList[i])->objects[j])))->size));
-
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
-		}
-	
-		if(time - previosTimeDelay >= delayTime){
-			handleMoves(entitiesList, entitiesList.size());
-			previosTimeDelay = time;
-		}
-
-        fps = 1 / (time-previosTime);
-      	glBindVertexArray(0);
-      	glfwSwapBuffers(window);
-      	previosTime = time;
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+      }
     }
 
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    if (time - previosTimeDelay >= delayTime) {
+      handleMoves(entitiesList, entitiesList.size());
+      previosTimeDelay = time;
+    }
 
-    glfwTerminate();
-    return 0;
+    fps = 1 / (time - previosTime);
+    glBindVertexArray(0);
+    glfwSwapBuffers(window);
+    previosTime = time;
+  }
+
+  glDeleteVertexArrays(1, &VAO);
+  glDeleteBuffers(1, &VBO);
+
+  glfwTerminate();
+  return 0;
 }
+
