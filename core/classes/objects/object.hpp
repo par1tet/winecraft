@@ -2,6 +2,9 @@
 #include <string>
 #include <iostream>
 
+#ifndef objectclass
+#define objectclass
+
 class Object {
 public:
     Object(glm::vec3 position, std::string texturePath){
@@ -9,9 +12,7 @@ public:
         this->texturePath = texturePath;
     }
 
-    virtual void printPosition(){
-        std::cout << "x:\t" << position.x << "y:\t" << position.y << "z: " << position.z << std::endl;
-    }
+    virtual void printPosition();
 
     glm::vec3 position;
     std::string texturePath;
@@ -27,3 +28,5 @@ public:
     std::string texturePath;
     glm::vec3 size;
 };
+
+#endif
