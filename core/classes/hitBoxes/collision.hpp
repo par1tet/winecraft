@@ -1,4 +1,4 @@
-#include<hitBoxes/hitBox.hpp>
+#include<classes/hitBoxes/hitBox.hpp>
 #include<vector>
 #include<iostream>
 

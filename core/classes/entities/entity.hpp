@@ -1,7 +1,7 @@
 #include <glm/glm.hpp>
 #include <string>
-#include <objects/object.hpp>
-#include <hitBoxes/collision.hpp>
+#include <classes/objects/object.hpp>
+#include <classes/hitBoxes/collision.hpp>
 #include <vector>
 
 class Entity {
