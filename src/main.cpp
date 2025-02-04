@@ -10,35 +10,24 @@
 #include <vars.h>
 #include "assets.h"
 #include "controls.hpp"
+#include "createEntities.h"
 
 using namespace std;
 
-
-
 int main() {
-	std::vector<Object*> objects;
-	objects.push_back(new Cube(glm::vec3(0.0f,0.0f,0.0f), "assets/textures/murych_cat.png", glm::vec3(3.0f, 1.0f, 1.0f)));
+	entitiesList.push_back(new Entity(glm::vec3(0.0f,0.0f,0.0f),
+					createCubeObjects({glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
+									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}}),
+					createCollisionHitBoxAABB({glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
+									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})));
 
-	vector<HitBox*> hitBoxes;
-	hitBoxes.push_back(new HitBoxAABB(glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec3{3.0f, 1.0f, 1.0f}));
+	entitiesList.push_back(new Entity(glm::vec3(3.0f,3.0f,0.0f),
+					createCubeObjects({glm::vec3{3.0f,3.0f,0.0f}, glm::vec3{3.0f,4.5f,0.0f}}, 
+									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}}),
+					createCollisionHitBoxAABB({glm::vec3{3.0f,3.0f,0.0f}, glm::vec3{3.0f,4.5f,0.0f}}, 
+									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}})));
 
-	Collision* collision = new Collision(hitBoxes);
-
-	entitiesList.push_back(new Entity(glm::vec3(0.0f,0.0f,0.0f), objects, collision));
-//------
-	std::vector<Object*> objects1;
-	objects1.push_back(new Cube(glm::vec3(3.0f,3.0f,0.0f), "assets/textures/murych_cat.png", glm::vec3(3.0f, 2.0f, 1.0f)));
-	objects1.push_back(new Cube(glm::vec3(3.0f,4.0f,0.0f), "assets/textures/murych_cat.png", glm::vec3(1.0f, 1.0f, 1.0f)));
-
-	vector<HitBox*> hitBoxes1;
-	hitBoxes1.push_back(new HitBoxAABB(glm::vec3{3.0f, 3.0f, 0.0f}, glm::vec3{3.0f, 2.0f, 1.0f}));
-	hitBoxes1.push_back(new HitBoxAABB(glm::vec3{3.0f, 4.0f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}));
-
-	Collision* collision1 = new Collision(hitBoxes1);
-
-	entitiesList.push_back(new Entity(glm::vec3(3.0f,3.0f,0.0f), objects1, collision1));
-
-
+	entitiesList.push_back(createCube(glm::vec3{-3.0f}));
 
     if (!glfwInit()) {
         cerr << "Failed to initialize GLFW" << endl;

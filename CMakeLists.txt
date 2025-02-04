@@ -3,9 +3,10 @@ project(winecraft VERSION 0.1.0)
 
 add_executable(winecraft
     src/main.cpp
-    src/utils/shader_utils.cpp
     src/utils/texture_loader.cpp
+    src/utils/shader_utils.cpp
     src/utils/assets.cpp
+    src/utils/createEntities.cpp
     src/control/movement.cpp
     src/classes/entities/Entity.cpp
     src/classes/hitBoxes/Collision.cpp

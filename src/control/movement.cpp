@@ -7,7 +7,6 @@ void handleMoves(vector<Entity*> entitiesList, int countCubes) {
 	vector<glm::vec3> backPos;
 	vector<int> indexEntity;
 
-
 	if (PressedW) {
 		entitiesList[0]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
 		backPos.push_back(glm::vec3{0.0f, moveXY, 0.0f});
@@ -52,8 +51,10 @@ void handleMoves(vector<Entity*> entitiesList, int countCubes) {
 	}
 
 	for(int i = 0;i != entitiesList.size();i++){
-		for(int j = 0;j != entitiesList.size();j++){
+		for(int j = i+1;j != entitiesList.size();j++){
 			if(i == j) continue;
+
+            std::cout << i << " : " << j << std::endl;
 
 			if(entitiesList[i]->_collision->checkCollision(entitiesList[j]->_collision)){
 				for(int i = 0;i != backPos.size();i++){
