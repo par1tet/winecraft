@@ -1,6 +1,69 @@
 #include "controls.hpp"
 #include <GLFW/glfw3.h>
+#include <vector>
+using namespace std;
 
+void handleMoves(vector<Entity*> entitiesList, int countCubes) {
+	vector<glm::vec3> backPos;
+	vector<int> indexEntity;
+
+
+	if (PressedW) {
+		entitiesList[0]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
+		backPos.push_back(glm::vec3{0.0f, moveXY, 0.0f});
+		indexEntity.push_back(0);
+	}
+	if (PressedS) {
+		entitiesList[0]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
+		backPos.push_back(glm::vec3{0.0f, -moveXY, 0.0f});
+		indexEntity.push_back(0);
+	}
+	if (PressedA) {
+		entitiesList[0]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
+		backPos.push_back(glm::vec3{-moveXY, 0.0f,  0.0f});
+		indexEntity.push_back(0);
+	}
+
+	if (PressedD) {
+		entitiesList[0]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
+		backPos.push_back(glm::vec3{moveXY, 0.0f, 0.0f});
+		indexEntity.push_back(0);
+	}
+
+	if (PressedUp) {
+		entitiesList[1]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
+		backPos.push_back(glm::vec3{ 0.0f, moveXY, 0.0f});
+		indexEntity.push_back(1);
+	}
+	if (PressedDown) {
+		entitiesList[1]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
+		backPos.push_back(glm::vec3{0.0f, -moveXY, 0.0f});
+		indexEntity.push_back(1);
+	}
+	if (PressedLeft) {
+		entitiesList[1]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
+		backPos.push_back(glm::vec3{-moveXY, 0.0f, 0.0f});
+		indexEntity.push_back(1);
+	}
+	if (PressedRight) {
+		entitiesList[1]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
+		backPos.push_back(glm::vec3{moveXY, 0.0f, 0.0f});
+		indexEntity.push_back(1);
+	}
+
+	for(int i = 0;i != entitiesList.size();i++){
+		for(int j = 0;j != entitiesList.size();j++){
+			if(i == j) continue;
+
+			if(entitiesList[i]->_collision->checkCollision(entitiesList[j]->_collision)){
+				for(int i = 0;i != backPos.size();i++){
+					entitiesList[indexEntity[i]]->changePosition(backPos[i] * -1.0f);
+				}
+				return;
+			};
+		}
+	}
+}
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode) {
   	if (key == GLFW_KEY_W) {
