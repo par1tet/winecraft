@@ -27,7 +27,7 @@ int main() {
 					createCollisionHitBoxAABB({glm::vec3{3.0f,3.0f,0.0f}, glm::vec3{3.0f,4.5f,0.0f}}, 
 									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}})));
 
-	entitiesList.push_back(createCube(glm::vec3{-3.0f}));
+	entitiesList.push_back(createCube(glm::vec3{-3.0f, -3.0f, 0.0f}));
 
     if (!glfwInit()) {
         cerr << "Failed to initialize GLFW" << endl;

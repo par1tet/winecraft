@@ -54,13 +54,11 @@ void handleMoves(vector<Entity*> entitiesList, int countCubes) {
 		for(int j = i+1;j != entitiesList.size();j++){
 			if(i == j) continue;
 
-            std::cout << i << " : " << j << std::endl;
-
 			if(entitiesList[i]->_collision->checkCollision(entitiesList[j]->_collision)){
-				for(int i = 0;i != backPos.size();i++){
-					entitiesList[indexEntity[i]]->changePosition(backPos[i] * -1.0f);
+				for(int k = 0;k != backPos.size();k++){
+					if(i != indexEntity[k] && j != indexEntity[k]) continue;
+					entitiesList[indexEntity[k]]->changePosition(backPos[k] * -1.0f);
 				}
-				return;
 			};
 		}
 	}
