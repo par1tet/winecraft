@@ -4,49 +4,49 @@
 using namespace std;
 
 void handleMoves(vector<Entity*> entitiesList, int countCubes) {
-	vector<glm::vec3> backPos;
+	vector<int> backPos;
 	vector<int> indexEntity;
 
 	if (PressedW) {
 		entitiesList[0]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
-		backPos.push_back(glm::vec3{0.0f, moveXY, 0.0f});
+		backPos.push_back(1);
 		indexEntity.push_back(0);
 	}
 	if (PressedS) {
 		entitiesList[0]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
-		backPos.push_back(glm::vec3{0.0f, -moveXY, 0.0f});
+		backPos.push_back(1);
 		indexEntity.push_back(0);
 	}
 	if (PressedA) {
 		entitiesList[0]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
-		backPos.push_back(glm::vec3{-moveXY, 0.0f,  0.0f});
+		backPos.push_back(0);
 		indexEntity.push_back(0);
 	}
 
 	if (PressedD) {
 		entitiesList[0]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
-		backPos.push_back(glm::vec3{moveXY, 0.0f, 0.0f});
+		backPos.push_back(0);
 		indexEntity.push_back(0);
 	}
 
 	if (PressedUp) {
 		entitiesList[1]->changePosition(glm::vec3{0.0f, moveXY, 0.0f});
-		backPos.push_back(glm::vec3{ 0.0f, moveXY, 0.0f});
+		backPos.push_back(1);
 		indexEntity.push_back(1);
 	}
 	if (PressedDown) {
 		entitiesList[1]->changePosition(glm::vec3{0.0f, -moveXY, 0.0f});
-		backPos.push_back(glm::vec3{0.0f, -moveXY, 0.0f});
+		backPos.push_back(1);
 		indexEntity.push_back(1);
 	}
 	if (PressedLeft) {
 		entitiesList[1]->changePosition(glm::vec3{-moveXY, 0.0f, 0.0f});
-		backPos.push_back(glm::vec3{-moveXY, 0.0f, 0.0f});
+		backPos.push_back(0);
 		indexEntity.push_back(1);
 	}
 	if (PressedRight) {
 		entitiesList[1]->changePosition(glm::vec3{moveXY, 0.0f, 0.0f});
-		backPos.push_back(glm::vec3{moveXY, 0.0f, 0.0f});
+		backPos.push_back(0);
 		indexEntity.push_back(1);
 	}
 
@@ -57,7 +57,7 @@ void handleMoves(vector<Entity*> entitiesList, int countCubes) {
 			if(entitiesList[i]->_collision->checkCollision(entitiesList[j]->_collision)){
 				for(int k = 0;k != backPos.size();k++){
 					if(i != indexEntity[k] && j != indexEntity[k]) continue;
-					entitiesList[indexEntity[k]]->changePosition(backPos[k] * -1.0f);
+					entitiesList[indexEntity[k]]->changePosition(entitiesList[indexEntity[i]]->_collision->resolveCollision(backPos[k],entitiesList[j]->_collision));
 				}
 			};
 		}
