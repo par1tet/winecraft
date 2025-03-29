@@ -10,8 +10,6 @@ int width = 800, height = 600;
 int targetFps = 60;
 float sizeCube = 1.0f;
 
-vector<Entity*> entitiesList;
-
 GLfloat vertices[] {
     -sizeCube, -sizeCube, -sizeCube,
      sizeCube, -sizeCube, -sizeCube,

@@ -54,12 +54,7 @@ void handleMoves(vector<Entity*> entitiesList, int countCubes) {
 		for(int j = i+1;j != entitiesList.size();j++){
 			if(i == j) continue;
 
-			if(entitiesList[i]->_collision->checkCollision(entitiesList[j]->_collision)){
-				for(int k = 0;k != backPos.size();k++){
-					if(i != indexEntity[k] && j != indexEntity[k]) continue;
-					entitiesList[indexEntity[k]]->changePosition(entitiesList[indexEntity[i]]->_collision->resolveCollision(backPos[k],entitiesList[j]->_collision));
-				}
-			};
+			entitiesList[i]->_collision->resolveCollision(entitiesList[j]->_collision);
 		}
 	}
 }

@@ -12,6 +12,9 @@ add_executable(winecraft
     src/classes/hitBoxes/Collision.cpp
     src/classes/hitBoxes/HitBox.cpp
     src/classes/objects/Object.cpp
+    src/classes/worldKeeper/worldKeeper.cpp
+    src/classes/extensions/testExtension.cpp
+    src/classes/extensions/extension.cpp
 )
 
 add_library(glad STATIC libs/glad/src/glad.c)

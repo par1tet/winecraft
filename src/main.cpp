@@ -11,21 +11,25 @@
 #include "assets.h"
 #include "controls.hpp"
 #include "createEntities.h"
+#include <classes/worldKeeper/worldKeeper.hpp>
+#include <classes/extensions/testExtension.hpp>
 
 using namespace std;
 
 int main() {
+	vector<Entity*> entitiesList;
+
 	entitiesList.push_back(new Entity(glm::vec3(0.0f,0.0f,0.0f),
 					createCubeObjects({glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
 									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}}),
 					createCollisionHitBoxAABB({glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
-									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})));
+									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}}), {new TestExtension("mega")}));
 
 	entitiesList.push_back(new Entity(glm::vec3(3.0f,3.0f,0.0f),
 					createCubeObjects({glm::vec3{3.0f,3.0f,0.0f}, glm::vec3{3.0f,4.5f,0.0f}}, 
 									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}}),
 					createCollisionHitBoxAABB({glm::vec3{3.0f,3.0f,0.0f}, glm::vec3{3.0f,4.5f,0.0f}}, 
-									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}})));
+									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}}), {new TestExtension("mega")}));
 
 	entitiesList.push_back(createCube(glm::vec3{-3.0f, -3.0f, 0.0f}));
 
@@ -89,6 +93,8 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
+	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window);
+
     // Main loop : λι τνκ υζσλκ
     while (!glfwWindowShouldClose(window)) {
       	glfwPollEvents();
@@ -97,6 +103,7 @@ int main() {
 
       	GLdouble time = glfwGetTime();
 
+		worldKeeperObj->gameFrame();
 
       	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
       	glClear(GL_COLOR_BUFFER_BIT);

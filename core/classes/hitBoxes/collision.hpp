@@ -2,6 +2,7 @@
 #include<vector>
 #include<iostream>
 #include<glm/glm.hpp>
+#include <vector>
 
 #ifndef collisionclass
 #define collisionclass
@@ -12,8 +13,8 @@ public:
         this->hitBoxes = hitBoxes;
     }
 
-    bool checkCollision(const Collision *otherCollision);
-    glm::vec3 resolveCollision(int demension, const Collision *otherCollision);
+    void checkCollision(const Collision *otherCollision);
+    void resolveCollision(const Collision *otherCollision);
 
     std::vector<HitBox*> hitBoxes;
 };

@@ -12,7 +12,8 @@ public:
         this->position = position;
     }
 
-    virtual bool checkCollision(const HitBox* OtherHitBox){return false;}
+    virtual bool checkCollision(const HitBox* otherHitBox){return false;}
+    virtual std::vector<glm::vec3> resolveCollision(const HitBox* otherHitBox){return {glm::vec3{0.0f}};}
 
     glm::vec3 position;
 };
@@ -23,8 +24,10 @@ public:
         this->size = size;
     }
 
-    bool checkCollision(const HitBox* OtherHitBox);
-    bool checkCollision(const HitBoxAABB* OtherHitBox);
+    bool checkCollision(const HitBox* otherHitBox);
+    bool checkCollision(const HitBoxAABB* otherHitBox);
+    std::vector<glm::vec3> resolveCollision(const HitBox* otherHitBox);
+    std::vector<glm::vec3> resolveCollision(const HitBoxAABB* otherHitBox);
 
     glm::vec3 size;
 };
