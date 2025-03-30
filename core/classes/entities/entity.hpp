@@ -3,30 +3,29 @@
 #include <classes/objects/object.hpp>
 #include <classes/hitBoxes/collision.hpp>
 #include <vector>
-#include <classes/extensions/extension.hpp>
+#include <unordered_map>
+#include <GLFW/glfw3.h>
 
 #ifndef entityclass
 #define entityclass
 
+class Extension;
+
 class Entity {
 public:
-    Entity(glm::vec3 position, std::vector<Object*> objects, Collision *collision, std::vector<Extension*> extensions): _collision(collision) {
-        this->position = position;
-        this->objects = objects;
-        this->extensions = extensions;
-    }
+    Entity(Collision *collision, std::vector<Extension*> extensions);
 
     Entity(const Entity &other): _collision(other._collision){
-        position = other.position;
-        objects = other.objects;
     }
 
     void changePosition(glm::vec3 dPos);
+    void gameInit(GLFWwindow* window);
+    template<class T>
+    T* getExtension(std::string exName);
 
-    glm::vec3 position;
-    std::vector<Object*> objects;
     Collision *_collision;
-    std::vector<Extension*> extensions;
+    std::unordered_map<std::string, Extension*> extensions;
+    std::vector<std::string> extensionsNames;
 };
 
 #endif

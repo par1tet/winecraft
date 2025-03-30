@@ -13,23 +13,26 @@
 #include "createEntities.h"
 #include <classes/worldKeeper/worldKeeper.hpp>
 #include <classes/extensions/testExtension.hpp>
+#include <classes/extensions/moveMent.hpp>
+#include <classes/extensions/position.hpp>
+#include <classes/extensions/object.hpp>
 
 using namespace std;
 
 int main() {
 	vector<Entity*> entitiesList;
 
-	entitiesList.push_back(new Entity(glm::vec3(0.0f,0.0f,0.0f),
-					createCubeObjects({glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
-									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}}),
-					createCollisionHitBoxAABB({glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
-									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}}), {new TestExtension("mega")}));
+	entitiesList.push_back(new Entity(
+					createCollisionHitBoxAABB({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
+									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}}), {new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
+									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), 
+									new Position(glm::vec3{0.0f,0.0f,0.0f}), new MoveMent()}));
 
-	entitiesList.push_back(new Entity(glm::vec3(3.0f,3.0f,0.0f),
-					createCubeObjects({glm::vec3{3.0f,3.0f,0.0f}, glm::vec3{3.0f,4.5f,0.0f}}, 
-									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}}),
+	entitiesList.push_back(new Entity(
 					createCollisionHitBoxAABB({glm::vec3{3.0f,3.0f,0.0f}, glm::vec3{3.0f,4.5f,0.0f}}, 
-									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}}), {new TestExtension("mega")}));
+									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}}), {new ObjectExtension(
+					createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,1.5f,0.0f}}, 
+									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}})), new Position(glm::vec3{3.0f,3.0f,0.0f})}));
 
 	entitiesList.push_back(createCube(glm::vec3{-3.0f, -3.0f, 0.0f}));
 
@@ -131,20 +134,20 @@ int main() {
 
       	glBindVertexArray(VAO);
 
-		for(int i = 0;i < entitiesList.size(); i++){
-			for(int j = 0;j < entitiesList[i]->objects.size();j++){
+		for(int i = 0;i < worldKeeperObj->entities.size(); i++){
+			for(int j = 0;j < worldKeeperObj->entities[i]->getExtension<ObjectExtension>("ObjectExtension")->objects.size();j++){
 				glm::mat4 modelMatrix = glm::mat4(1.0f);
-				modelMatrix = glm::translate(modelMatrix, entitiesList[i]->objects[j]->position);
+				modelMatrix = glm::translate(modelMatrix, worldKeeperObj->entities[i]->getExtension<ObjectExtension>("ObjectExtension")->getAbsolutePosition(worldKeeperObj->entities[i], j));
 			
 				glm::mat4 trans = glm::mat4(1.0f);
-				trans = glm::translate(trans, entitiesList[i]->objects[j]->position);
+				trans = glm::translate(trans, worldKeeperObj->entities[i]->getExtension<ObjectExtension>("ObjectExtension")->getAbsolutePosition(worldKeeperObj->entities[i], j));
 				
 				float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
 
 				glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 				glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
 				glUniform4fv(colorLocation, 1, color);
-				glUniform3fv(sizeLocation, 1, glm::value_ptr(((dynamic_cast<Cube*>((entitiesList[i])->objects[j])))->size));
+				glUniform3fv(sizeLocation, 1, glm::value_ptr(dynamic_cast<Cube*>(worldKeeperObj->entities[i]->getExtension<ObjectExtension>("ObjectExtension")->objects[j])->size));
 
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}

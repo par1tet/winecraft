@@ -3,10 +3,6 @@
 #include <vector>
 using namespace std;
 
-inline bool PressedW= false;
-inline bool PressedS= false;
-inline bool PressedA= false;
-inline bool PressedD= false;
 inline bool PressedUp = false;
 inline bool PressedLeft = false;
 inline bool PressedRight = false;

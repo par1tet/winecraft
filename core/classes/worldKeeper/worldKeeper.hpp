@@ -11,10 +11,13 @@ public:
     WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window){
         this->entities = entities;
         this->window = window;
+
+        for(int i = 0;i != this->entities.size();i++){
+            this->entities[i]->gameInit(window);
+        }
     }
 
     void gameFrame();
-    // std::vector<Entity*> getEntities();
 
     std::vector<Entity*> entities;
     GLFWwindow* window;

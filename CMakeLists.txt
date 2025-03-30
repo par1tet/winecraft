@@ -8,13 +8,17 @@ add_executable(winecraft
     src/utils/assets.cpp
     src/utils/createEntities.cpp
     src/control/movement.cpp
-    src/classes/entities/Entity.cpp
+    src/classes/entities/entity.cpp
     src/classes/hitBoxes/Collision.cpp
     src/classes/hitBoxes/HitBox.cpp
     src/classes/objects/Object.cpp
     src/classes/worldKeeper/worldKeeper.cpp
     src/classes/extensions/testExtension.cpp
     src/classes/extensions/extension.cpp
+    src/classes/extensions/position.cpp
+    src/classes/extensions/moveMent.cpp
+    src/classes/extensions/object.cpp
+    
 )
 
 add_library(glad STATIC libs/glad/src/glad.c)

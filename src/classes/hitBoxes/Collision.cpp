@@ -6,7 +6,7 @@
 using namespace std;
 
 void Collision::checkCollision(const Collision* otherCollision){
-    cout << "dont collision" << endl;
+    // cout << "dont collision" << endl;
     for(int i = 0;i != this->hitBoxes.size();++i){
         for(int j = 0;j != otherCollision->hitBoxes.size();j++){
             if(this->hitBoxes[i]->checkCollision(otherCollision->hitBoxes[j])){
@@ -51,11 +51,11 @@ void Collision::checkCollision(const Collision* otherCollision){
         float xBorderDiff = defPosition[0] - dynamic_cast<HitBoxAABB*>(this->hitBoxes.at(i))->size[0] + 
         dynamic_cast<HitBoxAABB*>(otherCollision->hitBoxes.at(i))->size[0];
 
-        cout << 0 << ": " << xBorderDiff << endl;
+        //cout << 0 << ": " << xBorderDiff << endl;
 
         if(xBorderDiff < 0 && xBorderDiff < (
             dynamic_cast<HitBoxAABB*>(otherCollision->hitBoxes.at(i))->size[0]) + dynamic_cast<HitBoxAABB*>(this->hitBoxes.at(i))->size[0]){
-            cout << "collision" << endl;
+            //cout << "collision" << endl;
         }
     }
 
@@ -63,7 +63,7 @@ void Collision::checkCollision(const Collision* otherCollision){
 }
 
 void Collision::resolveCollision(const Collision* otherCollision){
-    cout << "dont collision" << endl;
+    //cout << "dont collision" << endl;
     for(int i = 0;i != this->hitBoxes.size();++i){
         for(int j = 0;j != otherCollision->hitBoxes.size();j++){
             if(this->hitBoxes[i]->checkCollision(otherCollision->hitBoxes[j])){
@@ -108,11 +108,11 @@ void Collision::resolveCollision(const Collision* otherCollision){
         float xBorderDiff = defPosition[0] - dynamic_cast<HitBoxAABB*>(this->hitBoxes.at(i))->size[0] + 
         dynamic_cast<HitBoxAABB*>(otherCollision->hitBoxes.at(i))->size[0];
 
-        cout << 0 << ": " << xBorderDiff << endl;
+        //cout << 0 << ": " << xBorderDiff << endl;
 
         if(xBorderDiff < 0 && xBorderDiff < (
             dynamic_cast<HitBoxAABB*>(otherCollision->hitBoxes.at(i))->size[0]) + dynamic_cast<HitBoxAABB*>(this->hitBoxes.at(i))->size[0]){
-            cout << "collision" << endl;
+            //cout << "collision" << endl;
         }
     }
 }
