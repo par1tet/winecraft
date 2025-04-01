@@ -11,17 +11,18 @@
 #define objectExtensionClass
 
 class ObjectExtension : public Extension {
+private:
+    std::vector<Object*> objects;
+
 public:
-    ObjectExtension(std::vector<Object*> objects) : Extension() {
-        this->objects = objects;
-    }
+    ObjectExtension(std::vector<Object*> objects);
 
     void gameFrame(WorldKeeper* worldKeeperCl, int enId){}
     void gameInit(GLFWwindow* window){}
-    std::string getExName(){return "ObjectExtension";}
+    std::string getExName();
     glm::vec3 getAbsolutePosition(Entity*, int);
 
-    std::vector<Object*> objects;
+    std::vector<Object*> getObjects();
 };
 
 

@@ -8,19 +8,17 @@
 #define moveMentClass
 
 class MoveMent : public Extension {
-public:
-    MoveMent(double maxSpeed, double runUpTime) : Extension() {
-        this->maxSpeed = maxSpeed;
-        this->runUpTime = runUpTime;
-    }
-
-    void gameInit(GLFWwindow* window);
-    void gameFrame(WorldKeeper* worldKeeperCl, int enId);
-    std::string getExName(){return "MoveMent";}
-
+private:
     glm::vec3 moveVector = glm::vec3(0.0f);
     double maxSpeed;
     double runUpTime;
+
+public:
+    MoveMent(double maxSpeed, double runUpTime);
+
+    void gameInit(GLFWwindow* window);
+    void gameFrame(WorldKeeper* worldKeeperCl, int enId);
+    std::string getExName();
 };
 
 

@@ -12,11 +12,11 @@
 #include "controls.hpp"
 #include "createEntities.h"
 #include <classes/worldKeeper/worldKeeper.hpp>
-#include <classes/extensions/testExtension.hpp>
 #include <classes/extensions/moveMent.hpp>
 #include <classes/extensions/position.hpp>
 #include <classes/extensions/object.hpp>
 #include <classes/worldKeeper/keyTrigger.hpp>
+#include <classes/objects/cube.hpp>
 
 using namespace std;
 
@@ -58,8 +58,6 @@ int main() {
     }
 
     glViewport(0, 0, width, height);
-
-    glfwSetKeyCallback(window, key_callback);
 
     GLuint shaderProgram = createShaderProgram(
       	getAssetPath("shaders/vertex.glsl").c_str(),
@@ -135,27 +133,26 @@ int main() {
 
       	glBindVertexArray(VAO);
 
-		for(int i = 0;i < worldKeeperObj->entities.size(); i++){
-			for(int j = 0;j < worldKeeperObj->entities[i]->getExtension<ObjectExtension>("ObjectExtension")->objects.size();j++){
+		for(int i = 0;i < worldKeeperObj->getEntities().size(); i++){
+			for(int j = 0;j < worldKeeperObj->getEntities()[i]->getExtension<ObjectExtension>("ObjectExtension")->getObjects().size();j++){
 				glm::mat4 modelMatrix = glm::mat4(1.0f);
-				modelMatrix = glm::translate(modelMatrix, worldKeeperObj->entities[i]->getExtension<ObjectExtension>("ObjectExtension")->getAbsolutePosition(worldKeeperObj->entities[i], j));
+				modelMatrix = glm::translate(modelMatrix, worldKeeperObj->getEntities()[i]->getExtension<ObjectExtension>("ObjectExtension")->getAbsolutePosition(worldKeeperObj->getEntities()[i], j));
 			
 				glm::mat4 trans = glm::mat4(1.0f);
-				trans = glm::translate(trans, worldKeeperObj->entities[i]->getExtension<ObjectExtension>("ObjectExtension")->getAbsolutePosition(worldKeeperObj->entities[i], j));
+				trans = glm::translate(trans, worldKeeperObj->getEntities()[i]->getExtension<ObjectExtension>("ObjectExtension")->getAbsolutePosition(worldKeeperObj->getEntities()[i], j));
 				
 				float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
 
 				glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 				glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
 				glUniform4fv(colorLocation, 1, color);
-				glUniform3fv(sizeLocation, 1, glm::value_ptr(dynamic_cast<Cube*>(worldKeeperObj->entities[i]->getExtension<ObjectExtension>("ObjectExtension")->objects[j])->size));
+				glUniform3fv(sizeLocation, 1, glm::value_ptr(dynamic_cast<Cube*>((worldKeeperObj->getEntities()[i])->getExtension<ObjectExtension>("ObjectExtension")->getObjects()[j])->getSize()));
 
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
 		}
 	
 		if(time - previosTimeDelay >= delayTime){
-			handleMoves(entitiesList, entitiesList.size());
 			previosTimeDelay = time;
 		}
 

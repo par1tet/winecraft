@@ -7,15 +7,17 @@
 #define positionClass
 
 class Position : public Extension {
+private:
+    glm::vec3 position;
 public:
-    Position(glm::vec3 position) : Extension() {
-        this->position = position;
-    }
+    Position(glm::vec3 position);
 
     void gameFrame(WorldKeeper* worldKeeperCl, int enId);
-    std::string getExName(){return "Position";}
+    std::string getExName();
 
-    glm::vec3 position;
+    glm::vec3 getPosition();
+    void setPosition(glm::vec3 newPosition);
+    void changePosition(glm::vec3 dPosition);
 };
 
 

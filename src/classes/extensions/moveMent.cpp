@@ -6,14 +6,20 @@
 #include<stdio.h>
 #include<GLFW/glfw3.h>
 #include<glm/glm.hpp>
+#include<string>
 
-void MoveMent::gameInit(GLFWwindow* window){
+MoveMent::MoveMent(double maxSpeed, double runUpTime) : Extension(){
+	this->maxSpeed = maxSpeed;
+	this->runUpTime = runUpTime;
 }
 
-void MoveMent::gameFrame(WorldKeeper* worldKeeperCl, int enId){
-    Entity* thisEntity = worldKeeperCl->entities[enId];
+void MoveMent::gameInit(GLFWwindow* window){}
+std::string MoveMent::getExName(){return "Movement";}
 
-	bool* keysTrigger = worldKeeperCl->keyTrigger->keys;
+void MoveMent::gameFrame(WorldKeeper* worldKeeperCl, int enId){
+    Entity* thisEntity = worldKeeperCl->getEntities()[enId];
+
+	bool* keysTrigger = worldKeeperCl->getKeyTrigger()->getKeys();
 
 	{
 		if(keysTrigger[GLFW_KEY_W] && !keysTrigger[GLFW_KEY_S]){
@@ -94,5 +100,5 @@ void MoveMent::gameFrame(WorldKeeper* worldKeeperCl, int enId){
 	std::cout << this->moveVector.x << std::endl;
 	std::cout << this->moveVector.y << std::endl;
 	
-	thisEntity->getExtension<Position>("Position")->position += this->moveVector;
+	thisEntity->getExtension<Position>("Position")->changePosition(this->moveVector);
 }

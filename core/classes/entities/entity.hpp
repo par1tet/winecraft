@@ -12,20 +12,22 @@
 class Extension;
 
 class Entity {
+private:
+    Collision *collision;
+    std::unordered_map<std::string, Extension*> extensions;
+    std::vector<std::string> extensionsNames;
+
 public:
     Entity(Collision *collision, std::vector<Extension*> extensions);
-
-    Entity(const Entity &other): _collision(other._collision){
-    }
 
     void changePosition(glm::vec3 dPos);
     void gameInit(GLFWwindow* window);
     template<class T>
     T* getExtension(std::string exName);
 
-    Collision *_collision;
-    std::unordered_map<std::string, Extension*> extensions;
-    std::vector<std::string> extensionsNames;
+    Collision* getCollision();
+    std::vector<std::string> getExtensionsNames();
+    std::unordered_map<std::string, Extension*> getExtensions();
 };
 
 #endif

@@ -19,3 +19,7 @@ void KeyTrigger::callbackFunction(GLFWwindow *window, int key, int scancode, int
         contextThis->keys[key] = false;
     }
 }
+
+bool* KeyTrigger::getKeys(){
+    return keys;
+}

@@ -6,8 +6,9 @@
 #include <GLFW/glfw3.h>
 #include <string.h>
 #include <stdio_ext.h>
+#include <unordered_map>
 
-Entity::Entity(Collision *collision, std::vector<Extension*> extensions): _collision(collision) {
+Entity::Entity(Collision *collision, std::vector<Extension*> extensions): collision(collision) {
     for(int i = 0;i != extensions.size();i++){
 
         this->extensionsNames.push_back(extensions[i]->getExName());
@@ -16,8 +17,8 @@ Entity::Entity(Collision *collision, std::vector<Extension*> extensions): _colli
 }
 
 void Entity::changePosition(glm::vec3 dPos){
-    for(int i = 0;i != this->getExtension<ObjectExtension>("ObjectExtension")->objects.size();i++){
-        this->getExtension<Position>("Position")->position += dPos;
+    for(int i = 0;i != this->getExtension<ObjectExtension>("ObjectExtension")->getObjects().size();i++){
+        this->getExtension<Position>("Position")->changePosition(dPos);
     }
 }
 
@@ -36,4 +37,16 @@ T* Entity::getExtension(std::string exName){
     }else{
         throw std::runtime_error("Жидкие ясели не работают с питонами");
     }
+}
+
+Collision* Entity::getCollision(){
+    return collision;
+}
+
+std::unordered_map<std::string, Extension*> Entity::getExtensions(){
+    return extensions;
+}
+
+std::vector<std::string> Entity::getExtensionsNames(){
+    return extensionsNames;
 }

@@ -5,13 +5,16 @@
 #define keyTriggerclass
 
 class KeyTrigger {
+private:
+    GLFWwindow* window;
+    bool keys[348] = {false};
+
 public:
     KeyTrigger(GLFWwindow* window);
 
     static void callbackFunction(GLFWwindow *window, int key, int scancode, int action, int mode);
 
-    GLFWwindow* window;
-    bool keys[348] = {false};
+    bool* getKeys();
 };
 
 #endif

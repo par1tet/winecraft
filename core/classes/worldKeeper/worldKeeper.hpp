@@ -8,27 +8,18 @@
 #define worldKeeper
 
 class WorldKeeper{
-public:
-    WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, KeyTrigger* keyTrigger){
-
-        this->entities = entities;
-        this->window = window;
-        this->keyTrigger = keyTrigger;
-
-        for(int i = 0;i != this->entities.size();i++){
-            this->entities[i]->gameInit(window);
-        }
-    }
-
-    void gameFrame();
-    KeyTrigger* getKeyTrigger(){
-        return this->keyTrigger;
-    }
-
-
+private:
     std::vector<Entity*> entities;
     GLFWwindow* window;
     KeyTrigger* keyTrigger;
+
+public:
+    WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, KeyTrigger* keyTrigger);
+
+    void gameFrame();
+    KeyTrigger* getKeyTrigger();
+    std::vector<Entity*> getEntities();
+    GLFWwindow* getWindow();
 };
 
 #endif

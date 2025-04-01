@@ -5,6 +5,7 @@
 #include <classes/entities/entity.hpp>
 #include <classes/extensions/position.hpp>
 #include <classes/extensions/object.hpp>
+#include <classes/objects/cube.hpp>
 
 std::vector<Object*> createCubeObjects(std::vector<glm::vec3> positions, std::vector<glm::vec3> sizes){
     std::vector<Object*> cubes;
