@@ -1,4 +1,4 @@
-#include<classes/extensions/position.hpp>
+#include<classes/extensions/positionExtension.hpp>
 #include<classes/worldKeeper/worldKeeper.hpp>
 #include<stdio.h>
 #include<string>
@@ -13,7 +13,7 @@ void Position::gameFrame(WorldKeeper* worldKeeperCl, int enId){
 }
 
 std::string Position::getExName(){
-    return "Position";
+    return "PositionExtension";
 }
 
 glm::vec3 Position::getPosition(){

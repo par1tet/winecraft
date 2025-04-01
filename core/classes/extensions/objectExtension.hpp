@@ -7,8 +7,7 @@
 #include<vector>
 #include<glm/glm.hpp>
 
-#ifndef objectExtensionClass
-#define objectExtensionClass
+#pragma once
 
 class ObjectExtension : public Extension {
 private:
@@ -24,6 +23,3 @@ public:
 
     std::vector<Object*> getObjects();
 };
-
-
-#endif

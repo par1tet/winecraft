@@ -2,8 +2,7 @@
 #include <string>
 #include <iostream>
 
-#ifndef objectclass
-#define objectclass
+#pragma once
 
 class Object {
 private:
@@ -17,5 +16,3 @@ public:
 
     virtual glm::vec3 getPosition();
 };
-
-#endif

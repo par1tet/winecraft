@@ -4,8 +4,7 @@
 #include<classes/worldKeeper/keyTrigger.hpp>
 #include<iostream>
 
-#ifndef worldKeeper
-#define worldKeeper
+#pragma once
 
 class WorldKeeper{
 private:
@@ -21,5 +20,3 @@ public:
     std::vector<Entity*> getEntities();
     GLFWwindow* getWindow();
 };
-
-#endif

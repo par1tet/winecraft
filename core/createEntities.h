@@ -6,7 +6,7 @@
 
 std::vector<Object*> createCubeObjects(std::vector<glm::vec3> positions, std::vector<glm::vec3> sizes);
 std::vector<Object*> createCubeObjects(std::vector<glm::vec3> positions, std::vector<glm::vec3> sizes, std::vector<std::string> textures);
-Collision* createCollisionHitBoxAABB(std::vector<glm::vec3> positionsHitBoxesAABB, std::vector<glm::vec3> sizesHitBoxesAABB);
+// Collision* createCollisionHitBoxAABB(std::vector<glm::vec3> positionsHitBoxesAABB, std::vector<glm::vec3> sizesHitBoxesAABB);
 Entity* createCube(glm::vec3 position, glm::vec3 size, std::string texturePath);
 Entity* createCube(glm::vec3 position, glm::vec3 size);
 Entity* createCube(glm::vec3 position);

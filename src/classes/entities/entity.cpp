@@ -1,16 +1,15 @@
 #include <classes/entities/entity.hpp>
 #include <classes/extensions/extension.hpp>
-#include <classes/extensions/object.hpp>
-#include <classes/extensions/position.hpp>
+#include <classes/extensions/objectExtension.hpp>
+#include <classes/extensions/positionExtension.hpp>
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
 #include <string.h>
 #include <stdio_ext.h>
 #include <unordered_map>
 
-Entity::Entity(Collision *collision, std::vector<Extension*> extensions): collision(collision) {
+Entity::Entity(std::vector<Extension*> extensions) {
     for(int i = 0;i != extensions.size();i++){
-
         this->extensionsNames.push_back(extensions[i]->getExName());
         this->extensions[this->extensionsNames[i]] = extensions[i];
     }
@@ -37,10 +36,6 @@ T* Entity::getExtension(std::string exName){
     }else{
         throw std::runtime_error("Жидкие ясели не работают с питонами");
     }
-}
-
-Collision* Entity::getCollision(){
-    return collision;
 }
 
 std::unordered_map<std::string, Extension*> Entity::getExtensions(){

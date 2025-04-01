@@ -1,8 +1,7 @@
 #include<GLFW/glfw3.h>
 #include<vector>
 
-#ifndef keyTriggerclass
-#define keyTriggerclass
+#pragma once
 
 class KeyTrigger {
 private:
@@ -16,5 +15,3 @@ public:
 
     bool* getKeys();
 };
-
-#endif

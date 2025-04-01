@@ -12,9 +12,9 @@
 #include "controls.hpp"
 #include "createEntities.h"
 #include <classes/worldKeeper/worldKeeper.hpp>
-#include <classes/extensions/moveMent.hpp>
-#include <classes/extensions/position.hpp>
-#include <classes/extensions/object.hpp>
+#include <classes/extensions/moveMentExtension.hpp>
+#include <classes/extensions/positionExtension.hpp>
+#include <classes/extensions/objectExtension.hpp>
 #include <classes/worldKeeper/keyTrigger.hpp>
 #include <classes/objects/cube.hpp>
 
@@ -23,15 +23,11 @@ using namespace std;
 int main() {
 	vector<Entity*> entitiesList;
 
-	entitiesList.push_back(new Entity(
-					createCollisionHitBoxAABB({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
-									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}}), {new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
+	entitiesList.push_back(new Entity({new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
 									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), 
 									new Position(glm::vec3{0.0f,0.0f,0.0f}), new MoveMent(0.18f, 0.015f)}));
 
-	entitiesList.push_back(new Entity(
-					createCollisionHitBoxAABB({glm::vec3{3.0f,3.0f,0.0f}, glm::vec3{3.0f,4.5f,0.0f}}, 
-									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}}), {new ObjectExtension(
+	entitiesList.push_back(new Entity({new ObjectExtension(
 					createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,1.5f,0.0f}}, 
 									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}})), new Position(glm::vec3{3.0f,3.0f,0.0f})}));
 

@@ -2,8 +2,7 @@
 #include<classes/worldKeeper/worldKeeper.hpp>
 #include<GLFW/glfw3.h>
 
-#ifndef extension
-#define extension
+#pragma once
 
 class Entity;
 
@@ -16,5 +15,3 @@ public:
     virtual void gameInit(GLFWwindow* window);
     virtual std::string getExName(){return "Extension";}
 };
-
-#endif

@@ -4,8 +4,7 @@
 #include<string.h>
 #include<glm/glm.hpp>
 
-#ifndef moveMentClass
-#define moveMentClass
+#pragma once
 
 class MoveMent : public Extension {
 private:
@@ -20,6 +19,3 @@ public:
     void gameFrame(WorldKeeper* worldKeeperCl, int enId);
     std::string getExName();
 };
-
-
-#endif

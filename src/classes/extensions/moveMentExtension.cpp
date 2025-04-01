@@ -1,6 +1,6 @@
-#include<classes/extensions/moveMent.hpp>
+#include<classes/extensions/moveMentExtension.hpp>
 #include<classes/entities/entity.hpp>
-#include<classes/extensions/position.hpp>
+#include<classes/extensions/positionExtension.hpp>
 #include<classes/worldKeeper/worldKeeper.hpp>
 #include<classes/worldKeeper/keyTrigger.hpp>
 #include<stdio.h>
@@ -14,7 +14,7 @@ MoveMent::MoveMent(double maxSpeed, double runUpTime) : Extension(){
 }
 
 void MoveMent::gameInit(GLFWwindow* window){}
-std::string MoveMent::getExName(){return "Movement";}
+std::string MoveMent::getExName(){return "MovementExtension";}
 
 void MoveMent::gameFrame(WorldKeeper* worldKeeperCl, int enId){
     Entity* thisEntity = worldKeeperCl->getEntities()[enId];
@@ -100,5 +100,5 @@ void MoveMent::gameFrame(WorldKeeper* worldKeeperCl, int enId){
 	std::cout << this->moveVector.x << std::endl;
 	std::cout << this->moveVector.y << std::endl;
 	
-	thisEntity->getExtension<Position>("Position")->changePosition(this->moveVector);
+	thisEntity->getExtension<Position>("PositionExtension")->changePosition(this->moveVector);
 }

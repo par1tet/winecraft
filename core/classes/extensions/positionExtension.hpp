@@ -3,8 +3,7 @@
 #include<string.h>
 #include<glm/glm.hpp>
 
-#ifndef positionClass
-#define positionClass
+#pragma once
 
 class Position : public Extension {
 private:
@@ -19,6 +18,3 @@ public:
     void setPosition(glm::vec3 newPosition);
     void changePosition(glm::vec3 dPosition);
 };
-
-
-#endif
