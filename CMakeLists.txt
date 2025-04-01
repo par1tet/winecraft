@@ -18,7 +18,7 @@ add_executable(winecraft
     src/classes/extensions/position.cpp
     src/classes/extensions/moveMent.cpp
     src/classes/extensions/object.cpp
-    
+    src/classes/worldKeeper/keyTrigger.cpp
 )
 
 add_library(glad STATIC libs/glad/src/glad.c)

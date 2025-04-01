@@ -16,6 +16,7 @@
 #include <classes/extensions/moveMent.hpp>
 #include <classes/extensions/position.hpp>
 #include <classes/extensions/object.hpp>
+#include <classes/worldKeeper/keyTrigger.hpp>
 
 using namespace std;
 
@@ -26,7 +27,7 @@ int main() {
 					createCollisionHitBoxAABB({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
 									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}}), {new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
 									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), 
-									new Position(glm::vec3{0.0f,0.0f,0.0f}), new MoveMent()}));
+									new Position(glm::vec3{0.0f,0.0f,0.0f}), new MoveMent(0.18f, 0.015f)}));
 
 	entitiesList.push_back(new Entity(
 					createCollisionHitBoxAABB({glm::vec3{3.0f,3.0f,0.0f}, glm::vec3{3.0f,4.5f,0.0f}}, 
@@ -96,7 +97,7 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
-	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window);
+	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window, new KeyTrigger(window));
 
     // Main loop : λι τνκ υζσλκ
     while (!glfwWindowShouldClose(window)) {
@@ -114,7 +115,7 @@ int main() {
       	glUseProgram(shaderProgram);
 
       	glm::mat4 viewMatrix = glm::mat4(1.0f);
-      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -40.0f));
+      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -70.0f));
 
       	glm::mat4 projectionMatrix = glm::mat4(1.0f);
       	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
