@@ -2,6 +2,7 @@
 #include <classes/extensions/extension.hpp>
 #include <classes/extensions/objectExtension.hpp>
 #include <classes/extensions/positionExtension.hpp>
+#include <classes/extensions/collisionExtension/collisionExtension.hpp>
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
 #include <string.h>
@@ -27,16 +28,6 @@ void Entity::gameInit(GLFWwindow* window){
     }
 }
 
-template <class T> 
-T* Entity::getExtension(std::string exName){
-    T* converted = dynamic_cast<T*>(this->extensions[exName]);
-
-    if(converted){
-        return converted;
-    }else{
-        throw std::runtime_error("Жидкие ясели не работают с питонами");
-    }
-}
 
 std::unordered_map<std::string, Extension*> Entity::getExtensions(){
     return extensions;

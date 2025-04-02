@@ -6,6 +6,8 @@
 #include <classes/extensions/positionExtension.hpp>
 #include <classes/extensions/objectExtension.hpp>
 #include <classes/objects/cube.hpp>
+#include <classes/extensions/collisionExtension/collisionExtension.hpp>
+#include <classes/hitBox/hitBoxRect.hpp>
 
 std::vector<Object*> createCubeObjects(std::vector<glm::vec3> positions, std::vector<glm::vec3> sizes){
     std::vector<Object*> cubes;
@@ -50,7 +52,7 @@ Entity* createCube(glm::vec3 position, glm::vec3 size){
 }
 
 Entity* createCube(glm::vec3 position){
-    Entity* cube = new Entity({new ObjectExtension(std::vector<Object*>{new Cube(glm::vec3(0.0f),"assets/textures/murych_cat.png", glm::vec3(1.0f))}), new Position(position)});
+    Entity* cube = new Entity({new ObjectExtension(std::vector<Object*>{new Cube(glm::vec3(0.0f),"assets/textures/murych_cat.png", glm::vec3(1.0f))}), new Position(position), new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{0.0f})})});
 
     return cube;
 }

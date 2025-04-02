@@ -17,6 +17,8 @@
 #include <classes/extensions/objectExtension.hpp>
 #include <classes/worldKeeper/keyTrigger.hpp>
 #include <classes/objects/cube.hpp>
+#include <classes/extensions/collisionExtension/collisionExtension.hpp>
+#include <classes/hitBox/hitBoxRect.hpp>
 
 using namespace std;
 
@@ -25,7 +27,7 @@ int main() {
 
 	entitiesList.push_back(new Entity({new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
 									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), 
-									new Position(glm::vec3{0.0f,0.0f,0.0f}), new MoveMent(0.18f, 0.015f)}));
+									new Position(glm::vec3{0.0f,0.0f,0.0f}), new MoveMent(0.18f, 0.015f), new CollisionExtension({})}));
 
 	entitiesList.push_back(new Entity({new ObjectExtension(
 					createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,1.5f,0.0f}}, 

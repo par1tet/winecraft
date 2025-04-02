@@ -1,7 +1,6 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <classes/objects/object.hpp>
-#include <classes/hitBoxes/collision.hpp>
 #include <vector>
 #include <unordered_map>
 #include <GLFW/glfw3.h>
@@ -26,3 +25,10 @@ public:
     std::vector<std::string> getExtensionsNames();
     std::unordered_map<std::string, Extension*> getExtensions();
 };
+
+template <class T> 
+T* Entity::getExtension(std::string exName){
+    T* converted = dynamic_cast<T*>(this->extensions[exName]);
+
+    return converted;
+}

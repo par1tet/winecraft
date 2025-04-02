@@ -8,7 +8,9 @@ class Entity;
 
 class Extension{
 public:
+    virtual ~Extension() = default;
     Extension(){
+
     }
 
     virtual void gameFrame(WorldKeeper* worldKeeperCl, int enId);
