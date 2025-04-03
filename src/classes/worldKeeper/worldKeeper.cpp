@@ -15,6 +15,8 @@ WorldKeeper::WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, KeyT
 }
 
 void WorldKeeper::gameFrame(){
+    system("clear");
+
     for(int i = 0;i != this->entities.size();i++){
         for(int j = 0;j != this->entities[i]->getExtensionsNames().size();j++){
             this->entities[i]->getExtensions()[(this->entities[i])->getExtensionsNames()[j]]->gameFrame(this, i);

@@ -9,7 +9,7 @@ Position::Position(glm::vec3 position) : Extension(){
 }
 
 void Position::gameFrame(WorldKeeper* worldKeeperCl, int enId){
-    std::cout << "x: " << this->position.x << " y: " << this->position.y << " z: " << this->position.z << std::endl;
+    // std::cout << "x: " << this->position.x << " y: " << this->position.y << " z: " << this->position.z << std::endl;
 }
 
 std::string Position::getExName(){

@@ -10,6 +10,7 @@ private:
 public:
     HitBoxRect(glm::vec3 position, glm::vec3 size);
 
-    bool collisionWith(HitBox* otherHitBox);
-    bool collisionWithRect(HitBoxRect* otherHitBox);
+    bool collisionWith(HitBox* otherHitBox, Entity*, Entity*);
+    bool collisionWithRect(HitBoxRect* otherHitBox, Entity*, Entity*);
+    glm::vec3 getSize();
 };

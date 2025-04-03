@@ -1,7 +1,9 @@
 #include<classes/extensions/extension.hpp>
 #include <classes/hitBox/hitBox.hpp>
+#include <glm/fwd.hpp>
 #include <string>
 #include <vector>
+#include <classes/entities/entity.hpp>
 
 #pragma once
 
@@ -12,9 +14,11 @@ private:
 public:
     CollisionExtension(std::vector<HitBox*> hitBoxes);
 
-    bool checkCollision(CollisionExtension* otherCollision);
+    bool checkCollision(CollisionExtension* otherCollision, Entity*, Entity*);
     void gameFrame(WorldKeeper* worldKeeperCl, int enId);
     void gameInit(GLFWwindow* window);
+    glm::vec3 getAbsolutePosition(Entity*, int);
+    std::vector<HitBox*> getHitBoxes();
 
     std::string getExName();
 };

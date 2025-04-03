@@ -97,8 +97,8 @@ void MoveMent::gameFrame(WorldKeeper* worldKeeperCl, int enId){
 		}
 	}
 
-	std::cout << this->moveVector.x << std::endl;
-	std::cout << this->moveVector.y << std::endl;
+	//std::cout << this->moveVector.x << std::endl;
+	//std::cout << this->moveVector.y << std::endl;
 	
 	thisEntity->getExtension<Position>("PositionExtension")->changePosition(this->moveVector);
 }
