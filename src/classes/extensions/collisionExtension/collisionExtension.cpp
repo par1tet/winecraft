@@ -7,38 +7,37 @@
 #include <string>
 #include <vector>
 
-CollisionExtension::CollisionExtension(std::vector<HitBox*> hitBoxes) : Extension() {
+CollisionExtension::CollisionExtension(std::vector<HitBox*> hitBoxes, float mass, float elasticity) : Extension() {
     this->hitBoxes = hitBoxes;
+    this->mass = mass;
+    this->elasticity = elasticity;
 }
 
-bool CollisionExtension::checkCollision(CollisionExtension* otherCollision, Entity* thisEntity, Entity* secondEntity){
+CollisionExtension::CollisionExtension(std::vector<HitBox*> hitBoxes) : Extension() {
+    this->hitBoxes = hitBoxes;
+    this->mass = 0.0;
+    this->elasticity = 0;
+}
+
+void CollisionExtension::checkCollision(CollisionExtension* otherCollision, Entity* thisEntity, Entity* secondEntity){
     for(int i = 0;i != this->getHitBoxes().size();i++){
         for(int j = 0;j != otherCollision->getHitBoxes().size();j++){
-            bool resultCheckWith = this->getHitBoxes()[i]->collisionWith(otherCollision->getHitBoxes()[j], thisEntity, secondEntity);
-
-            // std::cout << i << ":" << j << std::endl;
-            if(resultCheckWith){
-                return true;
-            }
+            this->getHitBoxes()[i]->collisionWith(otherCollision->getHitBoxes()[j], thisEntity, secondEntity);
         }
     }
-    return false;
 }
 
 void CollisionExtension::gameFrame(WorldKeeper* worldKeeper, int enId){
     std::vector<Entity*> worldEntities = worldKeeper->getEntities();
     std::cout << "huo: " << enId << std::endl;
     for(int i = 0;i != worldEntities.size();i++){
-        if(i == enId) continue;
+        if(i >= enId) continue;
 
         CollisionExtension* otherCollisionExtension = worldEntities[i]->getExtension<CollisionExtension>("CollisionExtension");
+        std::cout << "collisionWith: " << i << std::endl;
 
         if(otherCollisionExtension){
-            std::cout << "Check collision with: " << i << std::endl;
-
-            bool resultCollision = this->checkCollision(otherCollisionExtension, worldEntities[enId], worldEntities[i]);
-
-            std::cout << "resultCollision: " << resultCollision << std::endl;
+            this->checkCollision(otherCollisionExtension, worldEntities[enId], worldEntities[i]);
         }else{continue;}
     }
 }
@@ -55,4 +54,12 @@ std::vector<HitBox*> CollisionExtension::getHitBoxes(){
 
 glm::vec3 CollisionExtension::getAbsolutePosition(Entity* currentEntity, int hId){
     return this->getHitBoxes()[hId]->getAbsolutePositioin(currentEntity);
+}
+
+float CollisionExtension::getElasticity(){
+    return elasticity;
+}
+
+float CollisionExtension::getMass(){
+    return mass;
 }

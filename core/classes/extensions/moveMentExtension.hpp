@@ -18,4 +18,6 @@ public:
     void gameInit(GLFWwindow* window);
     void gameFrame(WorldKeeper* worldKeeperCl, int enId);
     std::string getExName();
+    glm::vec3 getVelocity();
+    void setVelocity(glm::vec3 newVelocity);
 };

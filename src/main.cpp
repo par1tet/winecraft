@@ -26,18 +26,18 @@ int main() {
 	vector<Entity*> entitiesList;
 
 	entitiesList.push_back(new Entity({new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
-									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), 
-									new Position(glm::vec3{0.0f,0.0f,0.0f}), new MoveMent(0.18f, 0.015f), 
+									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), new MoveMent(0.18f, 0.015f), 
         new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{0.5f, 4.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, 2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),
-                                new HitBoxRect(glm::vec3{0.0f, -2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),})
+                                new HitBoxRect(glm::vec3{0.0f, -2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), 
+									new Position(glm::vec3{0.0f,0.0f,0.0f})
                 }));
 
 	entitiesList.push_back(new Entity({new ObjectExtension(
 					createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,1.5f,0.0f}}, 
-									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}})), new Position(glm::vec3{3.0f,3.0f,0.0f}), 
+									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}})), 
         new CollisionExtension({new HitBoxRect(glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{3.0f, 2.0f, 1.0f}),
-                                new HitBoxRect(glm::vec3{0.0f, 1.5f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}),})}));
+                                new HitBoxRect(glm::vec3{0.0f, 1.5f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), new Position(glm::vec3{3.0f,3.0f,0.0f})}));
 
 	entitiesList.push_back(createCube(glm::vec3{-3.0f, -3.0f, 0.0f}));
 
@@ -109,8 +109,6 @@ int main() {
 
       	GLdouble time = glfwGetTime();
 
-		worldKeeperObj->gameFrame();
-
       	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
       	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -157,6 +155,7 @@ int main() {
 		}
 	
 		if(time - previosTimeDelay >= delayTime){
+            worldKeeperObj->gameFrame();
 			previosTimeDelay = time;
 		}
 

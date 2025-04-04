@@ -10,15 +10,20 @@
 class CollisionExtension : public Extension {
 private:
     std::vector<HitBox*> hitBoxes;
+    float mass;
+    float elasticity;
 
 public:
-    CollisionExtension(std::vector<HitBox*> hitBoxes);
+    CollisionExtension(std::vector<HitBox*> hitBoxes, float mass, float elasticity);
+    CollisionExtension(std::vector<HitBox*>);
 
-    bool checkCollision(CollisionExtension* otherCollision, Entity*, Entity*);
+    void checkCollision(CollisionExtension* otherCollision, Entity*, Entity*);
     void gameFrame(WorldKeeper* worldKeeperCl, int enId);
     void gameInit(GLFWwindow* window);
     glm::vec3 getAbsolutePosition(Entity*, int);
     std::vector<HitBox*> getHitBoxes();
+    float getElasticity();
 
     std::string getExName();
+    float getMass();
 };

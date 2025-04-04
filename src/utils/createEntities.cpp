@@ -52,7 +52,7 @@ Entity* createCube(glm::vec3 position, glm::vec3 size){
 }
 
 Entity* createCube(glm::vec3 position){
-    Entity* cube = new Entity({new ObjectExtension(std::vector<Object*>{new Cube(glm::vec3(0.0f),"assets/textures/murych_cat.png", glm::vec3(1.0f))}), new Position(position), new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{1.0f})})});
+    Entity* cube = new Entity({new ObjectExtension(std::vector<Object*>{new Cube(glm::vec3(0.0f),"assets/textures/murych_cat.png", glm::vec3(1.0f))}), new Position(position), new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{1.0f})}, 1.0f, 0.5f)});
 
     return cube;
 }

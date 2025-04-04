@@ -1,6 +1,7 @@
 #include <classes/worldKeeper/worldKeeper.hpp>
 #include <classes/extensions/extension.hpp>
 #include <stdio.h>
+#include <string>
 #include <vector>
 #include <GLFW/glfw3.h>
 
@@ -17,9 +18,16 @@ WorldKeeper::WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, KeyT
 void WorldKeeper::gameFrame(){
     system("clear");
 
-    for(int i = 0;i != this->entities.size();i++){
-        for(int j = 0;j != this->entities[i]->getExtensionsNames().size();j++){
-            this->entities[i]->getExtensions()[(this->entities[i])->getExtensionsNames()[j]]->gameFrame(this, i);
+    std::vector<std::string> extensionQueue = {
+        "ObjectExtension", "MoveMentExtension",
+        "CollisionExtension", "PositionExtension"
+    };
+
+    for(int j = 0;j != extensionQueue.size();j++){
+        for(int i = 0;i != this->entities.size();i++){
+            if(this->entities[i]->getExtensions().find(extensionQueue[j]) != this->entities[i]->getExtensions().end()){
+                this->entities[i]->getExtensions()[extensionQueue[j]]->gameFrame(this, i);
+            }
         }
     }
 }

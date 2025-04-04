@@ -9,7 +9,8 @@ Position::Position(glm::vec3 position) : Extension(){
 }
 
 void Position::gameFrame(WorldKeeper* worldKeeperCl, int enId){
-    // std::cout << "x: " << this->position.x << " y: " << this->position.y << " z: " << this->position.z << std::endl;
+    this->changePosition(this->getVelocity());
+    std::cout << "x: " << this->getPosition().x << " y: " << this->getPosition().y << std::endl;
 }
 
 std::string Position::getExName(){
@@ -26,4 +27,24 @@ void Position::setPosition(glm::vec3 newPosition){
 
 void Position::changePosition(glm::vec3 dPosition){
     setPosition(position + dPosition);
+}
+
+void Position::setVelocity(glm::vec3 newVelocity){
+    velocity = newVelocity;
+}
+
+void Position::setVelocityY(float y){
+    velocity.y = y;
+}
+
+void Position::setVelocityX(float x){
+    velocity.x = x;
+}
+
+void Position::setVelocityZ(float z){
+    velocity.z = z;
+}
+
+glm::vec3 Position::getVelocity(){
+    return velocity;
 }

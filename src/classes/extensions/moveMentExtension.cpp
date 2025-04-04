@@ -3,6 +3,8 @@
 #include<classes/extensions/positionExtension.hpp>
 #include<classes/worldKeeper/worldKeeper.hpp>
 #include<classes/worldKeeper/keyTrigger.hpp>
+#include <iostream>
+#include <ostream>
 #include<stdio.h>
 #include<GLFW/glfw3.h>
 #include<glm/glm.hpp>
@@ -14,84 +16,86 @@ MoveMent::MoveMent(double maxSpeed, double runUpTime) : Extension(){
 }
 
 void MoveMent::gameInit(GLFWwindow* window){}
-std::string MoveMent::getExName(){return "MovementExtension";}
+std::string MoveMent::getExName(){return "MoveMentExtension";}
 
 void MoveMent::gameFrame(WorldKeeper* worldKeeperCl, int enId){
     Entity* thisEntity = worldKeeperCl->getEntities()[enId];
+    std::cout << "conchil" << std::endl;
 
 	bool* keysTrigger = worldKeeperCl->getKeyTrigger()->getKeys();
+    Position* positionEntity = worldKeeperCl->getEntities()[enId]->getExtension<Position>("PositionExtension");
 
 	{
 		if(keysTrigger[GLFW_KEY_W] && !keysTrigger[GLFW_KEY_S]){
-			if(this->moveVector.y < this->maxSpeed){
-				if(this->moveVector.y + this->runUpTime > this->maxSpeed){
-					this->moveVector.y = this->maxSpeed;
+			if(positionEntity->getVelocity().y < this->maxSpeed){
+				if(positionEntity->getVelocity().y + this->runUpTime > this->maxSpeed){
+					positionEntity->setVelocityY(this->maxSpeed);
 				}else{
-					this->moveVector.y += this->runUpTime;
+                    positionEntity->setVelocityY(positionEntity->getVelocity().y + this->runUpTime);
 				}
 			}
 		}else{
-			if(this->moveVector.y > 0.0f){
-				if(this->moveVector.y - this->runUpTime < 0){
-					this->moveVector.y = 0;
+			if(positionEntity->getVelocity().y > 0.0f){
+				if(positionEntity->getVelocity().y - this->runUpTime < 0){
+					positionEntity->setVelocityY(0);
 				}else{
-					this->moveVector.y -= this->runUpTime;
+                    positionEntity->setVelocityY(positionEntity->getVelocity().y - this->runUpTime);
 				}
 			}
 		}
 
 		if(keysTrigger[GLFW_KEY_A] && !keysTrigger[GLFW_KEY_D]){
-			if(this->moveVector.x > -this->maxSpeed){
-				if(this->moveVector.x - this->runUpTime < -this->maxSpeed){
-					this->moveVector.x = -this->maxSpeed;
+			if(positionEntity->getVelocity().x > -this->maxSpeed){
+				if(positionEntity->getVelocity().x - this->runUpTime < -this->maxSpeed){
+					positionEntity->setVelocityX(-this->maxSpeed);
 				}else{
-					this->moveVector.x -= this->runUpTime;
+                    positionEntity->setVelocityX(positionEntity->getVelocity().x - this->runUpTime);
 				}
 			}
 
 		}else{
-			if(this->moveVector.x < 0.0f){
-				if(this->moveVector.x + this->runUpTime > 0){
-					this->moveVector.x = 0;
+			if(positionEntity->getVelocity().x < 0.0f){
+				if(positionEntity->getVelocity().x + this->runUpTime > 0){
+					positionEntity->setVelocityX(0);
 				}else{
-					this->moveVector.x += this->runUpTime;
+                    positionEntity->setVelocityX(positionEntity->getVelocity().x + this->runUpTime);
 				}
 			}
 		}
 
 		if(keysTrigger[GLFW_KEY_S] && !keysTrigger[GLFW_KEY_W]){
-			if(this->moveVector.y > -this->maxSpeed){
-				if(this->moveVector.y - this->runUpTime < -this->maxSpeed){
-					this->moveVector.y = -this->maxSpeed;
+			if(positionEntity->getVelocity().y > -this->maxSpeed){
+				if(positionEntity->getVelocity().y - this->runUpTime < -this->maxSpeed){
+					positionEntity->setVelocityY(-this->maxSpeed);
 				}else{
-					this->moveVector.y -= this->runUpTime;
+                    positionEntity->setVelocityY(positionEntity->getVelocity().y - this->runUpTime);
 				}
 			}
 
 		}else{
-			if(this->moveVector.y < 0.0f){
-				if(this->moveVector.y + this->runUpTime > 0){
-					this->moveVector.y = 0;
+			if(positionEntity->getVelocity().y < 0.0f){
+				if(positionEntity->getVelocity().y + this->runUpTime > 0){
+					positionEntity->setVelocityY(0);
 				}else{
-					this->moveVector.y += this->runUpTime;
+                    positionEntity->setVelocityY(positionEntity->getVelocity().y + this->runUpTime);
 				}
 			}
 		}  
 		
 		if(keysTrigger[GLFW_KEY_D] && !keysTrigger[GLFW_KEY_A]){
-			if(this->moveVector.x < this->maxSpeed){
-				if(this->moveVector.x + this->runUpTime > this->maxSpeed){
-					this->moveVector.x = this->maxSpeed;
+			if(positionEntity->getVelocity().x < this->maxSpeed){
+				if(positionEntity->getVelocity().x + this->runUpTime > this->maxSpeed){
+					positionEntity->setVelocityX(this->maxSpeed);
 				}else{
-					this->moveVector.x += this->runUpTime;
+                    positionEntity->setVelocityX(positionEntity->getVelocity().x + this->runUpTime);
 				}
 			}
 		}else{
-			if(this->moveVector.x > 0.0f){
-				if(this->moveVector.x - this->runUpTime < 0){
-					this->moveVector.x = 0;
+			if(positionEntity->getVelocity().x > 0.0f){
+				if(positionEntity->getVelocity().x - this->runUpTime < 0){
+					positionEntity->setVelocityX(0);
 				}else{
-					this->moveVector.x -= this->runUpTime;
+                    positionEntity->setVelocityX(positionEntity->getVelocity().x - this->runUpTime);
 				}
 			}
 		}
@@ -99,6 +103,12 @@ void MoveMent::gameFrame(WorldKeeper* worldKeeperCl, int enId){
 
 	//std::cout << this->moveVector.x << std::endl;
 	//std::cout << this->moveVector.y << std::endl;
-	
-	thisEntity->getExtension<Position>("PositionExtension")->changePosition(this->moveVector);
+}
+
+glm::vec3 MoveMent::getVelocity(){
+    return moveVector;
+}
+
+void MoveMent::setVelocity(glm::vec3 newVelocity){
+    moveVector = newVelocity;
 }
