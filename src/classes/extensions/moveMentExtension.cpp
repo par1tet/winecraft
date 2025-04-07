@@ -9,6 +9,7 @@
 #include<GLFW/glfw3.h>
 #include<glm/glm.hpp>
 #include<string>
+#include<map>
 
 MoveMent::MoveMent(double maxSpeed, double runUpTime) : Extension(){
 	this->maxSpeed = maxSpeed;
@@ -20,84 +21,74 @@ std::string MoveMent::getExName(){return "MoveMentExtension";}
 
 void MoveMent::gameFrame(WorldKeeper* worldKeeperCl, int enId){
     Entity* thisEntity = worldKeeperCl->getEntities()[enId];
-    std::cout << "conchil" << std::endl;
 
 	bool* keysTrigger = worldKeeperCl->getKeyTrigger()->getKeys();
     Position* positionEntity = worldKeeperCl->getEntities()[enId]->getExtension<Position>("PositionExtension");
 
+
 	{
 		if(keysTrigger[GLFW_KEY_W] && !keysTrigger[GLFW_KEY_S]){
-			if(positionEntity->getVelocity().y < this->maxSpeed){
-				if(positionEntity->getVelocity().y + this->runUpTime > this->maxSpeed){
-					positionEntity->setVelocityY(this->maxSpeed);
-				}else{
-                    positionEntity->setVelocityY(positionEntity->getVelocity().y + this->runUpTime);
-				}
-			}
+            if(positionEntity->getAccelerations().count("W") > 0){
+                if(!positionEntity->getAccelerations()["W"]->getIsActive()){
+                    positionEntity->getAccelerations()["W"]->setIsActive(true);
+                    positionEntity->getAccelerations()["W"]->setStartTime(glfwGetTime());
+                }
+            }else{
+                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{0.0, 0.1, 0.0}, glfwGetTime()), "W");
+            }
+
 		}else{
-			if(positionEntity->getVelocity().y > 0.0f){
-				if(positionEntity->getVelocity().y - this->runUpTime < 0){
-					positionEntity->setVelocityY(0);
-				}else{
-                    positionEntity->setVelocityY(positionEntity->getVelocity().y - this->runUpTime);
-				}
-			}
+            if(positionEntity->getAccelerations().count("W") > 0){
+                positionEntity->getAccelerations()["W"]->setIsActive(false);
+            }
 		}
 
 		if(keysTrigger[GLFW_KEY_A] && !keysTrigger[GLFW_KEY_D]){
-			if(positionEntity->getVelocity().x > -this->maxSpeed){
-				if(positionEntity->getVelocity().x - this->runUpTime < -this->maxSpeed){
-					positionEntity->setVelocityX(-this->maxSpeed);
-				}else{
-                    positionEntity->setVelocityX(positionEntity->getVelocity().x - this->runUpTime);
-				}
-			}
+			if(positionEntity->getAccelerations().count("A") > 0){
+                if(!positionEntity->getAccelerations()["A"]->getIsActive()){
+                    positionEntity->getAccelerations()["A"]->setIsActive(true);
+                    positionEntity->getAccelerations()["A"]->setStartTime(glfwGetTime());
+                }
+            }else{
+                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{-0.1, 0.0, 0.0}, glfwGetTime()), "A");
+            }
 
 		}else{
-			if(positionEntity->getVelocity().x < 0.0f){
-				if(positionEntity->getVelocity().x + this->runUpTime > 0){
-					positionEntity->setVelocityX(0);
-				}else{
-                    positionEntity->setVelocityX(positionEntity->getVelocity().x + this->runUpTime);
-				}
-			}
+            if(positionEntity->getAccelerations().count("A") > 0){
+                positionEntity->getAccelerations()["A"]->setIsActive(false);
+            }
 		}
 
 		if(keysTrigger[GLFW_KEY_S] && !keysTrigger[GLFW_KEY_W]){
-			if(positionEntity->getVelocity().y > -this->maxSpeed){
-				if(positionEntity->getVelocity().y - this->runUpTime < -this->maxSpeed){
-					positionEntity->setVelocityY(-this->maxSpeed);
-				}else{
-                    positionEntity->setVelocityY(positionEntity->getVelocity().y - this->runUpTime);
-				}
-			}
+			if(positionEntity->getAccelerations().count("S") > 0){
+                if(!positionEntity->getAccelerations()["S"]->getIsActive()){
+                    positionEntity->getAccelerations()["S"]->setIsActive(true);
+                    positionEntity->getAccelerations()["S"]->setStartTime(glfwGetTime());
+                }
+            }else{
+                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{0.0, -0.1, 0.0}, glfwGetTime()), "S");
+            }
 
 		}else{
-			if(positionEntity->getVelocity().y < 0.0f){
-				if(positionEntity->getVelocity().y + this->runUpTime > 0){
-					positionEntity->setVelocityY(0);
-				}else{
-                    positionEntity->setVelocityY(positionEntity->getVelocity().y + this->runUpTime);
-				}
-			}
-		}  
+            if(positionEntity->getAccelerations().count("S") > 0){
+                positionEntity->getAccelerations()["S"]->setIsActive(false);
+            }
+		}
 		
 		if(keysTrigger[GLFW_KEY_D] && !keysTrigger[GLFW_KEY_A]){
-			if(positionEntity->getVelocity().x < this->maxSpeed){
-				if(positionEntity->getVelocity().x + this->runUpTime > this->maxSpeed){
-					positionEntity->setVelocityX(this->maxSpeed);
-				}else{
-                    positionEntity->setVelocityX(positionEntity->getVelocity().x + this->runUpTime);
-				}
-			}
+			if(positionEntity->getAccelerations().count("D") > 0){
+                if(!positionEntity->getAccelerations()["D"]->getIsActive()){
+                    positionEntity->getAccelerations()["D"]->setIsActive(true);
+                    positionEntity->getAccelerations()["D"]->setStartTime(glfwGetTime());
+                }
+            }else{
+                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{0.1, 0.0, 0.0}, glfwGetTime()), "D");
+            }
+
 		}else{
-			if(positionEntity->getVelocity().x > 0.0f){
-				if(positionEntity->getVelocity().x - this->runUpTime < 0){
-					positionEntity->setVelocityX(0);
-				}else{
-                    positionEntity->setVelocityX(positionEntity->getVelocity().x - this->runUpTime);
-				}
-			}
+            if(positionEntity->getAccelerations().count("D") > 0){
+                positionEntity->getAccelerations()["D"]->setIsActive(false);
+            }
 		}
 	}
 

@@ -75,8 +75,8 @@ void HitBoxRect::collisionWithRect(HitBoxRect* otherHitBox, Entity* en, Entity* 
 
         glm::vec3 fullImpulse = impulseCoefficient * normal;
 
-        position1->setVelocity(position1->getVelocity() + (fullImpulse / collision1->getMass()));
-        position2->setVelocity(position2->getVelocity() + (fullImpulse / collision2->getMass()));
+        //position1->setVelocity(position1->getVelocity() + (fullImpulse / collision1->getMass()));
+        //position2->setVelocity(position2->getVelocity() + (fullImpulse / collision2->getMass()));
 
         glm::vec3 correction = normal * minOverlap;
 
@@ -84,8 +84,8 @@ void HitBoxRect::collisionWithRect(HitBoxRect* otherHitBox, Entity* en, Entity* 
             correction /= fullMass;
         }
 
-        position1->setPosition(position1->getPosition() + correction * collision1->getMass());        
-        position2->setPosition(position2->getPosition() - correction * collision2->getMass());        
+        //position1->setPosition(position1->getPosition() + correction * collision1->getMass());        
+        //position2->setPosition(position2->getPosition() - correction * collision2->getMass());        
     }
     // position1->setPosition(position1->getPosition() + position1->getVelocity());
     // position2->setPosition(position2->getPosition() + position2->getVelocity());
