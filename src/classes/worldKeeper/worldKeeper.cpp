@@ -19,7 +19,7 @@ void WorldKeeper::gameFrame(){
     system("clear");
 
     std::vector<std::string> extensionQueue = {
-        "ObjectExtension", "MoveMentExtension",
+        "PhysicsExtension","ObjectExtension", "MoveMentExtension", 
         "CollisionExtension", "PositionExtension"
     };
 

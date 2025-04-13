@@ -34,6 +34,10 @@ bool Acceleration::getIsActive(){
     return isActive;
 }
 
+void Acceleration::setAcceleration(glm::vec3 newAcceleration){
+    this->acceleration = newAcceleration;
+}
+
 Position::Position(glm::vec3 position) : Extension(){
     this->position = position;
 }
@@ -77,19 +81,19 @@ void Position::setVelocity(glm::vec3 newVelocity){
 }
 
 void Position::setVelocityY(float y){
-    velocity.y = y;
+    this->velocity.y = y;
 }
  
 void Position::setVelocityX(float x){
-    velocity.x = x;
+    this->velocity.x = x;
 }
 
 void Position::setVelocityZ(float z){
-    velocity.z = z;
+    this->velocity.z = z;
 }
 
 glm::vec3 Position::getVelocity(){
-    return velocity;
+    return this->velocity;
 }
 
 std::map<std::string, Acceleration*> Position::getAccelerations(){

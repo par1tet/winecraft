@@ -19,6 +19,7 @@
 #include <classes/objects/cube.hpp>
 #include <classes/extensions/collisionExtension/collisionExtension.hpp>
 #include <classes/hitBox/hitBoxRect.hpp>
+#include <classes/extensions/physicsExtension.hpp>
 
 using namespace std;
 
@@ -30,7 +31,8 @@ int main() {
         new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{0.5f, 4.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, 2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, -2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), 
-									new Position(glm::vec3{0.0f,0.0f,0.0f})
+									new Position(glm::vec3{0.0f,0.0f,0.0f}),
+            new PhysicsExtension(1.0f, 0.2f, 0.5f, 0.5f)
                 }));
 
 	entitiesList.push_back(new Entity({new ObjectExtension(
@@ -154,7 +156,7 @@ int main() {
 			}
 		}
 	
-		if(time - previosTimeDelay >= delayTime){
+		if(time - previosTimeDelay >= (1.0f/60.0f)){
             worldKeeperObj->gameFrame();
 			previosTimeDelay = time;
 		}

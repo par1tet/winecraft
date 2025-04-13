@@ -25,7 +25,6 @@ void MoveMent::gameFrame(WorldKeeper* worldKeeperCl, int enId){
 	bool* keysTrigger = worldKeeperCl->getKeyTrigger()->getKeys();
     Position* positionEntity = worldKeeperCl->getEntities()[enId]->getExtension<Position>("PositionExtension");
 
-
 	{
 		if(keysTrigger[GLFW_KEY_W] && !keysTrigger[GLFW_KEY_S]){
             if(positionEntity->getAccelerations().count("W") > 0){

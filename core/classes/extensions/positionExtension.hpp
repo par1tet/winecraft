@@ -20,6 +20,7 @@ public:
     float getStartTime();
     void setIsActive(bool);
     bool getIsActive();
+    void setAcceleration(glm::vec3 newAcceleration);
 };
 
 class Position : public Extension {
