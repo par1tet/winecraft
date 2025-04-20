@@ -8,14 +8,13 @@
 #include <iostream>
 #include <ostream>
 
-PhysicsExtension::PhysicsExtension(float mass, float maxSpeed, float elasticity, float friction){
+PhysicsExtension::PhysicsExtension(float mass, float elasticity, float friction){
     this->mass = mass;
-    this->maxSpeed = maxSpeed;
     this->elasticity = elasticity;
     this->friction = friction;
 }
 
-void PhysicsExtension::gameFrame(WorldKeeper* worldKeeperCl, int enId){
+void PhysicsExtension::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
     Entity* thisEntity = worldKeeperCl->getEntities()[enId];
 
     Position* enPos = thisEntity->getExtension<Position>("PositionExtension");
@@ -23,21 +22,15 @@ void PhysicsExtension::gameFrame(WorldKeeper* worldKeeperCl, int enId){
     char a;
     //std::cin >> a;
     
-    if(glm::length(enPos->getVelocity()) >= 0.001f){
+    if(glm::length(enPos->getVelocity()) > 0.f){
         if(enPos->getAccelerations().count("PhysFriction") > 0){
             if(!enPos->getAccelerations()["PhysFriction"]->getIsActive()){
                 enPos->getAccelerations()["PhysFriction"]->setIsActive(true);
-                enPos->getAccelerations()["PhysFriction"]->setStartTime(glfwGetTime());
             }
-            if(glm::length(-glm::normalize(enPos->getVelocity()) * (9.81f * friction)) >= glm::length(enPos->getVelocity())){
-                enPos->setVelocity(glm::vec3(0.0f));
-                enPos->getAccelerations()["PhysFriction"]->setAcceleration(glm::vec3{0.0f});
-                enPos->getAccelerations()["PhysFriction"]->setIsActive(false);
-            }else{
-                enPos->getAccelerations()["PhysFriction"]->setAcceleration(-glm::normalize(enPos->getVelocity()) * (9.81f * friction));
-            }
+
+            enPos->getAccelerations()["PhysFriction"]->setAcceleration(-glm::normalize(enPos->getVelocity()) * (9.81f * friction));
         }else{
-            enPos->generateNewAcceleration(new Acceleration(-glm::normalize(enPos->getVelocity()) * (9.81f * friction), glfwGetTime()), "PhysFriction");
+            enPos->generateNewAcceleration(new Acceleration(-glm::normalize(enPos->getVelocity()) * (9.81f * friction)), "PhysFriction");
         }
     }else{
         if(enPos->getAccelerations().count("PhysFriction") > 0){
@@ -45,11 +38,8 @@ void PhysicsExtension::gameFrame(WorldKeeper* worldKeeperCl, int enId){
                 enPos->getAccelerations()["PhysFriction"]->setIsActive(false);
             }
         }
-
-        enPos->setVelocity(glm::vec3(0.0f));
     }
-
-    std::cout << glm::length(glm::normalize(enPos->getVelocity()) * (9.81f * friction)) << std::endl;
+    
     std::cout << glm::length(enPos->getVelocity()) << std::endl;
 
     // enPos->setVelocity(enPos->getVelocity() + (glm::normalize(glm::vec3(0.0f)) * (-9.81f * friction)));

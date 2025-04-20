@@ -9,21 +9,12 @@
 #include<map>
 #include <vector>
 
-Acceleration::Acceleration(glm::vec3 acceleration, float startTime){
+Acceleration::Acceleration(glm::vec3 acceleration){
     this->acceleration = acceleration;
-    this->startTime = startTime;
 }
 
 glm::vec3 Acceleration::getAcceleration(){
     return acceleration;
-}
-
-float Acceleration::getStartTime(){
-    return startTime;
-}
-
-void Acceleration::setStartTime(float newStartTime){
-    startTime = newStartTime;
 }
 
 void Acceleration::setIsActive(bool newIsActive){
@@ -42,20 +33,16 @@ Position::Position(glm::vec3 position) : Extension(){
     this->position = position;
 }
 
-void Position::gameFrame(WorldKeeper* worldKeeperCl, int enId){
+void Position::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
     std::vector<std::string> thisAccelerationNames = this->getAccelerationsNames();
-    std::cout << thisAccelerationNames.size() << std::endl;
+
     for(int i = 0;i != thisAccelerationNames.size();i++){
         if(this->getAccelerations()[thisAccelerationNames[i]]->getIsActive()){
-            float deltaTime = glfwGetTime() - this->getAccelerations()[thisAccelerationNames[i]]->getStartTime();
-
-            std::cout << deltaTime << std::endl;
-
-            this->setVelocity(this->getVelocity() + (this->getAccelerations()[thisAccelerationNames[i]]->getAcceleration() * deltaTime));
+            this->setVelocity(this->getVelocity() + (this->getAccelerations()[thisAccelerationNames[i]]->getAcceleration() * dTime));
         }
     }
 
-    this->changePosition(this->getVelocity());
+    this->changePosition(this->getVelocity() * dTime);
 
     std::cout << "x: " << this->getPosition().x << " y: " << this->getPosition().y << std::endl;
 }

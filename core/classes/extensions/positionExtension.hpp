@@ -9,15 +9,12 @@
 class Acceleration {
 private:
     glm::vec3 acceleration;
-    float startTime;
     bool isActive;
 
 public:
-    Acceleration(glm::vec3 acceleration, float startTime);
+    Acceleration(glm::vec3 acceleration);
     
-    void setStartTime(float);
     glm::vec3 getAcceleration();
-    float getStartTime();
     void setIsActive(bool);
     bool getIsActive();
     void setAcceleration(glm::vec3 newAcceleration);
@@ -33,7 +30,7 @@ private:
 public:
     Position(glm::vec3 position);
 
-    void gameFrame(WorldKeeper* worldKeeperCl, int enId);
+    void gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId);
     std::string getExName();
 
     glm::vec3 getPosition();

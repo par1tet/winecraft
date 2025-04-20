@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <iterator>
 #include <vars.h>
 #include "assets.h"
 #include "controls.hpp"
@@ -27,12 +28,12 @@ int main() {
 	vector<Entity*> entitiesList;
 
 	entitiesList.push_back(new Entity({new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
-									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), new MoveMent(0.18f, 0.015f), 
+									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), new MoveMent(8.f, 0.015f), 
         new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{0.5f, 4.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, 2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, -2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), 
 									new Position(glm::vec3{0.0f,0.0f,0.0f}),
-            new PhysicsExtension(1.0f, 0.2f, 0.5f, 0.5f)
+            new PhysicsExtension(1.0f, 0.5f, 0.5f)
                 }));
 
 	entitiesList.push_back(new Entity({new ObjectExtension(
@@ -96,7 +97,7 @@ int main() {
     // load texture
     GLuint texture = loadTexture(getAssetPath("textures/murych_cat.png").c_str());
 
-    GLdouble previosTimeDelay = 0.0f, previosTime = 0.0f, delayTime = moveXY/targetFps;
+    GLdouble previosTime = 0.0f, delayTime = moveXY/targetFps;
     int fps;
 
     glEnable(GL_DEPTH_TEST);
@@ -107,9 +108,19 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
       	glfwPollEvents();
 
-      	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
       	GLdouble time = glfwGetTime();
+
+        if(previosTime == 0) previosTime = time;
+
+		if(time - previosTime >= (1.0f/60.0f)){
+			previosTime = time;
+		}else{
+            continue;
+        }
+
+        worldKeeperObj->gameFrame(1.f/60.f);
+
+      	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
       	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
       	glClear(GL_COLOR_BUFFER_BIT);
@@ -154,11 +165,6 @@ int main() {
 
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
-		}
-	
-		if(time - previosTimeDelay >= (1.0f/60.0f)){
-            worldKeeperObj->gameFrame();
-			previosTimeDelay = time;
 		}
 
         fps = 1 / (time-previosTime);

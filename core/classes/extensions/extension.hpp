@@ -13,7 +13,7 @@ public:
 
     }
 
-    virtual void gameFrame(WorldKeeper* worldKeeperCl, int enId);
+    virtual void gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId);
     virtual void gameInit(GLFWwindow* window);
     virtual std::string getExName(){return "Extension";}
 };

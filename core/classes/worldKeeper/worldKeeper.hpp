@@ -15,7 +15,7 @@ private:
 public:
     WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, KeyTrigger* keyTrigger);
 
-    void gameFrame();
+    void gameFrame(float dTime);
     KeyTrigger* getKeyTrigger();
     std::vector<Entity*> getEntities();
     GLFWwindow* getWindow();

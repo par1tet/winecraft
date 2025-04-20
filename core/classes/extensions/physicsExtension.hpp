@@ -10,9 +10,9 @@ private:
     float friction;
 
 public:
-    PhysicsExtension(float mass, float maxSpeed, float elasticity, float friction);
+    PhysicsExtension(float mass, float elasticity, float friction);
 
-    void gameFrame(WorldKeeper *worldKeeperCl, int enId);
+    void gameFrame(float dTime, WorldKeeper *worldKeeperCl, int enId);
 
     std::string getExName(){return "PhysicsExtension";}
 };

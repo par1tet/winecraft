@@ -15,18 +15,18 @@ WorldKeeper::WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, KeyT
     }
 }
 
-void WorldKeeper::gameFrame(){
+void WorldKeeper::gameFrame(float dTime){
     system("clear");
 
     std::vector<std::string> extensionQueue = {
-        "PhysicsExtension","ObjectExtension", "MoveMentExtension", 
+        "PhysicsExtension", "ObjectExtension", "MoveMentExtension", 
         "CollisionExtension", "PositionExtension"
     };
 
     for(int j = 0;j != extensionQueue.size();j++){
         for(int i = 0;i != this->entities.size();i++){
             if(this->entities[i]->getExtensions().find(extensionQueue[j]) != this->entities[i]->getExtensions().end()){
-                this->entities[i]->getExtensions()[extensionQueue[j]]->gameFrame(this, i);
+                this->entities[i]->getExtensions()[extensionQueue[j]]->gameFrame(dTime, this, i);
             }
         }
     }

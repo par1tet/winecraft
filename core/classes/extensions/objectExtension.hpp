@@ -17,7 +17,7 @@ public:
     ObjectExtension(std::vector<Object*> objects);
 
     void gameFrame(WorldKeeper* worldKeeperCl, int enId){}
-    void gameInit(GLFWwindow* window){}
+    void gameInit(float dTime, GLFWwindow* window){}
     std::string getExName();
     glm::vec3 getAbsolutePosition(Entity*, int);
 

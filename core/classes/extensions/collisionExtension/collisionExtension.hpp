@@ -18,7 +18,7 @@ public:
     CollisionExtension(std::vector<HitBox*>);
 
     void checkCollision(CollisionExtension* otherCollision, Entity*, Entity*);
-    void gameFrame(WorldKeeper* worldKeeperCl, int enId);
+    void gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId);
     void gameInit(GLFWwindow* window);
     glm::vec3 getAbsolutePosition(Entity*, int);
     std::vector<HitBox*> getHitBoxes();

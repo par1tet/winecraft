@@ -27,7 +27,7 @@ void CollisionExtension::checkCollision(CollisionExtension* otherCollision, Enti
     }
 }
 
-void CollisionExtension::gameFrame(WorldKeeper* worldKeeper, int enId){
+void CollisionExtension::gameFrame(float dTime, WorldKeeper* worldKeeper, int enId){
     std::vector<Entity*> worldEntities = worldKeeper->getEntities();
     std::cout << "huo: " << enId << std::endl;
     for(int i = 0;i != worldEntities.size();i++){
