@@ -44,4 +44,7 @@ public:
     std::map<std::string, Acceleration*> getAccelerations();
     int generateNewAcceleration(Acceleration*, std::string);
     std::vector<std::string> getAccelerationsNames();
+    void setAccelerations(std::map<std::string, Acceleration*> newAcc, std::vector<std::string> newNames);
+    glm::vec3 getFullAcceleration(float dTime);
+    glm::vec3 getFullVelocity(float dTime);
 };

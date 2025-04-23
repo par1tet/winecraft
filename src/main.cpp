@@ -28,12 +28,12 @@ int main() {
 	vector<Entity*> entitiesList;
 
 	entitiesList.push_back(new Entity({new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
-									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), new MoveMent(8.f, 0.015f), 
+									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), new MoveMent(10.f, 100.f), 
         new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{0.5f, 4.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, 2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, -2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), 
 									new Position(glm::vec3{0.0f,0.0f,0.0f}),
-            new PhysicsExtension(1.0f, 0.5f, 0.5f)
+            new PhysicsExtension(1.0f, 0.9f, 0.8f)
                 }));
 
 	entitiesList.push_back(new Entity({new ObjectExtension(

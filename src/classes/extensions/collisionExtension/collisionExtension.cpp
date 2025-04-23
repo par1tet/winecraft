@@ -1,8 +1,11 @@
 #include <classes/entities/entity.hpp>
+#include "classes/extensions/positionExtension.hpp"
 #include "classes/hitBox/hitBox.hpp"
 #include "classes/worldKeeper/worldKeeper.hpp"
 #include<classes/extensions/collisionExtension/collisionExtension.hpp>
+#include <glm/ext/quaternion_geometric.hpp>
 #include <glm/fwd.hpp>
+#include <glm/geometric.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -19,11 +22,36 @@ CollisionExtension::CollisionExtension(std::vector<HitBox*> hitBoxes) : Extensio
     this->elasticity = 0;
 }
 
+bool isPositiveVector(glm::vec3 vector){
+    for(int j = 0;j != 3;j++){
+        if(vector[j] < 0) return false;
+    }
+    return true;
+}
+
 void CollisionExtension::checkCollision(CollisionExtension* otherCollision, Entity* thisEntity, Entity* secondEntity){
+    std::vector<glm::vec3> distances;
+    Position* pos = thisEntity->getExtension<Position>("PositionExtension");
+    Position* otherPos = secondEntity->getExtension<Position>("PositionExtension");
+    
     for(int i = 0;i != this->getHitBoxes().size();i++){
         for(int j = 0;j != otherCollision->getHitBoxes().size();j++){
-            this->getHitBoxes()[i]->collisionWith(otherCollision->getHitBoxes()[j], thisEntity, secondEntity);
+            distances.push_back(this->getHitBoxes()[i]->collisionWith(otherCollision->getHitBoxes()[j], thisEntity, secondEntity));
         }
+    }
+
+    for(int i = 0;i != distances.size();i++){
+        std::cout << "x " << distances[i].x << " y " << distances[i].y << " z " << distances[i].z << std::endl;
+
+        if(!isPositiveVector(distances[i])) continue;
+
+        otherPos->setVelocity(glm::vec3(0.0f));
+        otherPos->changePosition(-otherPos->getVelocity() * 1.f/60.f);
+        otherPos->setAccelerations({}, {});
+
+        pos->setVelocity(glm::vec3(0.0f));
+        pos->changePosition(-pos->getVelocity() * 1.f/60.f);
+        pos->setAccelerations({}, {});
     }
 }
 

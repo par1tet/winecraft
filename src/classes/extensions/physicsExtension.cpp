@@ -22,7 +22,7 @@ void PhysicsExtension::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int en
     char a;
     //std::cin >> a;
     
-    if(glm::length(enPos->getVelocity()) > 0.f){
+    if(glm::length(enPos->getVelocity() * dTime) > 0.001f){
         if(enPos->getAccelerations().count("PhysFriction") > 0){
             if(!enPos->getAccelerations()["PhysFriction"]->getIsActive()){
                 enPos->getAccelerations()["PhysFriction"]->setIsActive(true);
@@ -36,6 +36,7 @@ void PhysicsExtension::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int en
         if(enPos->getAccelerations().count("PhysFriction") > 0){
             if(enPos->getAccelerations()["PhysFriction"]->getIsActive()){
                 enPos->getAccelerations()["PhysFriction"]->setIsActive(false);
+                enPos->setVelocity(glm::vec3(0.f));
             }
         }
     }
