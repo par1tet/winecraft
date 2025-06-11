@@ -4,9 +4,9 @@
 
 ##### install glfw3
 
-sudo apt update
-sudo apt install libglfw3
-suod apt install libglfw3-dev
+sudo apt update\n
+sudo apt install libglfw3\n
+sudo apt install libglfw3-dev\n
 
 ##### install glm
 
