@@ -2,7 +2,7 @@
 #include "shader_utils.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <SOIL/SOIL.h>
+#include <SOIL2/SOIL2.h>
 
 GLuint loadTexture(const char* filePath) {
     GLuint texture;
