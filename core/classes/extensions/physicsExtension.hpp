@@ -1,3 +1,5 @@
+#pragma once
+
 #include<classes/extensions/extension.hpp>
 #include <glm/fwd.hpp>
 #include <string>

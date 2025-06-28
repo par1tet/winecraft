@@ -1,9 +1,4 @@
-#include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <classes/entities/entity.hpp>
-#include <vector>
-
-using namespace std;
+#include<vars.hpp>
 
 int width = 800, height = 600;
 

@@ -1,8 +1,7 @@
+#pragma once
+
 #include<string>
 #include<classes/worldKeeper/worldKeeper.hpp>
-#include<GLFW/glfw3.h>
-
-#pragma once
 
 class Entity;
 

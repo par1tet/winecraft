@@ -1,11 +1,12 @@
+#pragma once
+
 #include <glm/glm.hpp>
 #include <string>
 #include <classes/objects/object.hpp>
 #include <vector>
 #include <unordered_map>
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-
-#pragma once
 
 class Extension;
 

@@ -1,7 +1,8 @@
+#pragma once
+
 #include <GLFW/glfw3.h>
 #include <classes/entities/entity.hpp>
 #include <vector>
-using namespace std;
 
 inline bool PressedUp = false;
 inline bool PressedLeft = false;

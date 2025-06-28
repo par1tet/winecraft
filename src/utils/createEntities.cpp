@@ -1,7 +1,6 @@
 #include <vector>
 #include <classes/objects/object.hpp>
 #include <string>
-#include <classes/hitBoxes/collision.hpp>
 #include <classes/entities/entity.hpp>
 #include <classes/extensions/positionExtension.hpp>
 #include <classes/extensions/objectExtension.hpp>
@@ -28,16 +27,6 @@ std::vector<Object*> createCubeObjects(std::vector<glm::vec3> positions, std::ve
 
     return cubes;
 }
-
-// Collision* createCollisionHitBoxAABB(std::vector<glm::vec3> positionsHitBoxesAABB, std::vector<glm::vec3> sizesHitBoxesAABB){
-//     std::vector<HitBox*> hitBoxes;
-
-//     for(int i = 0;i != positionsHitBoxesAABB.size();i++){
-//         hitBoxes.push_back(new HitBoxAABB(positionsHitBoxesAABB[i], sizesHitBoxesAABB[i]));
-//     }
-
-//     return (new Collision(hitBoxes));
-// }
 
 Entity* createCube(glm::vec3 position, glm::vec3 size, std::string texturePath){
     Entity* cube = new Entity({new ObjectExtension(std::vector<Object*>{new Cube(glm::vec3(0.0f), texturePath, size)}), new Position(position)});

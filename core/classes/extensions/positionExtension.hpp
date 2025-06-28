@@ -1,10 +1,10 @@
-#include<classes/extensions/extension.hpp>
+#pragma once
+
 #include<classes/entities/entity.hpp>
+#include<classes/extensions/extension.hpp>
 #include<glm/glm.hpp>
 #include<map>
 #include <vector>
-
-#pragma once
 
 class Acceleration {
 private:

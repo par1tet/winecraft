@@ -20,6 +20,7 @@ add_executable(winecraft
     src/classes/hitBox/hitBoxRect.cpp
     src/classes/hitBox/hitBox.cpp
     src/classes/extensions/physicsExtension.cpp
+    src/vars.cpp
 )
 
 include(FetchContent)

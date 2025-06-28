@@ -15,3 +15,7 @@ void Object::printPosition(){
 glm::vec3 Object::getPosition(){
     return position;
 }
+
+void Object::drawObject(GLuint shaderProgram){
+    std::cout << "pines" << std::endl;
+}

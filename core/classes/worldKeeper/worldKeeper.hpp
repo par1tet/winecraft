@@ -1,10 +1,11 @@
+#pragma once
+
 #include<classes/entities/entity.hpp>
-#include<GLFW/glfw3.h>
 #include<vector>
 #include<classes/worldKeeper/keyTrigger.hpp>
 #include<iostream>
-
-#pragma once
+#define GLFW_INCLUDE_NONE
+#include<GLFW/glfw3.h>
 
 class WorldKeeper{
 private:

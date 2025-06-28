@@ -1,6 +1,4 @@
-#include <GLFW/glfw3.h>
 #include<classes/extensions/positionExtension.hpp>
-#include<classes/worldKeeper/worldKeeper.hpp>
 #include <iostream>
 #include <ostream>
 #include<stdio.h>

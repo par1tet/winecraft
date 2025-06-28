@@ -1,8 +1,11 @@
+#pragma once
+
 #include <glm/glm.hpp>
 #include <string>
 #include <iostream>
-
-#pragma once
+#include <vars.hpp>
+#define GLFW_INCLUDE_NONE
+#include<GLFW/glfw3.h>
 
 class Object {
 private:
@@ -15,4 +18,5 @@ public:
     virtual void printPosition();
 
     virtual glm::vec3 getPosition();
+    virtual void drawObject(GLuint shaderProgram);
 };
