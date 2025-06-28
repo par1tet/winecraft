@@ -128,7 +128,7 @@ int main() {
       	glUseProgram(shaderProgram);
 
       	glm::mat4 viewMatrix = glm::mat4(1.0f);
-      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -70.0f));
+      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -40.0f));
 
       	glm::mat4 projectionMatrix = glm::mat4(1.0f);
       	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
@@ -152,16 +152,12 @@ int main() {
 			for(int j = 0;j < worldKeeperObj->getEntities()[i]->getExtension<ObjectExtension>("ObjectExtension")->getObjects().size();j++){
 				glm::mat4 modelMatrix = glm::mat4(1.0f);
 				modelMatrix = glm::translate(modelMatrix, worldKeeperObj->getEntities()[i]->getExtension<ObjectExtension>("ObjectExtension")->getAbsolutePosition(worldKeeperObj->getEntities()[i], j));
-			
-				glm::mat4 trans = glm::mat4(1.0f);
-				trans = glm::translate(trans, worldKeeperObj->getEntities()[i]->getExtension<ObjectExtension>("ObjectExtension")->getAbsolutePosition(worldKeeperObj->getEntities()[i], j));
 				
 				float color[] = {(float)i, 1.0f, 1.0f, 1.0f};
 
 				glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-				glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
 				glUniform4fv(colorLocation, 1, color);
-				glUniform3fv(sizeLocation, 1, glm::value_ptr(dynamic_cast<Cube*>((worldKeeperObj->getEntities()[i])->getExtension<ObjectExtension>("ObjectExtension")->getObjects()[j])->getSize()));
+				glUniform3fv(sizeLocation, 1, glm::value_ptr(dynamic_cast<Cube*>((worldKeeperObj->getEntities()[i])->getExtension<ObjectExtension>("ObjectExtension")->getObjects()[j])->getSize()/2.f));
 
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
