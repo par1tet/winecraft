@@ -1,13 +1,16 @@
 #include <iostream>
 #include "shader_utils.h"
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <SOIL2/SOIL2.h>
 
 GLuint loadTexture(const char* filePath) {
+
     GLuint texture;
+
     glGenTextures(1, &texture);
+
     glBindTexture(GL_TEXTURE_2D, texture);
+
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

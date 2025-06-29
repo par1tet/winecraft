@@ -22,25 +22,6 @@
 using namespace std;
 
 int main() {
-	vector<Entity*> entitiesList;
-
-	entitiesList.push_back(new Entity({new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
-									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), new MoveMent(10.f, 100.f), 
-        new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{0.5f, 4.0f, 1.0f}),
-                                new HitBoxRect(glm::vec3{0.0f, 2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),
-                                new HitBoxRect(glm::vec3{0.0f, -2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), 
-									new Position(glm::vec3{0.0f,0.0f,0.0f}),
-            new PhysicsExtension(1.0f, 0.9f, 0.9f)
-                }));
-
-	entitiesList.push_back(new Entity({new ObjectExtension(
-					createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,1.5f,0.0f}}, 
-									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}})), 
-        new CollisionExtension({new HitBoxRect(glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{3.0f, 2.0f, 1.0f}),
-                                new HitBoxRect(glm::vec3{0.0f, 1.5f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), new Position(glm::vec3{3.0f,3.0f,0.0f})}));
-
-	entitiesList.push_back(createCube(glm::vec3{-3.0f, -3.0f, 0.0f}));
-
     if (!glfwInit()) {
         cerr << "Failed to initialize GLFW" << endl;
         return -1;
@@ -72,6 +53,26 @@ int main() {
     int fps;
 
     glEnable(GL_DEPTH_TEST);
+
+	vector<Entity*> entitiesList;
+
+	entitiesList.push_back(new Entity({new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
+									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), new MoveMent(10.f, 100.f), 
+        new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{0.5f, 4.0f, 1.0f}),
+                                new HitBoxRect(glm::vec3{0.0f, 2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),
+                                new HitBoxRect(glm::vec3{0.0f, -2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), 
+									new Position(glm::vec3{0.0f,0.0f,0.0f}),
+            new PhysicsExtension(1.0f, 0.9f, 0.9f)
+                }));
+
+
+	entitiesList.push_back(new Entity({new ObjectExtension(
+					createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,1.5f,0.0f}}, 
+									{glm::vec3{3.0f,2.0f,1.0f}, glm::vec3{1.0f,1.0f,1.0f}})), 
+        new CollisionExtension({new HitBoxRect(glm::vec3{0.0f,0.0f,0.0f}, glm::vec3{3.0f, 2.0f, 1.0f}),
+                                new HitBoxRect(glm::vec3{0.0f, 1.5f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), new Position(glm::vec3{3.0f,3.0f,0.0f})}));
+
+	entitiesList.push_back(createCube(glm::vec3{-3.0f, -3.0f, 0.0f}));
 
 	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window, new KeyTrigger(window));
 

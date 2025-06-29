@@ -6,6 +6,7 @@
 Object::Object(glm::vec3 position, std::string texturePath){
     this->position = position;
     this->texturePath = texturePath;
+
 }
 
 void Object::printPosition(){

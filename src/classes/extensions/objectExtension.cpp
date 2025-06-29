@@ -4,8 +4,10 @@
 #include <string>
 #include <vector>
 
+
 ObjectExtension::ObjectExtension(std::vector<Object*> objects) : Extension(){
     this->objects = objects;
+
 } 
 
 glm::vec3 ObjectExtension::getAbsolutePosition(Entity* entity, int idObj){

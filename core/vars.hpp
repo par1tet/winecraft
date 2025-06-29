@@ -12,4 +12,5 @@ extern int width, height;
 extern int targetFps;
 extern float sizeCube;
 
-extern GLfloat vertices[108], texCoords[72];
+extern GLfloat vertices[24], texCoords[72];
+extern GLuint indeces[36];
