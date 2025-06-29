@@ -18,6 +18,8 @@
 #include <classes/extensions/collisionExtension/collisionExtension.hpp>
 #include <classes/hitBox/hitBoxRect.hpp>
 #include <classes/extensions/physicsExtension.hpp>
+#include<thread>
+#include <chrono>
 
 using namespace std;
 
@@ -86,11 +88,10 @@ int main() {
 
         if(previosTime == 0) previosTime = time;
 
-		if(time - previosTime >= (1.0f/60.0f)){
-			previosTime = time;
-		}else{
-            continue;
-        }
+		double frameTime = time - previosTime;
+		if(frameTime < 1.0/60.0) {
+			std::this_thread::sleep_for(std::chrono::duration<double>(1.0/60.0 - frameTime));
+		}	
 
         worldKeeperObj->gameFrame(1.f/60.f);
 
