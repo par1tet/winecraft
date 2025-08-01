@@ -78,6 +78,10 @@ int main() {
 
 	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window, new KeyTrigger(window));
 
+    GLuint modelMatrixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
+    GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+    GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
+
     // Main loop : λι τνκ υζσλκ
     while (!glfwWindowShouldClose(window)) {
       	glfwPollEvents();
@@ -85,15 +89,15 @@ int main() {
       	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
 
       	GLdouble time = glfwGetTime();
+		float dt = 1.f/60;
 
         if(previosTime == 0) previosTime = time;
-
 		double frameTime = time - previosTime;
-		if(frameTime < 1.0/60.0) {
-			std::this_thread::sleep_for(std::chrono::duration<double>(1.0/60.0 - frameTime));
+		if(frameTime < dt) {
+			std::this_thread::sleep_for(std::chrono::duration<double>(dt - frameTime));
 		}	
 
-        worldKeeperObj->gameFrame(1.f/60.f);
+        worldKeeperObj->gameFrame(dt);
 
       	glm::mat4 viewMatrix = glm::mat4(1.0f);
       	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -30.0f));
@@ -101,12 +105,8 @@ int main() {
       	glm::mat4 projectionMatrix = glm::mat4(1.0f);
       	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
 
-      	GLuint modelMatrixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
-      	GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
-      	GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
-
-      	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
-      	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+    	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+    	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
 		for(int i = 0;i < worldKeeperObj->getEntities().size(); i++){
 			for(int j = 0;j < worldKeeperObj->getEntities()[i]->getExtension<ObjectExtension>("ObjectExtension")->getObjects().size();j++){
