@@ -16,8 +16,6 @@ WorldKeeper::WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, KeyT
 }
 
 void WorldKeeper::gameFrame(float dTime){
-    //system("clear");
-
     std::vector<std::string> extensionQueue = {
         "PhysicsExtension", "ObjectExtension", "MoveMentExtension", 
         "CollisionExtension", "PositionExtension"
