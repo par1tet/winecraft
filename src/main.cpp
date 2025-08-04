@@ -89,7 +89,6 @@ int main() {
       	glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
 
       	GLdouble time = glfwGetTime();
-		float dt = 1.f/60;
 
         if(previosTime == 0) previosTime = time;
 		double frameTime = time - previosTime;

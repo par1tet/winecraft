@@ -14,6 +14,7 @@
 #include <ostream>
 #include <vector>
 #include <assert.h>
+#include<vars.hpp>
 
 HitBoxRect::HitBoxRect(glm::vec3 position, glm::vec3 size) : HitBox(position) {
     this->size = size;
@@ -34,10 +35,8 @@ glm::vec3 HitBoxRect::collisionWithRect(const HitBoxRect* otherHitBox, Entity* e
     CollisionExtension* collision1 = en->getExtension<CollisionExtension>("CollisionExtension");
     CollisionExtension* collision2 = sEn->getExtension<CollisionExtension>("CollisionExtension");
 
-    float dTime = 1.f/60.f;
-
-    glm::vec3 updatePositionVector1 = (position1->getVelocity() + position1->getFullAcceleration(dTime) * dTime) * dTime;
-    glm::vec3 updatePositionVector2  = (position2->getVelocity() + position2->getFullAcceleration(dTime) * dTime) * dTime;
+    glm::vec3 updatePositionVector1 = (position1->getVelocity() + position1->getFullAcceleration(dt) * dt) * dt;
+    glm::vec3 updatePositionVector2  = (position2->getVelocity() + position2->getFullAcceleration(dt) * dt) * dt;
 
     std::vector<glm::vec3> diaFirst = {
          (this->getAbsolutePositioin(en) - (this->getSize() / 2.0f)) + updatePositionVector1,
@@ -74,10 +73,10 @@ glm::vec3 HitBoxRect::collisionWithRect(const HitBoxRect* otherHitBox, Entity* e
             std::cout << firstPersonPrecent[i] << std::endl;
         }
 
-        glm::vec3 vec = glm::normalize(position1->getFullVelocity(dTime));
+        glm::vec3 vec = glm::normalize(position1->getFullVelocity(dt));
         //vec /= glm::abs(vec);
 
-        for(int i = 0;i != 3;i++){if(position1->getFullVelocity(dTime)[i] == 0){vec[i] = 0;}}
+        for(int i = 0;i != 3;i++){if(position1->getFullVelocity(dt)[i] == 0){vec[i] = 0;}}
 
         std::cout << "x: " << vec.x << " y: " << vec.y << " z: " << vec.z << std::endl;
 
@@ -92,7 +91,7 @@ glm::vec3 HitBoxRect::collisionWithRect(const HitBoxRect* otherHitBox, Entity* e
             }
         }
 
-        correction1[smallest] = -(position1->getFullVelocity(dTime) * dTime)[smallest];
+        correction1[smallest] = -(position1->getFullVelocity(dt) * dt)[smallest];
 
         std::cout << "x: " << correction1.x << " y: " << correction1.y << " z: " << correction1.z << std::endl;
         std::cout << "x: " << overlap.x << " y: " << overlap.y << " z: " << overlap.z << std::endl;
