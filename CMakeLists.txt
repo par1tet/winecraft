@@ -21,6 +21,7 @@ add_executable(winecraft
     src/classes/hitBox/hitBox.cpp
     src/classes/extensions/physicsExtension.cpp
     src/vars.cpp
+    src/classes/entities/camera.cpp
 )
 
 include(FetchContent)

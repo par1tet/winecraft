@@ -61,8 +61,6 @@ glm::vec3 HitBoxRect::collisionWithRect(const HitBoxRect* otherHitBox, Entity* e
         (diaFirst[1][2] >= diaSecond[0][2] && diaSecond[1][2] >= diaFirst[0][2])){
         std::cout << "penesito" << std::endl;
 
-
-
         glm::vec3 firstPersonPrecent = (position1->getVelocity() + position2->getVelocity()) / (position1->getVelocity());
 
         for(int i = 0;i != 3;i++){

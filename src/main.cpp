@@ -18,8 +18,9 @@
 #include <classes/extensions/collisionExtension/collisionExtension.hpp>
 #include <classes/hitBox/hitBoxRect.hpp>
 #include <classes/extensions/physicsExtension.hpp>
-#include<thread>
+#include <thread>
 #include <chrono>
+#include <classes/entities/camera.hpp>
 
 using namespace std;
 
@@ -78,6 +79,8 @@ int main() {
 
 	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window, new KeyTrigger(window));
 
+	Camera* camera = new Camera(glm::vec3(0.f,0.f,-60.f), 45.f);
+
     GLuint modelMatrixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
     GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
     GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
@@ -99,10 +102,9 @@ int main() {
         worldKeeperObj->gameFrame(dt);
 
       	glm::mat4 viewMatrix = glm::mat4(1.0f);
-      	viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -30.0f));
+      	viewMatrix = glm::translate(viewMatrix, camera->getPosition());
 
-      	glm::mat4 projectionMatrix = glm::mat4(1.0f);
-      	projectionMatrix = glm::perspective(glm::radians(45.0f), float(width/height), 0.1f, 100.0f);
+      	glm::mat4 projectionMatrix = camera->getProjectionMatrix();
 
     	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(viewMatrix));
     	glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
