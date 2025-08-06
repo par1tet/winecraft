@@ -6,6 +6,18 @@
 #include<map>
 #include <vector>
 
+enum typeLink {
+    additional,
+    equalitional
+};
+
+struct linked {
+    int idEntity;
+    bool invertMove;
+    typeLink typeOfLink;
+    glm::vec3 originPosition = glm::vec3{0.f};
+};
+
 class Acceleration {
 private:
     glm::vec3 acceleration;
@@ -26,6 +38,7 @@ private:
     glm::vec3 velocity = glm::vec3{0.0f};
     std::map<std::string, Acceleration*> accelerations;
     std::vector<std::string> accelerationsNames;
+    linked linkedEntity;
 
 public:
     Position(glm::vec3 position);
@@ -47,4 +60,5 @@ public:
     void setAccelerations(std::map<std::string, Acceleration*> newAcc, std::vector<std::string> newNames);
     glm::vec3 getFullAcceleration(float dTime);
     glm::vec3 getFullVelocity(float dTime);
+    void linkEntity(linked linkedEn);
 };

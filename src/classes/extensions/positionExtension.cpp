@@ -29,16 +29,33 @@ void Acceleration::setAcceleration(glm::vec3 newAcceleration){
 
 Position::Position(glm::vec3 position) : Extension(){
     this->position = position;
+    this->linkedEntity.idEntity = -1;
 }
 
 void Position::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
-    std::vector<std::string> thisAccelerationNames = this->getAccelerationsNames();
+    if(this->linkedEntity.idEntity == -1){
+        std::vector<std::string> thisAccelerationNames = this->getAccelerationsNames();
 
-    this->setVelocity(this->getVelocity() + (this->getFullAcceleration(dTime) * dTime));
+        this->setVelocity(this->getVelocity() + (this->getFullAcceleration(dTime) * dTime));
 
-    this->changePosition(this->getVelocity() * dTime);
+        this->changePosition(this->getVelocity() * dTime);
 
-    std::cout << "x: " << this->getPosition().x << " y: " << this->getPosition().y << std::endl;
+        std::cout << "x: " << this->getPosition().x << " y: " << this->getPosition().y << std::endl;
+    }else{
+        Position* linkedPosition = worldKeeperCl->getEntities()[this->linkedEntity.idEntity]->getExtension<Position>("PositionExtension");
+
+        std::cout << "chilen" << std::endl;
+
+        if(linkedEntity.typeOfLink == additional){
+            float invertCoff = 1;
+            if(linkedEntity.invertMove){invertCoff = -1;}
+            this->setPosition(this->linkedEntity.originPosition + invertCoff*linkedPosition->getPosition());
+        }else if(linkedEntity.typeOfLink == equalitional){
+            float invertCoff = 1;
+            if(linkedEntity.invertMove){invertCoff = -1;}
+            this->setPosition(invertCoff*linkedPosition->getPosition());
+        }
+    }
 }
 
 std::string Position::getExName(){
@@ -112,4 +129,8 @@ glm::vec3 Position::getFullAcceleration(float dTime){
 
 glm::vec3 Position::getFullVelocity(float dTime){
     return this->getVelocity() + (getFullAcceleration(dTime) * dTime);
+}
+
+void Position::linkEntity(linked linkedEn){
+    this->linkedEntity = linkedEn;
 }

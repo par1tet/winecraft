@@ -60,7 +60,7 @@ int main() {
 	vector<Entity*> entitiesList;
 
 	entitiesList.push_back(new Entity({new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
-									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), 
+									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), new MoveMent(10.f, 15.f),
         new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{0.5f, 4.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, 2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, -2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), 
@@ -78,6 +78,7 @@ int main() {
 	entitiesList.push_back(createCube(glm::vec3{-3.0f, -3.0f, 0.0f}));
 
 	Camera* camera = new Camera(glm::vec3(0.f,0.f,-30.f), 45.f);
+	camera->getExtension<Position>("PositionExtension")->linkEntity({0, true, additional, camera->getPosition()});
 	entitiesList.push_back(dynamic_cast<Entity*>(camera));
 
 	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window, new KeyTrigger(window));
