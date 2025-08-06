@@ -39,7 +39,7 @@ void MoveMent::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
                     positionEntity->getAccelerations()["W"]->setIsActive(true);
                 }
             }else{
-                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{0.0, 15, 0.0}), "W");
+                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{0.0, this->runUpTime, 0.0}), "W");
             }
 
 		}else{
@@ -54,7 +54,7 @@ void MoveMent::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
                     positionEntity->getAccelerations()["A"]->setIsActive(true);
                 }
             }else{
-                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{-15, 0.0, 0.0}), "A");
+                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{-this->runUpTime, 0.0, 0.0}), "A");
             }
 
 		}else{
@@ -69,7 +69,7 @@ void MoveMent::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
                     positionEntity->getAccelerations()["S"]->setIsActive(true);
                 }
             }else{
-                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{0.0, -15, 0.0}), "S");
+                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{0.0, -this->runUpTime, 0.0}), "S");
             }
 
 		}else{
@@ -84,7 +84,7 @@ void MoveMent::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
                     positionEntity->getAccelerations()["D"]->setIsActive(true);
                 }
             }else{
-                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{15, 0.0, 0.0}), "D");
+                positionEntity->generateNewAcceleration(new Acceleration(glm::vec3{this->runUpTime, 0.0, 0.0}), "D");
             }
 
 		}else{
@@ -94,7 +94,7 @@ void MoveMent::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
 		}
 	}
 
-    if(glm::length(positionEntity->getVelocity()) > this->maxSpeed){
+    if(glm::length(positionEntity->getVelocity()) > sqrt(this->maxSpeed*this->maxSpeed)){
         positionEntity->setVelocity(glm::normalize(positionEntity->getVelocity()) * this->maxSpeed);
     }
 }

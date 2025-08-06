@@ -2,7 +2,7 @@
 
 std::vector<Extension*> initCamerasExts(std::vector<Extension*> extensions, glm::vec3 position){
     extensions.push_back(new Position(position));
-    extensions.push_back(new MoveMent(15.f, 100.f));
+    extensions.push_back(new MoveMent(10.f, -15.f));
     return extensions;
 }
 

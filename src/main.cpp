@@ -105,8 +105,6 @@ int main() {
 		}	
 
         worldKeeperObj->gameFrame(dt);
-		//(camera)->getExtension<MoveMent>("MoveMentExtension")->gameFrame(dt, worldKeeperObj, 3);
-		
 
       	glm::mat4 viewMatrix = glm::mat4(1.0f);
       	viewMatrix = glm::translate(viewMatrix, camera->getPosition());
