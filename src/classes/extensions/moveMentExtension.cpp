@@ -21,10 +21,16 @@ void MoveMent::gameInit(GLFWwindow* window){}
 std::string MoveMent::getExName(){return "MoveMentExtension";}
 
 void MoveMent::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
-    Entity* thisEntity = worldKeeperCl->getEntities()[enId];
+    Entity* thisEntity = (worldKeeperCl->getEntities()[enId]);
 
 	bool* keysTrigger = worldKeeperCl->getKeyTrigger()->getKeys();
-    Position* positionEntity = worldKeeperCl->getEntities()[enId]->getExtension<Position>("PositionExtension");
+
+    std::cout << "ID: " << enId << std::endl;
+    std::cout << "moveSeg" << std::endl;
+    std::cout << thisEntity << std::endl;
+    Position* positionEntity = (thisEntity)->getExtension<Position>("PositionExtension");
+
+    std::cout << positionEntity->getPosition().x << std::endl;
 
 	{
 		if(keysTrigger[GLFW_KEY_W] && !keysTrigger[GLFW_KEY_S]){

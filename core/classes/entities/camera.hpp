@@ -3,6 +3,7 @@
 #include<classes/entities/entity.hpp>
 #include<glm/gtc/matrix_transform.hpp>
 #include<classes/extensions/positionExtension.hpp>
+#include<classes/extensions/moveMentExtension.hpp>
 
 class Camera : public Entity {
 private:
