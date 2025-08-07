@@ -6,7 +6,7 @@
 #include<map>
 #include <vector>
 
-enum typeLink {
+enum class typeLink {
     additional,
     equalitional
 };

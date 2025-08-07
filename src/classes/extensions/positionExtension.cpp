@@ -46,11 +46,11 @@ void Position::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
 
         std::cout << "chilen" << std::endl;
 
-        if(linkedEntity.typeOfLink == additional){
+        if(linkedEntity.typeOfLink == typeLink::additional){
             float invertCoff = 1;
             if(linkedEntity.invertMove){invertCoff = -1;}
             this->setPosition(this->linkedEntity.originPosition + invertCoff*linkedPosition->getPosition());
-        }else if(linkedEntity.typeOfLink == equalitional){
+        }else if(linkedEntity.typeOfLink == typeLink::equalitional){
             float invertCoff = 1;
             if(linkedEntity.invertMove){invertCoff = -1;}
             this->setPosition(invertCoff*linkedPosition->getPosition());
