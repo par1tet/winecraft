@@ -40,11 +40,10 @@ void Position::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
 
         this->changePosition(this->getVelocity() * dTime);
 
-        std::cout << "x: " << this->getPosition().x << " y: " << this->getPosition().y << std::endl;
+        std::cout << "ID: " << enId << " | ";
+        std::cout << "x: " << this->getPosition().x << " y: " << this->getPosition().y << " z: " << this->getPosition().z << std::endl;
     }else{
         Position* linkedPosition = worldKeeperCl->getEntities()[this->linkedEntity.idEntity]->getExtension<Position>("PositionExtension");
-
-        std::cout << "chilen" << std::endl;
 
         if(linkedEntity.typeOfLink == typeLink::additional){
             float invertCoff = 1;

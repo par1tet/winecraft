@@ -1,3 +1,5 @@
+#pragma once
+
 #include<classes/extensions/extension.hpp>
 #include<classes/worldKeeper/worldKeeper.hpp>
 #include<classes/entities/entity.hpp>
@@ -6,8 +8,6 @@
 #include<classes/objects/object.hpp>
 #include<vector>
 #include<glm/glm.hpp>
-
-#pragma once
 
 class ObjectExtension : public Extension {
 private:

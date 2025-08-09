@@ -1,7 +1,7 @@
+#pragma once
+
 #include <glm/glm.hpp>
 #include <classes/entities/entity.hpp>
-
-#pragma once
 
 class HitBoxRect;
 

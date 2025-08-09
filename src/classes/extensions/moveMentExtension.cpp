@@ -17,6 +17,14 @@ MoveMent::MoveMent(float maxSpeed, double runUpTime, std::vector<KeyMove> keyMov
 	this->maxSpeed = maxSpeed;
 	this->runUpTime = runUpTime;
     this->keyMoves = keyMoves;
+    this->invertMove = false;
+}
+
+MoveMent::MoveMent(float maxSpeed, double runUpTime, std::vector<KeyMove> keyMoves, bool invertMove) : Extension(){
+	this->maxSpeed = maxSpeed;
+	this->runUpTime = runUpTime;
+    this->keyMoves = keyMoves;
+    this->invertMove = invertMove;
 }
 
 void MoveMent::gameInit(GLFWwindow* window){}
@@ -48,11 +56,15 @@ glm::vec3 transformationDirect(Direction dir){
     return glm::vec3{0.f};
 }
 
-void moveDir(Position* positionEntity, bool* keysTrigger, KeyMove keyMove, float runUpTime){
+void moveDir(Position* positionEntity, bool* keysTrigger, KeyMove keyMove, float runUpTime, bool invertMove){
     string keyMoveString = std::string({keyMove.key}); 
 
     std::cout << keyMoveString << std::endl;
     std::cout << keysTrigger[(int)keyMove.key] << std::endl;
+
+    float invertCooficient = 1.f;
+
+    if(invertMove) invertCooficient = -1.f;
 
     if(keysTrigger[(int)keyMove.key]){
         if(positionEntity->getAccelerations().count(keyMoveString) > 0){
@@ -60,7 +72,7 @@ void moveDir(Position* positionEntity, bool* keysTrigger, KeyMove keyMove, float
                 positionEntity->getAccelerations()[keyMoveString]->setIsActive(true);
             }
         }else{
-            positionEntity->generateNewAcceleration(new Acceleration(runUpTime * transformationDirect(keyMove.direct)), keyMoveString);
+            positionEntity->generateNewAcceleration(new Acceleration(invertCooficient * runUpTime * transformationDirect(keyMove.direct)), keyMoveString);
         }
 
     }else{
@@ -83,7 +95,7 @@ void MoveMent::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
     std::cout << positionEntity->getPosition().x << std::endl;
 
     for(int i = 0;i != this->keyMoves.size();i++){
-        moveDir(positionEntity, keysTrigger, keyMoves[i], this->runUpTime);
+        moveDir(positionEntity, keysTrigger, keyMoves[i], this->runUpTime, this->invertMove);
     }
 
     if(glm::length(positionEntity->getVelocity()) > sqrt(this->maxSpeed*this->maxSpeed)){

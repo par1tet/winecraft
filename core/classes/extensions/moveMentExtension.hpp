@@ -27,9 +27,11 @@ private:
     float maxSpeed;
     double runUpTime;
     std::vector<KeyMove> keyMoves;
+    bool invertMove;
 
 public:
     MoveMent(float maxSpeed, double runUpTime, std::vector<KeyMove> keyMoves);
+    MoveMent(float maxSpeed, double runUpTime, std::vector<KeyMove> keyMoves, bool invertMove);
 
     void gameInit(GLFWwindow* window);
     void gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId);

@@ -1,11 +1,11 @@
+#pragma once
+
 #include<classes/extensions/extension.hpp>
 #include <classes/hitBox/hitBox.hpp>
 #include <glm/fwd.hpp>
 #include <string>
 #include <vector>
 #include <classes/entities/entity.hpp>
-
-#pragma once
 
 class CollisionExtension : public Extension {
 private:

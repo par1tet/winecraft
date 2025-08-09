@@ -20,7 +20,8 @@
 #include <classes/extensions/physicsExtension.hpp>
 #include <thread>
 #include <chrono>
-#include <classes/entities/camera.hpp>
+#include <classes/entities/camera/camera.hpp>
+#include<classes/entities/camera/rotateCameraExtension.hpp>
 
 using namespace std;
 
@@ -61,7 +62,6 @@ int main() {
 
 	entitiesList.push_back(new Entity({new ObjectExtension(createCubeObjects({glm::vec3{0.0f}, glm::vec3{0.0f,2.5f,0.0f}, glm::vec3{0.0f,-2.5f,0.0f}}, 
 									{glm::vec3{0.5f,4.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}, glm::vec3{2.0f,1.0f,1.0f}})), 
-									new MoveMent(10.f, 15.f, {{Direction::LEFT, 'A'},{Direction::DOWN, 'S'},{Direction::RIGHT, 'D'},{Direction::UP, 'W'},}),
         new CollisionExtension({new HitBoxRect(glm::vec3{0.0f}, glm::vec3{0.5f, 4.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, 2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),
                                 new HitBoxRect(glm::vec3{0.0f, -2.5f, 0.0f}, glm::vec3{2.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), 
@@ -77,18 +77,21 @@ int main() {
                                 new HitBoxRect(glm::vec3{0.0f, 1.5f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), new Position(glm::vec3{3.0f,3.0f,0.0f})}));
 
 	entitiesList.push_back(createCube(glm::vec3{-3.0f, -3.0f, 0.0f}));
-
-	Camera* camera = new Camera(glm::vec3(0.f,0.f,-30.f), 45.f);
-	camera->getExtension<Position>("PositionExtension")->linkEntity({0, true, typeLink::additional, camera->getPosition()});
+	Position* cameraPosition =new Position(glm::vec3(0.f,0.f,-30.f));
+	Camera* camera = new Camera(glm::vec3(0.f,0.f,-30.f), 45.f, {new MoveMent(10.f, 15.f, 
+		{{Direction::LEFT, 'A'},{Direction::FORWARD, 'S'},{Direction::RIGHT, 'D'},{Direction::BACK, 'W'},}, true),
+		 cameraPosition, new RotateCameraExtension(0.02f, window, cameraPosition)}, 0.02f, window);
 	entitiesList.push_back(dynamic_cast<Entity*>(camera));
 
-	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window, new KeyTrigger(window));
+	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window, new KeyTrigger(window), camera);
 
 	//std::cout << "lenght: " << entitiesList[3]->getExtension<Position>("PositionExtension")->getPosition().x << std::endl;
 
     GLuint modelMatrixLocation = glGetUniformLocation(shaderProgram, "modelMatrix");
     GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
     GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // Main loop : λι τνκ υζσλκ
     while (!glfwWindowShouldClose(window)) {
@@ -108,8 +111,8 @@ int main() {
 
         worldKeeperObj->gameFrame(dt);
 
-      	glm::mat4 viewMatrix = glm::mat4(1.0f);
-      	viewMatrix = glm::translate(viewMatrix, camera->getPosition());
+      	glm::mat4 viewMatrix = worldKeeperObj->getCamera()->getExtension<RotateCameraExtension>("RotateCameraExtension")->getViewMatrix();
+      	//viewMatrix = glm::translate(viewMatrix, camera->getPosition());
 
       	glm::mat4 projectionMatrix = camera->getProjectionMatrix();
 
