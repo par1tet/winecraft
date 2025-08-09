@@ -20,10 +20,11 @@ add_executable(winecraft
     src/classes/hitBox/hitBox.cpp
     src/classes/extensions/physicsExtension.cpp
     src/vars.cpp
-    src/classes/entities/camera/camera.cpp
+    src/classes/entities/specialEntities/camera/camera.cpp
     src/classes/worldKeeper/triggers/mouseTrigger.cpp
     src/classes/worldKeeper/triggers/keyTrigger.cpp
     src/classes/worldKeeper/triggers/triggerManager.cpp
+    src/classes/entities/specialEntities/specialEntity.cpp
 )
 
 include(FetchContent)

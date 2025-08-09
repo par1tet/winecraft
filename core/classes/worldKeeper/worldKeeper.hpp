@@ -6,21 +6,22 @@
 #include<iostream>
 #define GLFW_INCLUDE_NONE
 #include<GLFW/glfw3.h>
-#include<classes/entities/camera/camera.hpp>
+#include<classes/entities/specialEntities/specialEntity.hpp>
+#include<map>
 
 class WorldKeeper{
 private:
     std::vector<Entity*> entities;
     GLFWwindow* window;
     TriggerManager* triggerManager;
-    Camera* camera;
+	std::map<std::string, SpecialEntity*> specialList;
 
 public:
-    WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, Camera* camera);
+    WorldKeeper(std::vector<Entity*> entities, std::map<std::string, SpecialEntity*> specialList, GLFWwindow* window);
 
     void gameFrame(float dTime);
     TriggerManager* getTriggerManager();
     std::vector<Entity*> getEntities();
     GLFWwindow* getWindow();
-    Camera* getCamera();
+    SpecialEntity* getSpecialEntity(std::string);
 };

@@ -19,7 +19,8 @@
 #include <classes/extensions/physicsExtension.hpp>
 #include <thread>
 #include <chrono>
-#include <classes/entities/camera/camera.hpp>
+#include <classes/entities/specialEntities/specialEntity.hpp>
+#include <classes/entities/specialEntities/camera/camera.hpp>
 
 using namespace std;
 
@@ -75,13 +76,20 @@ int main() {
                                 new HitBoxRect(glm::vec3{0.0f, 1.5f, 0.0f}, glm::vec3{1.0f, 1.0f, 1.0f}),}, 1.0f, 0.5f), new Position(glm::vec3{3.0f,3.0f,0.0f})}));
 
 	entitiesList.push_back(createCube(glm::vec3{-3.0f, -3.0f, 0.0f}));
-	Position* cameraPosition =new Position(glm::vec3(0.f,0.f,-30.f));
-	Camera* camera = new Camera(glm::vec3(0.f,0.f,-30.f), 45.f, {new MoveMent(10.f, 15.f, 
-		{{Direction::LEFT, 'A'},{Direction::FORWARD, 'S'},{Direction::RIGHT, 'D'},{Direction::BACK, 'W'},}, true),
-		 cameraPosition}, 0.02f, window);
-	entitiesList.push_back(dynamic_cast<Entity*>(camera));
 
-	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window, camera);
+	Position* cameraPosition = new Position(glm::vec3(0.f,0.f,-30.f));
+	Entity* cameraEntity = new Entity({cameraPosition, new MoveMent(10.f, 15.f, 
+		{{Direction::LEFT, 'A'},{Direction::FORWARD, 'S'},{Direction::RIGHT, 'D'},{Direction::BACK, 'W'},})});
+
+	entitiesList.push_back(cameraEntity);
+
+	std::map<std::string, SpecialEntity*> specialList;
+
+	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, specialList, window);
+
+	Camera* camera = new Camera(glm::vec3(0.f,0.f,0.f), 45.f, 0.02f, cameraEntity, worldKeeperObj->getTriggerManager());
+
+	specialList["Camera"] = camera;
 
 	//std::cout << "lenght: " << entitiesList[3]->getExtension<Position>("PositionExtension")->getPosition().x << std::endl;
 
@@ -109,8 +117,7 @@ int main() {
 
         worldKeeperObj->gameFrame(dt);
 
-      	glm::mat4 viewMatrix = glm::mat4(1.f);
-      	viewMatrix = glm::translate(viewMatrix, camera->getPosition());
+      	glm::mat4 viewMatrix = camera->getViewMatrix();
 
       	glm::mat4 projectionMatrix = camera->getProjectionMatrix();
 

@@ -5,11 +5,10 @@
 #include <vector>
 #include <GLFW/glfw3.h>
 
-WorldKeeper::WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, Camera* camera){
+WorldKeeper::WorldKeeper(std::vector<Entity*> entities, std::map<std::string, SpecialEntity*> specialList, GLFWwindow* window){
     this->entities = entities;
     this->window = window;
     this->triggerManager = new TriggerManager(window);
-    this->camera = camera;
 
     for(int i = 0;i != this->entities.size();i++){
         this->entities[i]->gameInit(window);
@@ -31,8 +30,8 @@ void WorldKeeper::gameFrame(float dTime){
     }
 }
 
-Camera* WorldKeeper::getCamera(){
-    return this->camera;
+SpecialEntity* WorldKeeper::getSpecialEntity(std::string specialName){
+    return this->specialList[specialName];
 }
 
 std::vector<Entity*> WorldKeeper::getEntities(){

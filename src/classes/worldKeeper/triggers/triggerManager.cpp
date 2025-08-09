@@ -32,8 +32,6 @@ void TriggerManager::mouseCallback(GLFWwindow* window, double xpos, double ypos)
     }
 }
 
-
-
 KeyTrigger* TriggerManager::getKeyTrigger(){
     return this->keyTrigger;
 }

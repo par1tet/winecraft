@@ -1,0 +1,1 @@
+#include<classes/entities/specialEntities/specialEntity.hpp>
