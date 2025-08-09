@@ -14,7 +14,6 @@ add_executable(winecraft
     src/classes/extensions/positionExtension.cpp
     src/classes/extensions/moveMentExtension.cpp
     src/classes/extensions/objectExtension.cpp
-    src/classes/worldKeeper/keyTrigger.cpp
     src/classes/objects/Cube.cpp
     src/classes/extensions/collisionExtension/collisionExtension.cpp
     src/classes/hitBox/hitBoxRect.cpp
@@ -22,7 +21,9 @@ add_executable(winecraft
     src/classes/extensions/physicsExtension.cpp
     src/vars.cpp
     src/classes/entities/camera/camera.cpp
-    src/classes/entities/camera/rotateCameraExtension.cpp
+    src/classes/worldKeeper/triggers/mouseTrigger.cpp
+    src/classes/worldKeeper/triggers/keyTrigger.cpp
+    src/classes/worldKeeper/triggers/triggerManager.cpp
 )
 
 include(FetchContent)

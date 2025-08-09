@@ -13,7 +13,6 @@
 #include <classes/extensions/moveMentExtension.hpp>
 #include <classes/extensions/positionExtension.hpp>
 #include <classes/extensions/objectExtension.hpp>
-#include <classes/worldKeeper/keyTrigger.hpp>
 #include <classes/objects/cube.hpp>
 #include <classes/extensions/collisionExtension/collisionExtension.hpp>
 #include <classes/hitBox/hitBoxRect.hpp>
@@ -21,7 +20,6 @@
 #include <thread>
 #include <chrono>
 #include <classes/entities/camera/camera.hpp>
-#include<classes/entities/camera/rotateCameraExtension.hpp>
 
 using namespace std;
 
@@ -80,10 +78,10 @@ int main() {
 	Position* cameraPosition =new Position(glm::vec3(0.f,0.f,-30.f));
 	Camera* camera = new Camera(glm::vec3(0.f,0.f,-30.f), 45.f, {new MoveMent(10.f, 15.f, 
 		{{Direction::LEFT, 'A'},{Direction::FORWARD, 'S'},{Direction::RIGHT, 'D'},{Direction::BACK, 'W'},}, true),
-		 cameraPosition, new RotateCameraExtension(0.02f, window, cameraPosition)}, 0.02f, window);
+		 cameraPosition}, 0.02f, window);
 	entitiesList.push_back(dynamic_cast<Entity*>(camera));
 
-	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window, new KeyTrigger(window), camera);
+	WorldKeeper* worldKeeperObj = new WorldKeeper(entitiesList, window, camera);
 
 	//std::cout << "lenght: " << entitiesList[3]->getExtension<Position>("PositionExtension")->getPosition().x << std::endl;
 
@@ -111,8 +109,8 @@ int main() {
 
         worldKeeperObj->gameFrame(dt);
 
-      	glm::mat4 viewMatrix = worldKeeperObj->getCamera()->getExtension<RotateCameraExtension>("RotateCameraExtension")->getViewMatrix();
-      	//viewMatrix = glm::translate(viewMatrix, camera->getPosition());
+      	glm::mat4 viewMatrix = glm::mat4(1.f);
+      	viewMatrix = glm::translate(viewMatrix, camera->getPosition());
 
       	glm::mat4 projectionMatrix = camera->getProjectionMatrix();
 

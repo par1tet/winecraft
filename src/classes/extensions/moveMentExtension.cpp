@@ -2,7 +2,6 @@
 #include<classes/entities/entity.hpp>
 #include<classes/extensions/positionExtension.hpp>
 #include<classes/worldKeeper/worldKeeper.hpp>
-#include<classes/worldKeeper/keyTrigger.hpp>
 #include <glm/geometric.hpp>
 #include <iostream>
 #include <ostream>
@@ -85,7 +84,7 @@ void moveDir(Position* positionEntity, bool* keysTrigger, KeyMove keyMove, float
 void MoveMent::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
     Entity* thisEntity = (worldKeeperCl->getEntities()[enId]);
 
-	bool* keysTrigger = worldKeeperCl->getKeyTrigger()->getKeys();
+	bool* keysTrigger = worldKeeperCl->getTriggerManager()->getKeyTrigger()->getKeys();
 
     std::cout << "ID: " << enId << std::endl;
     std::cout << "moveSeg" << std::endl;

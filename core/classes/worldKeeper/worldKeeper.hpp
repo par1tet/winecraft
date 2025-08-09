@@ -1,7 +1,8 @@
 #pragma once
 
 #include<vector>
-#include<classes/worldKeeper/keyTrigger.hpp>
+#include<glad/glad.h>
+#include<classes/worldKeeper/triggers/triggerManager.hpp>
 #include<iostream>
 #define GLFW_INCLUDE_NONE
 #include<GLFW/glfw3.h>
@@ -11,14 +12,14 @@ class WorldKeeper{
 private:
     std::vector<Entity*> entities;
     GLFWwindow* window;
-    KeyTrigger* keyTrigger;
+    TriggerManager* triggerManager;
     Camera* camera;
 
 public:
-    WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, KeyTrigger* keyTrigger, Camera* camera);
+    WorldKeeper(std::vector<Entity*> entities, GLFWwindow* window, Camera* camera);
 
     void gameFrame(float dTime);
-    KeyTrigger* getKeyTrigger();
+    TriggerManager* getTriggerManager();
     std::vector<Entity*> getEntities();
     GLFWwindow* getWindow();
     Camera* getCamera();
