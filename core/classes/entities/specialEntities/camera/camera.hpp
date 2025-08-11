@@ -4,6 +4,7 @@
 #include<classes/entities/entity.hpp>
 #include<classes/worldKeeper/triggers/triggerManager.hpp>
 #include<classes/entities/specialEntities/specialEntity.hpp>
+#include<classes/extensions/moveMentExtension.hpp>
 
 class Camera : public SpecialEntity{
 private:
@@ -15,6 +16,7 @@ private:
     PositionMouse previewPositionMouse;
     double yaw, pitch;
     float sens;
+    std::vector<KeyMove> initialDirections;
 
 public:
     Camera(glm::vec3 position, float fov, float sens, Entity* linkedEntity, TriggerManager* TriggerManager);

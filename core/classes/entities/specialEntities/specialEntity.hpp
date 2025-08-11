@@ -5,4 +5,6 @@
 class SpecialEntity{
 private:
     Entity* linkedEntity;
+public:
+    void gameFrame();
 };

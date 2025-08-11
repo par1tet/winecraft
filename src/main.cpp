@@ -77,9 +77,9 @@ int main() {
 
 	entitiesList.push_back(createCube(glm::vec3{-3.0f, -3.0f, 0.0f}));
 
-	Position* cameraPosition = new Position(glm::vec3(0.f,0.f,-30.f));
+	Position* cameraPosition = new Position(glm::vec3(0.f,0.f,30.f));
 	Entity* cameraEntity = new Entity({cameraPosition, new MoveMent(10.f, 15.f, 
-		{{Direction::LEFT, 'A'},{Direction::FORWARD, 'S'},{Direction::RIGHT, 'D'},{Direction::BACK, 'W'},})});
+		{{DIR_RIGHT, 'A'},{DIR_BACK, 'S'},{DIR_LEFT, 'D'},{DIR_FORWARD, 'W'},})});
 
 	entitiesList.push_back(cameraEntity);
 

@@ -8,17 +8,15 @@
 #include<map>
 #include<vector>
 
-enum class Direction {
-    LEFT,
-    RIGHT,
-    DOWN,
-    UP,
-    BACK,
-    FORWARD,
-};
+#define DIR_LEFT glm::vec3{-1.f, 0.f, 0.f}
+#define DIR_RIGHT glm::vec3{1.f, 0.f, 0.f}
+#define DIR_FORWARD glm::vec3{0.f, 0.f, 1.f}
+#define DIR_BACK glm::vec3{0.f, 0.f, -1.f}
+#define DIR_UP glm::vec3{0.f, 1.f, 0.f}
+#define DIR_DOWN glm::vec3{0.f, -1.f, 0.f}
 
 struct KeyMove {
-    Direction direct;
+    glm::vec3 direct;
     char key;
 };
 
@@ -36,4 +34,6 @@ public:
     void gameInit(GLFWwindow* window);
     void gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId);
     std::string getExName();
+    std::vector<KeyMove> getKeyMoves();
+    void setKeyMoves(std::vector<KeyMove> newKeyMoves);
 };

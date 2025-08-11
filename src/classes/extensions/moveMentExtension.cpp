@@ -10,7 +10,6 @@
 #include<glm/glm.hpp>
 #include<string>
 #include<map>
-#include<string>
 
 MoveMent::MoveMent(float maxSpeed, double runUpTime, std::vector<KeyMove> keyMoves) : Extension(){
 	this->maxSpeed = maxSpeed;
@@ -29,32 +28,6 @@ MoveMent::MoveMent(float maxSpeed, double runUpTime, std::vector<KeyMove> keyMov
 void MoveMent::gameInit(GLFWwindow* window){}
 std::string MoveMent::getExName(){return "MoveMentExtension";}
 
-glm::vec3 transformationDirect(Direction dir){
-    switch (dir)
-    {
-        case Direction::LEFT:
-            return glm::vec3(-1.f, 0.f, 0.f);
-            break;
-        case Direction::RIGHT:
-            return glm::vec3(1.f, 0.f, 0.f);
-            break;
-        case Direction::UP:
-            return glm::vec3(0.f, 1.f, 0.f);
-            break;
-        case Direction::DOWN:
-            return glm::vec3(0.f, -1.f, 0.f);
-            break;
-        case Direction::BACK:
-            return glm::vec3(0.f, 0.f, -1.f);
-            break;
-        case Direction::FORWARD:
-            return glm::vec3(0.f, 0.f, 1.f);
-            break;
-    }
-
-    return glm::vec3{0.f};
-}
-
 void moveDir(Position* positionEntity, bool* keysTrigger, KeyMove keyMove, float runUpTime, bool invertMove){
     string keyMoveString = std::string({keyMove.key}); 
 
@@ -70,8 +43,10 @@ void moveDir(Position* positionEntity, bool* keysTrigger, KeyMove keyMove, float
             if(!positionEntity->getAccelerations()[keyMoveString]->getIsActive()){
                 positionEntity->getAccelerations()[keyMoveString]->setIsActive(true);
             }
+
+            positionEntity->getAccelerations()[keyMoveString]->setAcceleration(invertCooficient * runUpTime * keyMove.direct);
         }else{
-            positionEntity->generateNewAcceleration(new Acceleration(invertCooficient * runUpTime * transformationDirect(keyMove.direct)), keyMoveString);
+            positionEntity->generateNewAcceleration(new Acceleration(invertCooficient * runUpTime * keyMove.direct), keyMoveString);
         }
 
     }else{
@@ -94,10 +69,19 @@ void MoveMent::gameFrame(float dTime, WorldKeeper* worldKeeperCl, int enId){
     std::cout << positionEntity->getPosition().x << std::endl;
 
     for(int i = 0;i != this->keyMoves.size();i++){
-        moveDir(positionEntity, keysTrigger, keyMoves[i], this->runUpTime, this->invertMove);
+        moveDir(positionEntity, keysTrigger, this->keyMoves[i], this->runUpTime, this->invertMove);
     }
 
     if(glm::length(positionEntity->getVelocity()) > sqrt(this->maxSpeed*this->maxSpeed)){
         positionEntity->setVelocity(glm::normalize(positionEntity->getVelocity()) * this->maxSpeed);
     }
+}
+
+std::vector<KeyMove> MoveMent::getKeyMoves(){
+    return this->keyMoves;
+}
+
+void MoveMent::setKeyMoves(std::vector<KeyMove> newKeyMoves){
+    std::cout << "sosaaaaaaaal" << std::endl;
+    this->keyMoves = newKeyMoves;
 }
